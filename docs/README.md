@@ -1,1 +1,5 @@
-# 我的博客
+---
+layout: Landing
+---
+
+<Welcome />
