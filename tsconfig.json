@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "strict": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["docs/.vuepress/*"]
+    },
+    "types": ["@vuepress/client/types", "node"]
+  },
+  "include": [
+    "docs/.vuepress/**/*",
+    "docs/.vuepress/shims.d.ts"
+  ]
+} 
