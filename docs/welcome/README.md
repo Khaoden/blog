@@ -1,5 +1,0 @@
----
-layout: Layout
----
-
-<Welcome /> 
