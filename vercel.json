@@ -1,13 +1,5 @@
 {
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "docs/.vitepress/dist",
-          "buildCommand": "pnpm install --no-frozen-lockfile && pnpm docs:build"
-        }
-      }
-    ],
+    "buildCommand": "pnpm docs:build",
+    "outputDirectory": "docs/.vitepress/dist",
     "cleanUrls": true
   }
