@@ -24,6 +24,7 @@
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/slim": "^3.5.0",
     "@tsparticles/vue3": "^3.0.1",
+    "@vueuse/core": "^11.2.0",
     "@vueuse/motion": "^2.2.6",
     "animate.css": "^4.1.1",
     "gray-matter": "^4.0.3",

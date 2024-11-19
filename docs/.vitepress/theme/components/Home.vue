@@ -78,12 +78,7 @@
            class="stat-item animate__animated animate__fadeIn"
            :style="{ animationDelay: `${index * 150}ms` }">
         <div class="stat-number">
-          <vue-count-up
-            :start-val="0"
-            :end-val="stat.value"
-            :duration="2.5"
-            :options="{}"
-          />
+          {{ Math.round(stat.count) }}
         </div>
         <div class="stat-label">{{ stat.label }}</div>
       </div>
@@ -93,13 +88,13 @@
 
 <script setup>
 import { useData } from 'vitepress'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import 'animate.css'
 import VanillaTilt from 'vanilla-tilt'
 import { tsParticles } from "@tsparticles/engine"
 import { loadSlim } from "@tsparticles/slim"
-import VueCountUp from 'vue-countup-v3'
 import TypeWriter from './TypeWriter.vue'
+import { useTransition } from '@vueuse/core'
 
 // 技能数据
 const skills = [
@@ -116,7 +111,10 @@ const stats = [
   { value: 1000, label: 'Commits' },
   { value: 50, label: 'Articles' },
   { value: 10000, label: 'Lines of Code' },
-]
+].map(stat => ({
+  ...stat,
+  count: useTransition(ref(stat.value))
+}))
 
 onMounted(async () => {
   // 初始化 3D 倾斜效果
