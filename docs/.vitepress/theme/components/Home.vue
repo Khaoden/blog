@@ -93,7 +93,7 @@ import 'animate.css'
 import VanillaTilt from 'vanilla-tilt'
 import { tsParticles } from "@tsparticles/engine"
 import { loadSlim } from "@tsparticles/slim"
-import CountUp from 'vue-countup-v3'
+import { CountUp } from 'vue-countup-v3'
 import TypeWriter from './TypeWriter.vue'
 
 // 技能数据
