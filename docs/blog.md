@@ -1,6 +1,8 @@
 ---
-layout: doc
+layout: page
 title: Khaoden'sBlog
+aside: false
+sidebar: false
 ---
 
 <script setup>

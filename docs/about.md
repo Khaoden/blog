@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: About Khaoden
+aside: false
+sidebar: false
 ---
 
 <script setup>

@@ -29,6 +29,8 @@
     "animate.css": "^4.1.1",
     "gray-matter": "^4.0.3",
     "vanilla-tilt": "^1.8.1",
-    "vue-countup-v3": "^1.4.2"
+    "vue-countup-v3": "^1.4.2",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   }
 }
