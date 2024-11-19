@@ -1,6 +1,6 @@
 ---
 layout: Home
-title: 主页
+title: Khaoden's Home
 hero:
   name: "Khaoden's Blog"
   text: "Welcome to my personal blog"

@@ -49,14 +49,30 @@ function getBlogPosts(): Post[] {
 
 export default defineConfig({
   lang: 'zh-CN',
-  title: '我的博客',
+  title: 'Khaoden',
   description: '这是我的个人博客',
   
   head: [
     ['link', { 
       rel: 'stylesheet', 
       href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-    }]
+    }],
+    ['link', {
+      rel: 'icon',
+      href: '/images/avatar.jpg'
+    }],
+    [
+      'script',
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-9999KR6YC8' }
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'TAG_ID');`
+    ]
   ],
 
   themeConfig: {
