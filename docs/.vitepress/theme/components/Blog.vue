@@ -21,7 +21,7 @@
         @click="navigateTo(post.url)"
       >
         <h2 class="post-title">
-          <a :href="post.url">{{ post.frontmatter.title }}</a>
+          <a :href="post.url">{{ post.frontmatter?.title || 'Untitled' }}</a>
         </h2>
         <div class="post-meta">
           <span class="post-date">
@@ -33,7 +33,7 @@
             {{ post.frontmatter.readingTime }}min
           </span>
         </div>
-        <p class="post-desc">{{ post.frontmatter.description }}</p>
+        <p class="post-desc">{{ post.frontmatter?.description || 'No description available' }}</p>
         <div class="post-tags">
           <span v-for="tag in post.frontmatter.tags" :key="tag" class="tag">
             {{ tag }}
@@ -46,7 +46,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useData } from 'vitepress'
+import { useData, useRouter } from 'vitepress'
+import type { Post } from '../../types/blog'
 
 defineOptions({
   name: 'Blog'
@@ -55,7 +56,7 @@ defineOptions({
 const { theme } = useData()
 
 // 获取所有博客文章
-const posts = theme.value.posts || []
+const posts = theme.value.posts as Post[]
 
 // 搜索和标签筛选
 const searchQuery = ref('')
@@ -72,10 +73,10 @@ const allTags = computed(() => {
 
 // 过滤文章
 const filteredPosts = computed(() => {
-  return posts.filter(post => {
+  return posts.filter((post: Post) => {
     // 搜索过滤
-    const searchMatch = post.frontmatter.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      post.frontmatter.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const searchMatch = (post.frontmatter?.title?.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      post.frontmatter?.description?.toLowerCase().includes(searchQuery.value.toLowerCase())) ?? false
     
     // 标签过滤
     const tagMatch = selectedTags.value.length === 0 || 
@@ -102,6 +103,14 @@ const formatDate = (date: string) => {
     month: 'long',
     day: 'numeric'
   })
+}
+
+// 添加 router
+const router = useRouter()
+
+// 添加导航函数
+const navigateTo = (url: string) => {
+  router.go(url)
 }
 </script>
 

@@ -1,14 +1,21 @@
 import { defineConfig } from 'vitepress'
-import { fileURLToPath, URL } from 'node:url'
+import type { DefaultTheme } from 'vitepress'
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import type { Post } from './types/blog'
 
-function getBlogPosts() {
+function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 200
+  const words = content.trim().split(/\s+/).length
+  return Math.ceil(words / wordsPerMinute)
+}
+
+function getBlogPosts(): Post[] {
   const postsDirectory = path.resolve(__dirname, '../blog/posts')
-  const posts = []
+  const posts: Post[] = []
   
-  function getPostsRecursively(dir) {
+  function getPostsRecursively(dir: string): void {
     const files = fs.readdirSync(dir)
     
     files.forEach(filename => {
@@ -27,7 +34,7 @@ function getBlogPosts() {
           frontmatter: {
             ...frontmatter,
             readingTime: calculateReadingTime(content),
-            date: new Date(frontmatter.date).toISOString()
+            date: frontmatter.date ? new Date(frontmatter.date).toISOString() : new Date().toISOString()
           }
         })
       }
@@ -40,19 +47,12 @@ function getBlogPosts() {
   )
 }
 
-function calculateReadingTime(content) {
-  const wordsPerMinute = 200
-  const words = content.trim().split(/\s+/).length
-  return Math.ceil(words / wordsPerMinute)
-}
-
 export default defineConfig({
   lang: 'zh-CN',
-  title: 'Khaoden\'s Notes',
-  description: '个人笔记 & 知识库',
+  title: '我的博客',
+  description: '这是我的个人博客',
   
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['link', { 
       rel: 'stylesheet', 
       href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
@@ -61,16 +61,21 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: '🏠 Home', link: '/home/' },
-      { text: '💭 Notes', link: '/blog/' },
-      { text: '🦄 Projects', link: '/projects/' },
-      { text: '👫 Friends', link: '/friend/' },
-      { text: '👋 About', link: '/about/' }
+      { text: 'home', link: '/home' },
+      { text: 'blog', link: '/blog' },
+      { text: 'friends', link: '/friend' },
+      { text: 'project', link: '/project' },
+      { text: 'about', link: '/about' },
     ],
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/Khaoden' }
     ],
+
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: `Copyright © ${new Date().getFullYear()}-present Khaoden`
+    },
 
     sidebar: {
       '/blog/posts/learning/': [
@@ -78,13 +83,23 @@ export default defineConfig({
           text: '学习笔记',
           collapsed: false,
           items: [
-            { text: 'JavaSE',       collapsed: true,
+            {
+              text: 'JavaSE',
+              collapsed: true,
               items: [
-                { text: '基础语法', link: '/blog/posts/learning/javaSE/basic' },
+                { text: '基础语法', link: '/blog/posts/learning/javaSE/basics' },
                 { text: '面向对象', link: '/blog/posts/learning/javaSE/oop' },
                 { text: '集合框架', link: '/blog/posts/learning/javaSE/collection' }
-              ] },
-            { text: 'Spring', link: '/blog/posts/learning/Spring/' },
+              ]
+            },
+            {
+              text: 'Spring',
+              collapsed: true,
+              items: [
+                { text: 'IOC容器', link: '/blog/posts/learning/Spring/ioc' },
+                { text: 'AOP编程', link: '/blog/posts/learning/Spring/aop' }
+              ]
+            },
             { text: 'SpringMVC', link: '/blog/posts/learning/SpringMVC/' },
             { text: 'MyBatis', link: '/blog/posts/learning/MyBatis/' },
             { text: 'SpringBoot', link: '/blog/posts/learning/SpringBoot/' },
@@ -124,11 +139,7 @@ export default defineConfig({
       provider: 'local'
     },
 
-    posts: getBlogPosts(),
-
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: `Copyright © ${new Date().getFullYear()}-present Khaoden`
-    }
-  }
+    // @ts-ignore
+    posts: getBlogPosts()
+  } as DefaultTheme.Config & { posts: Post[] }
 }) 

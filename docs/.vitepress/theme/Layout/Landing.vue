@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useData } from 'vitepress'
-import emojis from '../../../public/emoji/full.mjs'
+import emojis from '../emoji/full.mjs'
 
 const { frontmatter } = useData()
 

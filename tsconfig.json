@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler", // 或者使用 "Node" 根据 Vite 版本调整
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowJs": true,
@@ -10,25 +10,25 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "skipLibCheck": true,
-    "types": [
-      "vitepress/client",
-      "node",
-      "vue"
-    ],
+    "noEmit": true,
     "paths": {
       "@theme/*": ["docs/.vitepress/theme/*"]
-    },
-    "outDir": "dist"
+    }
   },
   "include": [
-    "docs/**/*.vue",
-    "docs/**/*.ts",
-    "docs/.vitepress/**/*",
-    "components.d.ts"
+    "docs/.vitepress/**/*.ts",
+    "docs/.vitepress/**/*.d.ts",
+    "docs/.vitepress/**/*.tsx",
+    "docs/.vitepress/**/*.vue"
   ],
   "exclude": [
     "node_modules",
     "docs/.vitepress/cache",
-    "docs/.vitepress/dist"
+    "docs/.vitepress/dist",
+    "docs/public",
+    "**/*.mjs",
+    "**/*.js",
+    "**/dist/**",
+    "docs/.vitepress/theme/emoji/**"
   ]
 }

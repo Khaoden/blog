@@ -1,3 +1,7 @@
+import { ComputedRef } from 'vue';
+import { DefaultTheme } from 'vitepress'
+import type { Post } from '../types/blog'
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
@@ -16,3 +20,9 @@ declare module 'vue' {
     component(name: string, component: any): any
   }
 } 
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+      $computed: ComputedRef<any>;
+  }
+}

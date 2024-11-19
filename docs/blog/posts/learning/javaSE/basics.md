@@ -1,15 +1,15 @@
 ---
 layout: doc
-title: Java基础知识
+title: Java基础语法
 date: 2024-03-20
-tags: ['Java', '编程基础']
+tags: ['Java', '基础语法']
 category: 'learning/javaSE'
-description: Java基础语法和核心概念详解
+description: Java基础语法详解
 aside: true
 outline: deep
 ---
 
-# Java基础知识
+# Java基础语法
 
 ## 变量与数据类型
 
