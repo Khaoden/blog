@@ -78,7 +78,12 @@
            class="stat-item animate__animated animate__fadeIn"
            :style="{ animationDelay: `${index * 150}ms` }">
         <div class="stat-number">
-          <CountUp :endVal="stat.value" :duration="2.5" />
+          <vue-count-up
+            :start-val="0"
+            :end-val="stat.value"
+            :duration="2.5"
+            :options="{}"
+          />
         </div>
         <div class="stat-label">{{ stat.label }}</div>
       </div>
@@ -93,7 +98,7 @@ import 'animate.css'
 import VanillaTilt from 'vanilla-tilt'
 import { tsParticles } from "@tsparticles/engine"
 import { loadSlim } from "@tsparticles/slim"
-import { CountUp } from 'vue-countup-v3'
+import VueCountUp from 'vue-countup-v3'
 import TypeWriter from './TypeWriter.vue'
 
 // 技能数据

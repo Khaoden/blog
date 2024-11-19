@@ -10,6 +10,7 @@ import { MotionPlugin } from '@vueuse/motion'
 import '../style/custom.css'
 import 'animate.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import VueCountUp from 'vue-countup-v3'
 
 export default {
   extends: DefaultTheme,
@@ -21,5 +22,6 @@ export default {
     app.component('Blog', Blog)
     app.component('Friends', Friends)
     app.component('Projects', Projects)
+    app.component('vue-count-up', VueCountUp)
   }
 } as Theme
