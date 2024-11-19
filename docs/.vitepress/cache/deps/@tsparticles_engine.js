@@ -147,6 +147,7 @@ import {
   isDivModeEnabled,
   isFunction,
   isInArray,
+  isNull,
   isNumber,
   isObject,
   isPointInside,
@@ -193,7 +194,7 @@ import {
   updateColor,
   updateColorValue,
   visibilityChangeEvent
-} from "./chunk-BCCVFSYK.js";
+} from "./chunk-OGDBEFUE.js";
 export {
   AlterType,
   AnimatableColor,
@@ -343,6 +344,7 @@ export {
   isDivModeEnabled,
   isFunction,
   isInArray,
+  isNull,
   isNumber,
   isObject,
   isPointInside,

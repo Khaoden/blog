@@ -43,6 +43,7 @@ import {
   isArray,
   isDivModeEnabled,
   isInArray,
+  isNull,
   isObject,
   isPointInside,
   isSsr,
@@ -61,9 +62,9 @@ import {
   setRangeValue,
   updateAnimation,
   updateColor
-} from "./chunk-BCCVFSYK.js";
+} from "./chunk-OGDBEFUE.js";
 
-// node_modules/.pnpm/@tsparticles+move-base@3.5.0/node_modules/@tsparticles/move-base/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+move-base@3.6.0/node_modules/@tsparticles/move-base/browser/Utils.js
 var half = 0.5;
 var minVelocity = 0;
 var identity = 1;
@@ -188,7 +189,7 @@ function initSpin(particle) {
   };
 }
 
-// node_modules/.pnpm/@tsparticles+move-base@3.5.0/node_modules/@tsparticles/move-base/browser/BaseMover.js
+// node_modules/.pnpm/@tsparticles+move-base@3.6.0/node_modules/@tsparticles/move-base/browser/BaseMover.js
 var diffFactor = 2;
 var defaultSizeFactor = 1;
 var defaultDeltaFactor = 1;
@@ -224,14 +225,14 @@ var BaseMover = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+move-base@3.5.0/node_modules/@tsparticles/move-base/browser/index.js
+// node_modules/.pnpm/@tsparticles+move-base@3.6.0/node_modules/@tsparticles/move-base/browser/index.js
 async function loadBaseMover(engine, refresh = true) {
   await engine.addMover("base", () => {
     return Promise.resolve(new BaseMover());
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-circle@3.5.0/node_modules/@tsparticles/shape-circle/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-circle@3.6.0/node_modules/@tsparticles/shape-circle/browser/Utils.js
 var double = 2;
 var doublePI = Math.PI * double;
 var minAngle = 0;
@@ -245,7 +246,7 @@ function drawCircle(data) {
   context.arc(origin.x, origin.y, radius, circleRange.min, circleRange.max, false);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-circle@3.5.0/node_modules/@tsparticles/shape-circle/browser/CircleDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-circle@3.6.0/node_modules/@tsparticles/shape-circle/browser/CircleDrawer.js
 var sides = 12;
 var maxAngle = 360;
 var minAngle2 = 0;
@@ -271,12 +272,12 @@ var CircleDrawer = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-circle@3.5.0/node_modules/@tsparticles/shape-circle/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-circle@3.6.0/node_modules/@tsparticles/shape-circle/browser/index.js
 async function loadCircleShape(engine, refresh = true) {
   await engine.addShape(new CircleDrawer(), refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-color@3.5.0/node_modules/@tsparticles/updater-color/browser/ColorUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-color@3.6.0/node_modules/@tsparticles/updater-color/browser/ColorUpdater.js
 var ColorUpdater = class {
   constructor(container) {
     this.container = container;
@@ -296,14 +297,14 @@ var ColorUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-color@3.5.0/node_modules/@tsparticles/updater-color/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-color@3.6.0/node_modules/@tsparticles/updater-color/browser/index.js
 async function loadColorUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("color", (container) => {
     return Promise.resolve(new ColorUpdater(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-opacity@3.5.0/node_modules/@tsparticles/updater-opacity/browser/OpacityUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-opacity@3.6.0/node_modules/@tsparticles/updater-opacity/browser/OpacityUpdater.js
 var OpacityUpdater = class {
   constructor(container) {
     this.container = container;
@@ -337,14 +338,14 @@ var OpacityUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-opacity@3.5.0/node_modules/@tsparticles/updater-opacity/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-opacity@3.6.0/node_modules/@tsparticles/updater-opacity/browser/index.js
 async function loadOpacityUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("opacity", (container) => {
     return Promise.resolve(new OpacityUpdater(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/Utils.js
 var minVelocity2 = 0;
 var boundsMin = 0;
 function bounceHorizontal(data) {
@@ -406,7 +407,7 @@ function bounceVertical(data) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/BounceOutMode.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/BounceOutMode.js
 var BounceOutMode = class {
   constructor(container) {
     this.container = container;
@@ -421,7 +422,7 @@ var BounceOutMode = class {
     }
     const container = this.container;
     let handled = false;
-    for (const [, plugin] of container.plugins) {
+    for (const plugin of container.plugins.values()) {
       if (plugin.particleBounce !== void 0) {
         handled = plugin.particleBounce(particle, delta, direction);
       }
@@ -438,7 +439,7 @@ var BounceOutMode = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/DestroyOutMode.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/DestroyOutMode.js
 var minVelocity3 = 0;
 var DestroyOutMode = class {
   constructor(container) {
@@ -465,11 +466,11 @@ var DestroyOutMode = class {
         break;
       }
     }
-    container.particles.remove(particle, void 0, true);
+    container.particles.remove(particle, particle.group, true);
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/NoneOutMode.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/NoneOutMode.js
 var minVelocity4 = 0;
 var NoneOutMode = class {
   constructor(container) {
@@ -500,7 +501,7 @@ var NoneOutMode = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/OutOutMode.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/OutOutMode.js
 var minVelocity5 = 0;
 var minDistance = 0;
 var OutOutMode = class {
@@ -604,32 +605,31 @@ var OutOutMode = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/OutOfCanvasUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/OutOfCanvasUpdater.js
 var checkOutMode = (outModes, outMode) => {
   return outModes.default === outMode || outModes.bottom === outMode || outModes.left === outMode || outModes.right === outMode || outModes.top === outMode;
 };
 var OutOfCanvasUpdater = class {
   constructor(container) {
+    this._addUpdaterIfMissing = (particle, outMode, getUpdater) => {
+      const outModes = particle.options.move.outModes;
+      if (!this.updaters.has(outMode) && checkOutMode(outModes, outMode)) {
+        this.updaters.set(outMode, getUpdater(this.container));
+      }
+    };
     this._updateOutMode = (particle, delta, outMode, direction) => {
-      for (const updater of this.updaters) {
+      for (const updater of this.updaters.values()) {
         updater.update(particle, direction, delta, outMode);
       }
     };
     this.container = container;
-    this.updaters = [];
+    this.updaters = /* @__PURE__ */ new Map();
   }
   init(particle) {
-    this.updaters = [];
-    const outModes = particle.options.move.outModes;
-    if (checkOutMode(outModes, OutMode.bounce)) {
-      this.updaters.push(new BounceOutMode(this.container));
-    } else if (checkOutMode(outModes, OutMode.out)) {
-      this.updaters.push(new OutOutMode(this.container));
-    } else if (checkOutMode(outModes, OutMode.destroy)) {
-      this.updaters.push(new DestroyOutMode(this.container));
-    } else if (checkOutMode(outModes, OutMode.none)) {
-      this.updaters.push(new NoneOutMode(this.container));
-    }
+    this._addUpdaterIfMissing(particle, OutMode.bounce, (container) => new BounceOutMode(container));
+    this._addUpdaterIfMissing(particle, OutMode.out, (container) => new OutOutMode(container));
+    this._addUpdaterIfMissing(particle, OutMode.destroy, (container) => new DestroyOutMode(container));
+    this._addUpdaterIfMissing(particle, OutMode.none, (container) => new NoneOutMode(container));
   }
   isEnabled(particle) {
     return !particle.destroyed && !particle.spawning;
@@ -643,14 +643,14 @@ var OutOfCanvasUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-out-modes@3.5.0/node_modules/@tsparticles/updater-out-modes/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-out-modes@3.6.0/node_modules/@tsparticles/updater-out-modes/browser/index.js
 async function loadOutModesUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("outModes", (container) => {
     return Promise.resolve(new OutOfCanvasUpdater(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-size@3.5.0/node_modules/@tsparticles/updater-size/browser/SizeUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-size@3.6.0/node_modules/@tsparticles/updater-size/browser/SizeUpdater.js
 var minLoops = 0;
 var SizeUpdater = class {
   init(particle) {
@@ -676,14 +676,14 @@ var SizeUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-size@3.5.0/node_modules/@tsparticles/updater-size/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-size@3.6.0/node_modules/@tsparticles/updater-size/browser/index.js
 async function loadSizeUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("size", () => {
     return Promise.resolve(new SizeUpdater());
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+basic@3.5.0/node_modules/@tsparticles/basic/browser/index.js
+// node_modules/.pnpm/@tsparticles+basic@3.6.0/node_modules/@tsparticles/basic/browser/index.js
 async function loadBasic(engine, refresh = true) {
   await loadBaseMover(engine, false);
   await loadCircleShape(engine, false);
@@ -694,7 +694,7 @@ async function loadBasic(engine, refresh = true) {
   await engine.refresh(refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+plugin-easing-quad@3.5.0/node_modules/@tsparticles/plugin-easing-quad/browser/index.js
+// node_modules/.pnpm/@tsparticles+plugin-easing-quad@3.6.0/node_modules/@tsparticles/plugin-easing-quad/browser/index.js
 async function loadEasingQuadPlugin() {
   addEasing(EasingType.easeInQuad, (value) => value ** 2);
   addEasing(EasingType.easeOutQuad, (value) => 1 - (1 - value) ** 2);
@@ -702,34 +702,44 @@ async function loadEasingQuadPlugin() {
   await Promise.resolve();
 }
 
-// node_modules/.pnpm/@tsparticles+shape-emoji@3.5.0/node_modules/@tsparticles/shape-emoji/browser/Utils.js
-function drawEmoji(data) {
-  const { context, particle, radius, opacity } = data, emojiData = particle.emojiData, double10 = 2, diameter = radius * double10, previousAlpha = context.globalAlpha;
-  if (!emojiData) {
+// node_modules/.pnpm/@tsparticles+shape-emoji@3.6.0/node_modules/@tsparticles/shape-emoji/browser/Utils.js
+function drawEmoji(data, image) {
+  const { context, opacity } = data, half9 = 0.5, previousAlpha = context.globalAlpha;
+  if (!image) {
     return;
   }
+  const diameter = image.width, radius = diameter * half9;
   context.globalAlpha = opacity;
-  context.drawImage(emojiData, -radius, -radius, diameter, diameter);
+  context.drawImage(image, -radius, -radius, diameter, diameter);
   context.globalAlpha = previousAlpha;
 }
 
-// node_modules/.pnpm/@tsparticles+shape-emoji@3.5.0/node_modules/@tsparticles/shape-emoji/browser/EmojiDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-emoji@3.6.0/node_modules/@tsparticles/shape-emoji/browser/EmojiDrawer.js
 var defaultFont = '"Twemoji Mozilla", Apple Color Emoji, "Segoe UI Emoji", "Noto Color Emoji", "EmojiOne Color"';
+var noPadding = 0;
 var EmojiDrawer = class {
   constructor() {
     this.validTypes = ["emoji"];
     this._emojiShapeDict = /* @__PURE__ */ new Map();
   }
   destroy() {
-    for (const [key, emojiData] of this._emojiShapeDict) {
-      if (emojiData instanceof ImageBitmap) {
-        emojiData == null ? void 0 : emojiData.close();
-        this._emojiShapeDict.delete(key);
+    for (const [key, data] of this._emojiShapeDict) {
+      if (data instanceof ImageBitmap) {
+        data == null ? void 0 : data.close();
       }
+      this._emojiShapeDict.delete(key);
     }
   }
   draw(data) {
-    drawEmoji(data);
+    const key = data.particle.emojiDataKey;
+    if (!key) {
+      return;
+    }
+    const image = this._emojiShapeDict.get(key);
+    if (!image) {
+      return;
+    }
+    drawEmoji(data, image);
   }
   async init(container) {
     const options = container.actualOptions, { validTypes } = this;
@@ -747,25 +757,34 @@ var EmojiDrawer = class {
     await Promise.all(promises);
   }
   particleDestroy(particle) {
-    delete particle.emojiData;
+    particle.emojiDataKey = void 0;
   }
-  particleInit(container, particle) {
+  particleInit(_container, particle) {
     const double10 = 2, shapeData = particle.shapeData;
     if (!(shapeData == null ? void 0 : shapeData.value)) {
       return;
     }
-    const emoji = itemFromSingleOrMultiple(shapeData.value, particle.randomIndexData), font = shapeData.font ?? defaultFont;
+    const emoji = itemFromSingleOrMultiple(shapeData.value, particle.randomIndexData);
     if (!emoji) {
       return;
     }
-    const key = `${emoji}_${font}`, existingData = this._emojiShapeDict.get(key);
-    if (existingData) {
-      particle.emojiData = existingData;
+    const emojiOptions = typeof emoji === "string" ? {
+      font: shapeData.font ?? defaultFont,
+      padding: shapeData.padding ?? noPadding,
+      value: emoji
+    } : {
+      font: defaultFont,
+      padding: noPadding,
+      ...shapeData,
+      ...emoji
+    }, font = emojiOptions.font, value = emojiOptions.value;
+    const key = `${value}_${font}`;
+    if (this._emojiShapeDict.has(key)) {
+      particle.emojiDataKey = key;
       return;
     }
-    const canvasSize = getRangeMax(particle.size.value) * double10;
-    let emojiData;
-    const maxSize = getRangeMax(particle.size.value);
+    const padding = emojiOptions.padding * double10, maxSize = getRangeMax(particle.size.value), fullSize = maxSize + padding, canvasSize = fullSize * double10;
+    let image;
     if (typeof OffscreenCanvas !== "undefined") {
       const canvas = new OffscreenCanvas(canvasSize, canvasSize), context = canvas.getContext("2d");
       if (!context) {
@@ -774,8 +793,8 @@ var EmojiDrawer = class {
       context.font = `400 ${maxSize * double10}px ${font}`;
       context.textBaseline = "middle";
       context.textAlign = "center";
-      context.fillText(emoji, maxSize, maxSize);
-      emojiData = canvas.transferToImageBitmap();
+      context.fillText(value, fullSize, fullSize);
+      image = canvas.transferToImageBitmap();
     } else {
       const canvas = document.createElement("canvas");
       canvas.width = canvasSize;
@@ -787,20 +806,20 @@ var EmojiDrawer = class {
       context.font = `400 ${maxSize * double10}px ${font}`;
       context.textBaseline = "middle";
       context.textAlign = "center";
-      context.fillText(emoji, maxSize, maxSize);
-      emojiData = canvas;
+      context.fillText(value, fullSize, fullSize);
+      image = canvas;
     }
-    this._emojiShapeDict.set(key, emojiData);
-    particle.emojiData = emojiData;
+    this._emojiShapeDict.set(key, image);
+    particle.emojiDataKey = key;
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-emoji@3.5.0/node_modules/@tsparticles/shape-emoji/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-emoji@3.6.0/node_modules/@tsparticles/shape-emoji/browser/index.js
 async function loadEmojiShape(engine, refresh = true) {
   await engine.addShape(new EmojiDrawer(), refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.5.0/node_modules/@tsparticles/interaction-external-attract/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.6.0/node_modules/@tsparticles/interaction-external-attract/browser/Utils.js
 var minFactor = 1;
 var identity2 = 1;
 var minRadius = 0;
@@ -847,7 +866,7 @@ function hoverAttract(container, enabledCb) {
   processAttract(container, mousePos, attractRadius, new Circle(mousePos.x, mousePos.y, attractRadius), (p) => enabledCb(p));
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.5.0/node_modules/@tsparticles/interaction-external-attract/browser/Options/Classes/Attract.js
+// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.6.0/node_modules/@tsparticles/interaction-external-attract/browser/Options/Classes/Attract.js
 var Attract = class {
   constructor() {
     this.distance = 200;
@@ -858,7 +877,7 @@ var Attract = class {
     this.speed = 1;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.distance !== void 0) {
@@ -882,7 +901,7 @@ var Attract = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.5.0/node_modules/@tsparticles/interaction-external-attract/browser/Attractor.js
+// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.6.0/node_modules/@tsparticles/interaction-external-attract/browser/Attractor.js
 var attractMode = "attract";
 var Attractor = class extends ExternalInteractorBase {
   constructor(engine, container) {
@@ -957,14 +976,14 @@ var Attractor = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.5.0/node_modules/@tsparticles/interaction-external-attract/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-attract@3.6.0/node_modules/@tsparticles/interaction-external-attract/browser/index.js
 async function loadExternalAttractInteraction(engine, refresh = true) {
   await engine.addInteractor("externalAttract", (container) => {
     return Promise.resolve(new Attractor(engine, container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.5.0/node_modules/@tsparticles/interaction-external-bounce/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.6.0/node_modules/@tsparticles/interaction-external-bounce/browser/Utils.js
 var squareExp = 2;
 var half2 = 0.5;
 var halfPI = Math.PI * half2;
@@ -1011,13 +1030,13 @@ function mouseBounce(container, enabledCb) {
   processBounce(container, mousePos, radius, new Circle(mousePos.x, mousePos.y, radius + tolerance), enabledCb);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.5.0/node_modules/@tsparticles/interaction-external-bounce/browser/Options/Classes/Bounce.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.6.0/node_modules/@tsparticles/interaction-external-bounce/browser/Options/Classes/Bounce.js
 var Bounce = class {
   constructor() {
     this.distance = 200;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.distance !== void 0) {
@@ -1026,7 +1045,7 @@ var Bounce = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.5.0/node_modules/@tsparticles/interaction-external-bounce/browser/Bouncer.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.6.0/node_modules/@tsparticles/interaction-external-bounce/browser/Bouncer.js
 var bounceMode = "bounce";
 var Bouncer = class extends ExternalInteractorBase {
   constructor(container) {
@@ -1065,14 +1084,14 @@ var Bouncer = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.5.0/node_modules/@tsparticles/interaction-external-bounce/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bounce@3.6.0/node_modules/@tsparticles/interaction-external-bounce/browser/index.js
 async function loadExternalBounceInteraction(engine, refresh = true) {
   await engine.addInteractor("externalBounce", (container) => {
     return Promise.resolve(new Bouncer(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/Options/Classes/BubbleBase.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/Options/Classes/BubbleBase.js
 var BubbleBase = class {
   constructor() {
     this.distance = 200;
@@ -1080,7 +1099,7 @@ var BubbleBase = class {
     this.mix = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.distance !== void 0) {
@@ -1107,7 +1126,7 @@ var BubbleBase = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/Options/Classes/BubbleDiv.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/Options/Classes/BubbleDiv.js
 var BubbleDiv = class extends BubbleBase {
   constructor() {
     super();
@@ -1115,7 +1134,7 @@ var BubbleDiv = class extends BubbleBase {
   }
   load(data) {
     super.load(data);
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.selectors !== void 0) {
@@ -1124,11 +1143,11 @@ var BubbleDiv = class extends BubbleBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/Options/Classes/Bubble.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/Options/Classes/Bubble.js
 var Bubble = class extends BubbleBase {
   load(data) {
     super.load(data);
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     this.divs = executeOnSingleOrMultiple(data.divs, (div) => {
@@ -1139,7 +1158,7 @@ var Bubble = class extends BubbleBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/Enums.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/Enums.js
 var ProcessBubbleType;
 (function(ProcessBubbleType2) {
   ProcessBubbleType2["color"] = "color";
@@ -1147,7 +1166,7 @@ var ProcessBubbleType;
   ProcessBubbleType2["size"] = "size";
 })(ProcessBubbleType || (ProcessBubbleType = {}));
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/Utils.js
 function calculateBubbleValue(particleValue, modeValue, optionsValue, ratio) {
   if (modeValue >= optionsValue) {
     const value = particleValue + (modeValue - optionsValue) * ratio;
@@ -1158,7 +1177,7 @@ function calculateBubbleValue(particleValue, modeValue, optionsValue, ratio) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/Bubbler.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/Bubbler.js
 var bubbleMode = "bubble";
 var minDistance2 = 0;
 var defaultClickTime = 0;
@@ -1429,20 +1448,20 @@ var Bubbler = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.5.0/node_modules/@tsparticles/interaction-external-bubble/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-bubble@3.6.0/node_modules/@tsparticles/interaction-external-bubble/browser/index.js
 async function loadExternalBubbleInteraction(engine, refresh = true) {
   await engine.addInteractor("externalBubble", (container) => {
     return Promise.resolve(new Bubbler(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.5.0/node_modules/@tsparticles/interaction-external-connect/browser/Options/Classes/ConnectLinks.js
+// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.6.0/node_modules/@tsparticles/interaction-external-connect/browser/Options/Classes/ConnectLinks.js
 var ConnectLinks = class {
   constructor() {
     this.opacity = 0.5;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.opacity !== void 0) {
@@ -1451,7 +1470,7 @@ var ConnectLinks = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.5.0/node_modules/@tsparticles/interaction-external-connect/browser/Options/Classes/Connect.js
+// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.6.0/node_modules/@tsparticles/interaction-external-connect/browser/Options/Classes/Connect.js
 var Connect = class {
   constructor() {
     this.distance = 80;
@@ -1459,7 +1478,7 @@ var Connect = class {
     this.radius = 60;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.distance !== void 0) {
@@ -1472,7 +1491,7 @@ var Connect = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.5.0/node_modules/@tsparticles/interaction-external-connect/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.6.0/node_modules/@tsparticles/interaction-external-connect/browser/Utils.js
 var gradientMin = 0;
 var gradientMax = 1;
 var defaultLinksWidth = 0;
@@ -1511,7 +1530,7 @@ function drawConnection(container, p1, p2) {
   });
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.5.0/node_modules/@tsparticles/interaction-external-connect/browser/Connector.js
+// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.6.0/node_modules/@tsparticles/interaction-external-connect/browser/Connector.js
 var connectMode = "connect";
 var minDistance3 = 0;
 var Connector = class extends ExternalInteractorBase {
@@ -1566,14 +1585,14 @@ var Connector = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.5.0/node_modules/@tsparticles/interaction-external-connect/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-connect@3.6.0/node_modules/@tsparticles/interaction-external-connect/browser/index.js
 async function loadExternalConnectInteraction(engine, refresh = true) {
   await engine.addInteractor("externalConnect", (container) => {
     return Promise.resolve(new Connector(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.5.0/node_modules/@tsparticles/interaction-external-grab/browser/Options/Classes/GrabLinks.js
+// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.6.0/node_modules/@tsparticles/interaction-external-grab/browser/Options/Classes/GrabLinks.js
 var GrabLinks = class {
   constructor() {
     this.blink = false;
@@ -1581,7 +1600,7 @@ var GrabLinks = class {
     this.opacity = 1;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.blink !== void 0) {
@@ -1599,14 +1618,14 @@ var GrabLinks = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.5.0/node_modules/@tsparticles/interaction-external-grab/browser/Options/Classes/Grab.js
+// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.6.0/node_modules/@tsparticles/interaction-external-grab/browser/Options/Classes/Grab.js
 var Grab = class {
   constructor() {
     this.distance = 100;
     this.links = new GrabLinks();
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.distance !== void 0) {
@@ -1616,7 +1635,7 @@ var Grab = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.5.0/node_modules/@tsparticles/interaction-external-grab/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.6.0/node_modules/@tsparticles/interaction-external-grab/browser/Utils.js
 var defaultWidth = 0;
 function drawGrabLine(context, width, begin, end, colorLine, opacity) {
   drawLine(context, begin, end);
@@ -1631,7 +1650,7 @@ function drawGrab(container, particle, lineColor, opacity, mousePos) {
   });
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.5.0/node_modules/@tsparticles/interaction-external-grab/browser/Grabber.js
+// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.6.0/node_modules/@tsparticles/interaction-external-grab/browser/Grabber.js
 var grabMode = "grab";
 var minDistance4 = 0;
 var minOpacity = 0;
@@ -1700,14 +1719,14 @@ var Grabber = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.5.0/node_modules/@tsparticles/interaction-external-grab/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-grab@3.6.0/node_modules/@tsparticles/interaction-external-grab/browser/index.js
 async function loadExternalGrabInteraction(engine, refresh = true) {
   await engine.addInteractor("externalGrab", (container) => {
     return Promise.resolve(new Grabber(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-pause@3.5.0/node_modules/@tsparticles/interaction-external-pause/browser/Pauser.js
+// node_modules/.pnpm/@tsparticles+interaction-external-pause@3.6.0/node_modules/@tsparticles/interaction-external-pause/browser/Pauser.js
 var pauseMode = "pause";
 var Pauser = class extends ExternalInteractorBase {
   constructor(container) {
@@ -1737,14 +1756,14 @@ var Pauser = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-pause@3.5.0/node_modules/@tsparticles/interaction-external-pause/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-pause@3.6.0/node_modules/@tsparticles/interaction-external-pause/browser/index.js
 async function loadExternalPauseInteraction(engine, refresh = true) {
   await engine.addInteractor("externalPause", (container) => {
     return Promise.resolve(new Pauser(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-push@3.5.0/node_modules/@tsparticles/interaction-external-push/browser/Options/Classes/Push.js
+// node_modules/.pnpm/@tsparticles+interaction-external-push@3.6.0/node_modules/@tsparticles/interaction-external-push/browser/Options/Classes/Push.js
 var Push = class {
   constructor() {
     this.default = true;
@@ -1752,7 +1771,7 @@ var Push = class {
     this.quantity = 4;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.default !== void 0) {
@@ -1771,7 +1790,7 @@ var Push = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-push@3.5.0/node_modules/@tsparticles/interaction-external-push/browser/Pusher.js
+// node_modules/.pnpm/@tsparticles+interaction-external-push@3.6.0/node_modules/@tsparticles/interaction-external-push/browser/Pusher.js
 var pushMode = "push";
 var minQuantity = 0;
 var Pusher = class extends ExternalInteractorBase {
@@ -1814,20 +1833,20 @@ var Pusher = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-push@3.5.0/node_modules/@tsparticles/interaction-external-push/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-push@3.6.0/node_modules/@tsparticles/interaction-external-push/browser/index.js
 async function loadExternalPushInteraction(engine, refresh = true) {
   await engine.addInteractor("externalPush", (container) => {
     return Promise.resolve(new Pusher(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-remove@3.5.0/node_modules/@tsparticles/interaction-external-remove/browser/Options/Classes/Remove.js
+// node_modules/.pnpm/@tsparticles+interaction-external-remove@3.6.0/node_modules/@tsparticles/interaction-external-remove/browser/Options/Classes/Remove.js
 var Remove = class {
   constructor() {
     this.quantity = 2;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     const quantity = data.quantity;
@@ -1837,7 +1856,7 @@ var Remove = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-remove@3.5.0/node_modules/@tsparticles/interaction-external-remove/browser/Remover.js
+// node_modules/.pnpm/@tsparticles+interaction-external-remove@3.6.0/node_modules/@tsparticles/interaction-external-remove/browser/Remover.js
 var removeMode = "remove";
 var Remover = class extends ExternalInteractorBase {
   constructor(container) {
@@ -1872,14 +1891,14 @@ var Remover = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-remove@3.5.0/node_modules/@tsparticles/interaction-external-remove/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-remove@3.6.0/node_modules/@tsparticles/interaction-external-remove/browser/index.js
 async function loadExternalRemoveInteraction(engine, refresh = true) {
   await engine.addInteractor("externalRemove", (container) => {
     return Promise.resolve(new Remover(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.5.0/node_modules/@tsparticles/interaction-external-repulse/browser/Options/Classes/RepulseBase.js
+// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.6.0/node_modules/@tsparticles/interaction-external-repulse/browser/Options/Classes/RepulseBase.js
 var RepulseBase = class {
   constructor() {
     this.distance = 200;
@@ -1890,7 +1909,7 @@ var RepulseBase = class {
     this.easing = EasingType.easeOutQuad;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.distance !== void 0) {
@@ -1914,7 +1933,7 @@ var RepulseBase = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.5.0/node_modules/@tsparticles/interaction-external-repulse/browser/Options/Classes/RepulseDiv.js
+// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.6.0/node_modules/@tsparticles/interaction-external-repulse/browser/Options/Classes/RepulseDiv.js
 var RepulseDiv = class extends RepulseBase {
   constructor() {
     super();
@@ -1922,7 +1941,7 @@ var RepulseDiv = class extends RepulseBase {
   }
   load(data) {
     super.load(data);
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.selectors !== void 0) {
@@ -1931,11 +1950,11 @@ var RepulseDiv = class extends RepulseBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.5.0/node_modules/@tsparticles/interaction-external-repulse/browser/Options/Classes/Repulse.js
+// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.6.0/node_modules/@tsparticles/interaction-external-repulse/browser/Options/Classes/Repulse.js
 var Repulse = class extends RepulseBase {
   load(data) {
     super.load(data);
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     this.divs = executeOnSingleOrMultiple(data.divs, (div) => {
@@ -1946,7 +1965,7 @@ var Repulse = class extends RepulseBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.5.0/node_modules/@tsparticles/interaction-external-repulse/browser/Repulser.js
+// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.6.0/node_modules/@tsparticles/interaction-external-repulse/browser/Repulser.js
 var repulseMode = "repulse";
 var minDistance5 = 0;
 var repulseRadiusFactor = 6;
@@ -2105,21 +2124,21 @@ var Repulser = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.5.0/node_modules/@tsparticles/interaction-external-repulse/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-repulse@3.6.0/node_modules/@tsparticles/interaction-external-repulse/browser/index.js
 async function loadExternalRepulseInteraction(engine, refresh = true) {
   await engine.addInteractor("externalRepulse", (container) => {
     return Promise.resolve(new Repulser(engine, container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-external-slow@3.5.0/node_modules/@tsparticles/interaction-external-slow/browser/Options/Classes/Slow.js
+// node_modules/.pnpm/@tsparticles+interaction-external-slow@3.6.0/node_modules/@tsparticles/interaction-external-slow/browser/Options/Classes/Slow.js
 var Slow = class {
   constructor() {
     this.factor = 3;
     this.radius = 200;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.factor !== void 0) {
@@ -2131,7 +2150,7 @@ var Slow = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-slow@3.5.0/node_modules/@tsparticles/interaction-external-slow/browser/Slower.js
+// node_modules/.pnpm/@tsparticles+interaction-external-slow@3.6.0/node_modules/@tsparticles/interaction-external-slow/browser/Slower.js
 var slowMode = "slow";
 var minRadius4 = 0;
 var Slower = class extends ExternalInteractorBase {
@@ -2180,14 +2199,14 @@ var Slower = class extends ExternalInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-external-slow@3.5.0/node_modules/@tsparticles/interaction-external-slow/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-external-slow@3.6.0/node_modules/@tsparticles/interaction-external-slow/browser/index.js
 async function loadExternalSlowInteraction(engine, refresh = true) {
   await engine.addInteractor("externalSlow", (container) => {
     return Promise.resolve(new Slower(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/Utils.js
 var stringStart = 0;
 var defaultOpacity2 = 1;
 var currentColorRegex = /(#(?:[0-9a-f]{2}){2,4}|(#[0-9a-f]{3})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d.]+%?\))|currentcolor/gi;
@@ -2276,11 +2295,11 @@ function replaceImageColor(image, imageData, color, particle) {
   });
 }
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Constants.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Constants.js
 var InterlaceOffsets = [0, 4, 2, 1];
 var InterlaceSteps = [8, 8, 4, 2];
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/GifUtils/ByteStream.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/GifUtils/ByteStream.js
 var ByteStream = class {
   constructor(bytes) {
     this.pos = 0;
@@ -2330,7 +2349,7 @@ var ByteStream = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Enums/DisposalMethod.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Enums/DisposalMethod.js
 var DisposalMethod;
 (function(DisposalMethod2) {
   DisposalMethod2[DisposalMethod2["Replace"] = 0] = "Replace";
@@ -2343,7 +2362,7 @@ var DisposalMethod;
   DisposalMethod2[DisposalMethod2["UndefinedD"] = 7] = "UndefinedD";
 })(DisposalMethod || (DisposalMethod = {}));
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Types/GIFDataHeaders.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Types/GIFDataHeaders.js
 var GIFDataHeaders;
 (function(GIFDataHeaders2) {
   GIFDataHeaders2[GIFDataHeaders2["Extension"] = 33] = "Extension";
@@ -2355,7 +2374,7 @@ var GIFDataHeaders;
   GIFDataHeaders2[GIFDataHeaders2["EndOfFile"] = 59] = "EndOfFile";
 })(GIFDataHeaders || (GIFDataHeaders = {}));
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/GifUtils/Utils.js
 var origin2 = {
   x: 0,
   y: 0
@@ -2772,7 +2791,7 @@ async function loadGifImage(image) {
   image.loading = false;
 }
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/ImageDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/ImageDrawer.js
 var double4 = 2;
 var defaultAlpha = 1;
 var sides2 = 12;
@@ -2901,14 +2920,14 @@ var ImageDrawer = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/Options/Classes/Preload.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/Options/Classes/Preload.js
 var Preload = class {
   constructor() {
     this.src = "";
     this.gif = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.gif !== void 0) {
@@ -2932,7 +2951,7 @@ var Preload = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/ImagePreloader.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/ImagePreloader.js
 var ImagePreloaderPlugin = class {
   constructor(engine) {
     this.id = "imagePreloader";
@@ -2966,7 +2985,7 @@ var ImagePreloaderPlugin = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-image@3.5.0/node_modules/@tsparticles/shape-image/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-image@3.6.0/node_modules/@tsparticles/shape-image/browser/index.js
 var extLength = 3;
 function addLoadImageToEngine(engine) {
   if (engine.loadImage) {
@@ -3013,14 +3032,14 @@ async function loadImageShape(engine, refresh = true) {
   await engine.addShape(new ImageDrawer(engine), refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-life@3.5.0/node_modules/@tsparticles/updater-life/browser/Options/Classes/LifeDelay.js
+// node_modules/.pnpm/@tsparticles+updater-life@3.6.0/node_modules/@tsparticles/updater-life/browser/Options/Classes/LifeDelay.js
 var LifeDelay = class extends ValueWithRandom {
   constructor() {
     super();
     this.sync = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     super.load(data);
@@ -3030,14 +3049,14 @@ var LifeDelay = class extends ValueWithRandom {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-life@3.5.0/node_modules/@tsparticles/updater-life/browser/Options/Classes/LifeDuration.js
+// node_modules/.pnpm/@tsparticles+updater-life@3.6.0/node_modules/@tsparticles/updater-life/browser/Options/Classes/LifeDuration.js
 var LifeDuration = class extends ValueWithRandom {
   constructor() {
     super();
     this.sync = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     super.load(data);
@@ -3047,7 +3066,7 @@ var LifeDuration = class extends ValueWithRandom {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-life@3.5.0/node_modules/@tsparticles/updater-life/browser/Options/Classes/Life.js
+// node_modules/.pnpm/@tsparticles+updater-life@3.6.0/node_modules/@tsparticles/updater-life/browser/Options/Classes/Life.js
 var Life = class {
   constructor() {
     this.count = 0;
@@ -3055,7 +3074,7 @@ var Life = class {
     this.duration = new LifeDuration();
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.count !== void 0) {
@@ -3066,7 +3085,7 @@ var Life = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-life@3.5.0/node_modules/@tsparticles/updater-life/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+updater-life@3.6.0/node_modules/@tsparticles/updater-life/browser/Utils.js
 var noTime = 0;
 var infiniteValue = -1;
 var noLife = 0;
@@ -3124,7 +3143,7 @@ function updateLife(particle, delta, canvasSize) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+updater-life@3.5.0/node_modules/@tsparticles/updater-life/browser/LifeUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-life@3.6.0/node_modules/@tsparticles/updater-life/browser/LifeUpdater.js
 var noTime2 = 0;
 var identity3 = 1;
 var infiniteValue2 = -1;
@@ -3173,14 +3192,14 @@ var LifeUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-life@3.5.0/node_modules/@tsparticles/updater-life/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-life@3.6.0/node_modules/@tsparticles/updater-life/browser/index.js
 async function loadLifeUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("life", async (container) => {
     return Promise.resolve(new LifeUpdater(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-line@3.5.0/node_modules/@tsparticles/shape-line/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-line@3.6.0/node_modules/@tsparticles/shape-line/browser/Utils.js
 function drawLine2(data) {
   const { context, particle, radius } = data, shapeData = particle.shapeData, centerY = 0;
   context.moveTo(-radius, centerY);
@@ -3188,7 +3207,7 @@ function drawLine2(data) {
   context.lineCap = (shapeData == null ? void 0 : shapeData.cap) ?? "butt";
 }
 
-// node_modules/.pnpm/@tsparticles+shape-line@3.5.0/node_modules/@tsparticles/shape-line/browser/LineDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-line@3.6.0/node_modules/@tsparticles/shape-line/browser/LineDrawer.js
 var sides3 = 1;
 var LineDrawer = class {
   constructor() {
@@ -3202,12 +3221,12 @@ var LineDrawer = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-line@3.5.0/node_modules/@tsparticles/shape-line/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-line@3.6.0/node_modules/@tsparticles/shape-line/browser/index.js
 async function loadLineShape(engine, refresh = true) {
   await engine.addShape(new LineDrawer(), refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+move-parallax@3.5.0/node_modules/@tsparticles/move-parallax/browser/ParallaxMover.js
+// node_modules/.pnpm/@tsparticles+move-parallax@3.6.0/node_modules/@tsparticles/move-parallax/browser/ParallaxMover.js
 var half6 = 0.5;
 var ParallaxMover = class {
   init() {
@@ -3236,14 +3255,14 @@ var ParallaxMover = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+move-parallax@3.5.0/node_modules/@tsparticles/move-parallax/browser/index.js
+// node_modules/.pnpm/@tsparticles+move-parallax@3.6.0/node_modules/@tsparticles/move-parallax/browser/index.js
 async function loadParallaxMover(engine, refresh = true) {
   await engine.addMover("parallax", () => {
     return Promise.resolve(new ParallaxMover());
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-attract@3.5.0/node_modules/@tsparticles/interaction-particles-attract/browser/Attractor.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-attract@3.6.0/node_modules/@tsparticles/interaction-particles-attract/browser/Attractor.js
 var attractFactor = 1e3;
 var identity4 = 1;
 var Attractor2 = class extends ParticlesInteractorBase {
@@ -3278,14 +3297,14 @@ var Attractor2 = class extends ParticlesInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-attract@3.5.0/node_modules/@tsparticles/interaction-particles-attract/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-attract@3.6.0/node_modules/@tsparticles/interaction-particles-attract/browser/index.js
 async function loadParticlesAttractInteraction(engine, refresh = true) {
   await engine.addInteractor("particlesAttract", (container) => {
     return Promise.resolve(new Attractor2(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.5.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Absorb.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.6.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Absorb.js
 var half7 = 0.5;
 var absorbFactor = 10;
 var minAbsorbFactor = 0;
@@ -3313,7 +3332,7 @@ function absorb(p1, p2, delta, pixelRatio) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.5.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Bounce.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.6.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Bounce.js
 var fixBounceSpeed = (p) => {
   if (p.collisionMaxSpeed === void 0) {
     p.collisionMaxSpeed = getRangeValue(p.options.collisions.maxSpeed);
@@ -3328,7 +3347,7 @@ function bounce(p1, p2) {
   fixBounceSpeed(p2);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.5.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Destroy.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.6.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Destroy.js
 function destroy(p1, p2) {
   if (!p1.unbreakable && !p2.unbreakable) {
     bounce(p1, p2);
@@ -3343,7 +3362,7 @@ function destroy(p1, p2) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.5.0/node_modules/@tsparticles/interaction-particles-collisions/browser/ResolveCollision.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.6.0/node_modules/@tsparticles/interaction-particles-collisions/browser/ResolveCollision.js
 function resolveCollision(p1, p2, delta, pixelRatio) {
   switch (p1.options.collisions.mode) {
     case CollisionMode.absorb: {
@@ -3361,7 +3380,7 @@ function resolveCollision(p1, p2, delta, pixelRatio) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.5.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Collider.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.6.0/node_modules/@tsparticles/interaction-particles-collisions/browser/Collider.js
 var double5 = 2;
 var Collider = class extends ParticlesInteractorBase {
   constructor(container) {
@@ -3398,14 +3417,14 @@ var Collider = class extends ParticlesInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.5.0/node_modules/@tsparticles/interaction-particles-collisions/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-collisions@3.6.0/node_modules/@tsparticles/interaction-particles-collisions/browser/index.js
 async function loadParticlesCollisionsInteraction(engine, refresh = true) {
   await engine.addInteractor("particlesCollisions", (container) => {
     return Promise.resolve(new Collider(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/CircleWarp.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/CircleWarp.js
 var double6 = 2;
 var CircleWarp = class extends Circle {
   constructor(x, y, radius, canvasSize) {
@@ -3436,7 +3455,7 @@ var CircleWarp = class extends Circle {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/Options/Classes/LinksShadow.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/Options/Classes/LinksShadow.js
 var LinksShadow = class {
   constructor() {
     this.blur = 5;
@@ -3445,7 +3464,7 @@ var LinksShadow = class {
     this.enable = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.blur !== void 0) {
@@ -3458,14 +3477,14 @@ var LinksShadow = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/Options/Classes/LinksTriangle.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/Options/Classes/LinksTriangle.js
 var LinksTriangle = class {
   constructor() {
     this.enable = false;
     this.frequency = 1;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.color !== void 0) {
@@ -3483,7 +3502,7 @@ var LinksTriangle = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/Options/Classes/Links.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/Options/Classes/Links.js
 var Links = class {
   constructor() {
     this.blink = false;
@@ -3500,7 +3519,7 @@ var Links = class {
     this.warp = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.id !== void 0) {
@@ -3536,7 +3555,7 @@ var Links = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/Linker.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/Linker.js
 var squarePower2 = 2;
 var opacityOffset = 1;
 var origin3 = {
@@ -3640,14 +3659,14 @@ var Linker = class extends ParticlesInteractorBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/interaction.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/interaction.js
 async function loadLinksInteraction(engine, refresh = true) {
   await engine.addInteractor("particlesLinks", async (container) => {
     return Promise.resolve(new Linker(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/Utils.js
 function drawTriangle(context, p1, p2, p3) {
   context.beginPath();
   context.moveTo(p1.x, p1.y);
@@ -3745,7 +3764,7 @@ function setLinkFrequency(particles, dictionary) {
   return res;
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/LinkInstance.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/LinkInstance.js
 var minOpacity2 = 0;
 var minWidth = 0;
 var minDistance7 = 0;
@@ -3895,7 +3914,7 @@ var LinkInstance = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/LinksPlugin.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/LinksPlugin.js
 var LinksPlugin = class {
   constructor() {
     this.id = "links";
@@ -3910,19 +3929,19 @@ var LinksPlugin = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/plugin.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/plugin.js
 async function loadLinksPlugin(engine, refresh = true) {
   const plugin = new LinksPlugin();
   await engine.addPlugin(plugin, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.5.0/node_modules/@tsparticles/interaction-particles-links/browser/index.js
+// node_modules/.pnpm/@tsparticles+interaction-particles-links@3.6.0/node_modules/@tsparticles/interaction-particles-links/browser/index.js
 async function loadParticlesLinksInteraction(engine, refresh = true) {
   await loadLinksInteraction(engine, refresh);
   await loadLinksPlugin(engine, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-polygon@3.5.0/node_modules/@tsparticles/shape-polygon/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-polygon@3.6.0/node_modules/@tsparticles/shape-polygon/browser/Utils.js
 var piDeg = 180;
 var origin4 = { x: 0, y: 0 };
 var sidesOffset = 2;
@@ -3941,7 +3960,7 @@ function drawPolygon(data, start, side) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+shape-polygon@3.5.0/node_modules/@tsparticles/shape-polygon/browser/PolygonDrawerBase.js
+// node_modules/.pnpm/@tsparticles+shape-polygon@3.6.0/node_modules/@tsparticles/shape-polygon/browser/PolygonDrawerBase.js
 var defaultSides = 5;
 var PolygonDrawerBase = class {
   draw(data) {
@@ -3954,7 +3973,7 @@ var PolygonDrawerBase = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-polygon@3.5.0/node_modules/@tsparticles/shape-polygon/browser/PolygonDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-polygon@3.6.0/node_modules/@tsparticles/shape-polygon/browser/PolygonDrawer.js
 var sidesCenterFactor = 3.5;
 var yFactor = 2.66;
 var sidesFactor = 3;
@@ -3981,7 +4000,7 @@ var PolygonDrawer = class extends PolygonDrawerBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-polygon@3.5.0/node_modules/@tsparticles/shape-polygon/browser/TriangleDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-polygon@3.6.0/node_modules/@tsparticles/shape-polygon/browser/TriangleDrawer.js
 var yFactor2 = 1.66;
 var sides4 = 3;
 var double7 = 2;
@@ -4011,7 +4030,7 @@ var TriangleDrawer = class extends PolygonDrawerBase {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-polygon@3.5.0/node_modules/@tsparticles/shape-polygon/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-polygon@3.6.0/node_modules/@tsparticles/shape-polygon/browser/index.js
 async function loadGenericPolygonShape(engine, refresh = true) {
   await engine.addShape(new PolygonDrawer(), refresh);
 }
@@ -4023,7 +4042,7 @@ async function loadPolygonShape(engine, refresh = true) {
   await loadTriangleShape(engine, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-rotate@3.5.0/node_modules/@tsparticles/updater-rotate/browser/Options/Classes/RotateAnimation.js
+// node_modules/.pnpm/@tsparticles+updater-rotate@3.6.0/node_modules/@tsparticles/updater-rotate/browser/Options/Classes/RotateAnimation.js
 var RotateAnimation = class {
   constructor() {
     this.enable = false;
@@ -4032,7 +4051,7 @@ var RotateAnimation = class {
     this.sync = false;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     if (data.enable !== void 0) {
@@ -4050,7 +4069,7 @@ var RotateAnimation = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-rotate@3.5.0/node_modules/@tsparticles/updater-rotate/browser/Options/Classes/Rotate.js
+// node_modules/.pnpm/@tsparticles+updater-rotate@3.6.0/node_modules/@tsparticles/updater-rotate/browser/Options/Classes/Rotate.js
 var Rotate = class extends ValueWithRandom {
   constructor() {
     super();
@@ -4060,7 +4079,7 @@ var Rotate = class extends ValueWithRandom {
     this.value = 0;
   }
   load(data) {
-    if (!data) {
+    if (isNull(data)) {
       return;
     }
     super.load(data);
@@ -4074,7 +4093,7 @@ var Rotate = class extends ValueWithRandom {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-rotate@3.5.0/node_modules/@tsparticles/updater-rotate/browser/RotateUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-rotate@3.6.0/node_modules/@tsparticles/updater-rotate/browser/RotateUpdater.js
 var double8 = 2;
 var doublePI2 = Math.PI * double8;
 var identity5 = 1;
@@ -4147,14 +4166,14 @@ var RotateUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-rotate@3.5.0/node_modules/@tsparticles/updater-rotate/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-rotate@3.6.0/node_modules/@tsparticles/updater-rotate/browser/index.js
 async function loadRotateUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("rotate", (container) => {
     return Promise.resolve(new RotateUpdater(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-square@3.5.0/node_modules/@tsparticles/shape-square/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-square@3.6.0/node_modules/@tsparticles/shape-square/browser/Utils.js
 var fixFactorSquared = 2;
 var fixFactor = Math.sqrt(fixFactorSquared);
 var double9 = 2;
@@ -4163,7 +4182,7 @@ function drawSquare(data) {
   context.rect(-fixedRadius, -fixedRadius, fixedDiameter, fixedDiameter);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-square@3.5.0/node_modules/@tsparticles/shape-square/browser/SquareDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-square@3.6.0/node_modules/@tsparticles/shape-square/browser/SquareDrawer.js
 var sides5 = 4;
 var SquareDrawer = class {
   constructor() {
@@ -4177,12 +4196,12 @@ var SquareDrawer = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-square@3.5.0/node_modules/@tsparticles/shape-square/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-square@3.6.0/node_modules/@tsparticles/shape-square/browser/index.js
 async function loadSquareShape(engine, refresh = true) {
   await engine.addShape(new SquareDrawer(), refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+shape-star@3.5.0/node_modules/@tsparticles/shape-star/browser/Utils.js
+// node_modules/.pnpm/@tsparticles+shape-star@3.6.0/node_modules/@tsparticles/shape-star/browser/Utils.js
 var defaultInset = 2;
 var origin5 = { x: 0, y: 0 };
 function drawStar(data) {
@@ -4196,7 +4215,7 @@ function drawStar(data) {
   }
 }
 
-// node_modules/.pnpm/@tsparticles+shape-star@3.5.0/node_modules/@tsparticles/shape-star/browser/StarDrawer.js
+// node_modules/.pnpm/@tsparticles+shape-star@3.6.0/node_modules/@tsparticles/shape-star/browser/StarDrawer.js
 var defaultInset2 = 2;
 var defaultSides2 = 5;
 var StarDrawer = class {
@@ -4216,12 +4235,12 @@ var StarDrawer = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+shape-star@3.5.0/node_modules/@tsparticles/shape-star/browser/index.js
+// node_modules/.pnpm/@tsparticles+shape-star@3.6.0/node_modules/@tsparticles/shape-star/browser/index.js
 async function loadStarShape(engine, refresh = true) {
   await engine.addShape(new StarDrawer(), refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+updater-stroke-color@3.5.0/node_modules/@tsparticles/updater-stroke-color/browser/StrokeColorUpdater.js
+// node_modules/.pnpm/@tsparticles+updater-stroke-color@3.6.0/node_modules/@tsparticles/updater-stroke-color/browser/StrokeColorUpdater.js
 var defaultOpacity3 = 1;
 var StrokeColorUpdater = class {
   constructor(container) {
@@ -4251,14 +4270,14 @@ var StrokeColorUpdater = class {
   }
 };
 
-// node_modules/.pnpm/@tsparticles+updater-stroke-color@3.5.0/node_modules/@tsparticles/updater-stroke-color/browser/index.js
+// node_modules/.pnpm/@tsparticles+updater-stroke-color@3.6.0/node_modules/@tsparticles/updater-stroke-color/browser/index.js
 async function loadStrokeColorUpdater(engine, refresh = true) {
   await engine.addParticleUpdater("strokeColor", (container) => {
     return Promise.resolve(new StrokeColorUpdater(container));
   }, refresh);
 }
 
-// node_modules/.pnpm/@tsparticles+slim@3.5.0/node_modules/@tsparticles/slim/browser/index.js
+// node_modules/.pnpm/@tsparticles+slim@3.6.0/node_modules/@tsparticles/slim/browser/index.js
 async function loadSlim(engine, refresh = true) {
   await loadParallaxMover(engine, false);
   await loadExternalAttractInteraction(engine, false);

@@ -1431,7 +1431,7 @@ function cubicBezier(mX1, mY1, mX2, mY2) {
   return (t) => t === 0 || t === 1 ? t : calcBezier(getTForX(t), mY1, mY2);
 }
 
-// node_modules/.pnpm/@vueuse+motion@2.2.6_rollup@4.27.2_vue@3.5.13_typescript@5.6.3_/node_modules/@vueuse/motion/dist/index.mjs
+// node_modules/.pnpm/@vueuse+motion@2.2.6_rollup@4.27.3_vue@3.5.13_typescript@5.6.3_/node_modules/@vueuse/motion/dist/index.mjs
 var motionState = {};
 var __defProp$1 = Object.defineProperty;
 var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;

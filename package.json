@@ -16,10 +16,11 @@
     "@types/node": "^20.11.24",
     "@vitejs/plugin-vue": "^5.2.0",
     "typescript": "^5.3.3",
-    "vitepress": "1.0.0-rc.44",
+    "vitepress": "1.5.0",
     "vue": "^3.4.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.0",
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/slim": "^3.5.0",
     "@tsparticles/vue3": "^3.0.1",
