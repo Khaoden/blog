@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: 友情链接
+title: Khaoden's Friends
 ---
 
 <script setup>

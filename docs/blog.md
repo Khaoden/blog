@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Blog
+title: Khaoden'sBlog
 ---
 
 <script setup>

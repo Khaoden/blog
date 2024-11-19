@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: 项目介绍
+title: Khaoden's Projects
 ---
 
 <script setup>
