@@ -1,3 +1,16 @@
+---
+title: 终端命令快速进入 IDE（Windows）
+date: 2024-03-20
+tags: ['os', 'windows']
+category: 'technology'
+description: 终端命令快速进入 IDE（Windows）
+cover: /images/posts/js-closure.jpg  # 可选的封面图
+toc: true                           # 是否显示目录
+top: false                          # 是否置顶
+draft: false                        # 是否为草稿
+readingTime: 10                     # 预计阅读时间（分钟）
+---
+
 ### 终端命令快速进入 IDE（Windows）
 
 当我们需要通过终端打开 IDE 时，通常会先从文件资源管理器找到指定路径，再在路径定位处输入 `cmd` 或 `PowerShell` 打开终端，随后输入对应命令启动 IDE，这种方式可以非常快捷地进入开发环境。
