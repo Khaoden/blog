@@ -2,12 +2,14 @@
   <div class="projects-container">
     <div class="projects-header">
       <h1 class="title">My Projects</h1>
-      <p class="subtitle">A collection of my personal and open source projects</p>
+      <p class="subtitle">
+        A collection of my personal and open source projects
+      </p>
     </div>
 
     <div class="projects-grid">
-      <div 
-        v-for="project in projects" 
+      <div
+        v-for="project in projects"
         :key="project.name"
         class="project-card"
         v-motion
@@ -18,27 +20,27 @@
           <h2 class="project-title">{{ project.name }}</h2>
           <p class="project-description">{{ project.description }}</p>
           <div class="project-tech">
-            <span 
-              v-for="tech in project.technologies" 
-              :key="tech" 
+            <span
+              v-for="tech in project.technologies"
+              :key="tech"
               class="tech-tag"
             >
               {{ tech }}
             </span>
           </div>
           <div class="project-links">
-            <a 
-              v-if="project.github" 
-              :href="project.github" 
-              target="_blank" 
+            <a
+              v-if="project.github"
+              :href="project.github"
+              target="_blank"
               class="project-link"
             >
               <i class="fab fa-github"></i> Source
             </a>
-            <a 
-              v-if="project.demo" 
-              :href="project.demo" 
-              target="_blank" 
+            <a
+              v-if="project.demo"
+              :href="project.demo"
+              target="_blank"
               class="project-link"
             >
               <i class="fas fa-external-link-alt"></i> Demo
@@ -51,31 +53,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
 interface Project {
-  name: string
-  description: string
-  technologies: string[]
-  github?: string
-  demo?: string
+  name: string;
+  description: string;
+  technologies: string[];
+  github?: string;
+  demo?: string;
 }
 
 const projects = ref<Project[]>([
   {
-    name: 'Project One',
-    description: 'A description of your first project',
-    technologies: ['Vue', 'TypeScript', 'Vite'],
-    github: 'https://github.com/yourusername/project-one',
-    demo: 'https://project-one.demo.com'
+    name: "Project One",
+    description: "A description of your first project",
+    technologies: ["Vue", "TypeScript", "Vite"],
+    github: "https://github.com/yourusername/project-one",
+    demo: "https://project-one.demo.com",
   },
   {
-    name: 'Project Two',
-    description: 'A description of your second project',
-    technologies: ['React', 'Node.js', 'MongoDB'],
-    github: 'https://github.com/yourusername/project-two'
-  }
-])
+    name: "Project Two",
+    description: "A description of your second project",
+    technologies: ["React", "Node.js", "MongoDB"],
+    github: "https://github.com/yourusername/project-two",
+  },
+]);
 </script>
 
 <style scoped>
@@ -93,7 +95,11 @@ const projects = ref<Project[]>([
 .title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(to right, var(--vp-c-brand), var(--vp-c-brand-light));
+  background: linear-gradient(
+    to right,
+    var(--vp-c-brand),
+    var(--vp-c-brand-light)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -179,11 +185,11 @@ const projects = ref<Project[]>([
   .projects-container {
     padding: 1rem;
   }
-  
+
   .title {
     font-size: 2rem;
   }
-  
+
   .subtitle {
     font-size: 1rem;
   }

@@ -10,6 +10,8 @@ import { MotionPlugin } from '@vueuse/motion'
 import '../style/custom.css'
 import 'animate.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import ArticleLayout from './components/ArticleLayout.vue'
+import Article from './Layout/Article.vue'
 
 export default {
   extends: DefaultTheme,
@@ -21,5 +23,9 @@ export default {
     app.component('Blog', Blog)
     app.component('Friends', Friends)
     app.component('Projects', Projects)
+    app.component('ArticleLayout', ArticleLayout)
+  },
+  layouts: {
+    article: Article
   }
 } as Theme

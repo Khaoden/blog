@@ -6,6 +6,8 @@
   --vp-c-brand-lighter: #5ccf9a;
   --vp-c-brand-dark: #2c8f6c;
   --vp-c-brand-darker: #1a7f5c;
+  --vp-c-brand-rgb: 62, 175, 124;
+  --vp-layout-max-width: 1440px;
 }
 
 .vp-doc h1 {
@@ -17,4 +19,145 @@
   font-size: 1.8rem;
   border-bottom: 2px solid var(--vp-c-divider);
   padding-bottom: 0.5rem;
+}
+
+/* 文章页面容器 */
+.vp-doc {
+  position: relative;
+  background-color: var(--vp-c-bg);
+  z-index: 1;
+}
+
+/* 背景图片样式 */
+.vp-doc::before {
+  display: none;
+}
+
+/* 文章封面图 */
+.article-cover {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 暗色主题适配 */
+:root.dark .vp-doc::before {
+  opacity: 0.05;
+}
+
+:root.dark .wave {
+  opacity: 0.03;
+}
+
+:root.dark .gradient-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.1)
+  );
+}
+
+/* 在文件末尾添加 */
+.vp-doc {
+  position: relative;
+  z-index: 1;
+  background-color: var(--vp-c-bg);
+}
+
+/* 确保背景动画在内容之后 */
+.background-animation {
+  z-index: 0;
+}
+
+/* 调整暗色主题下的背景透明度 */
+:root.dark .wave {
+  opacity: 0.02;
+}
+
+:root.dark .wave2 {
+  opacity: 0.015;
+}
+
+:root.dark .wave3 {
+  opacity: 0.01;
+}
+
+:root {
+  --vp-layout-max-width: 1440px;
+}
+
+.VPDoc {
+  position: relative !important;
+  z-index: 1 !important;
+  background: transparent !important;
+}
+
+.VPContent {
+  position: relative !important;
+  z-index: 1 !important;
+  background: transparent !important;
+}
+
+/* 确保背景动画在最底层 */
+.background-animation {
+  z-index: -1 !important;
+}
+
+/* 调整暗色主题下的效果 */
+:root.dark .wave {
+  opacity: 0.02;
+}
+
+:root.dark .wave2 {
+  opacity: 0.015;
+}
+
+:root.dark .wave3 {
+  opacity: 0.01;
+}
+
+:root.dark .gradient-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.1)
+  );
+}
+
+/* 添加新的样式 */
+:root {
+  --vp-layout-max-width: 1440px;
+}
+
+.VPDoc {
+  position: relative !important;
+  z-index: 1 !important;
+  background: transparent !important;
+}
+
+.VPContent {
+  position: relative !important;
+  z-index: 1 !important;
+  background: transparent !important;
+}
+
+/* 确保背景动画在最底层 */
+.background-animation {
+  z-index: -1 !important;
+}
+
+/* 调整文章内容容器样式 */
+.article-wrapper {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+}
+
+.article-content {
+  background: var(--vp-c-bg);
+  position: relative;
+  z-index: 2;
 } 
