@@ -1,23 +1,21 @@
 ---
+layout: doc
 title: 终端命令快速进入 IDE（Windows）
 date: 2024-03-20
 tags: ['os', 'windows']
 category: 'technology'
 description: 终端命令快速进入 IDE（Windows）
-cover: /images/posts/js-closure.jpg  # 可选的封面图
-toc: true                           # 是否显示目录
-top: false                          # 是否置顶
-draft: false                        # 是否为草稿
-readingTime: 10                     # 预计阅读时间（分钟）
+readingTime: 10
+aside: true
+outline: deep
 ---
-
-### 终端命令快速进入 IDE（Windows）
+# 终端命令快速进入 IDE（Windows）
 
 当我们需要通过终端打开 IDE 时，通常会先从文件资源管理器找到指定路径，再在路径定位处输入 `cmd` 或 `PowerShell` 打开终端，随后输入对应命令启动 IDE，这种方式可以非常快捷地进入开发环境。
 
 ------
 
-#### 常用 IDE 命令示例
+## 常用 IDE 命令示例
 
 - **VS Code**
 
@@ -43,7 +41,7 @@ readingTime: 10                     # 预计阅读时间（分钟）
 
 ------
 
-#### **解决方案**
+## **解决方案**
 
 1. **配置环境变量**
    将 Cursor 的安装路径加入系统环境变量中。以 Cursor 为例：
@@ -68,7 +66,7 @@ readingTime: 10                     # 预计阅读时间（分钟）
 
 ------
 
-#### **优化方案**
+## **优化方案**
 
 1. **使用 PowerShell 或 `start` 命令**
    PowerShell 和 Windows 提供了工具可启动分离型进程（与终端分离运行）：
@@ -93,7 +91,7 @@ readingTime: 10                     # 预计阅读时间（分钟）
 
 ------
 
-### 补充：进程相关知识
+## 补充：进程相关知识
 
 1. **什么是进程？**
    进程是一个程序的运行实例，包括程序代码和运行时资源。在操作系统中，进程有两种主要形式：

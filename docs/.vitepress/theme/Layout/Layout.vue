@@ -10,6 +10,7 @@ import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Landing from './Landing.vue'
 import Home from '../components/Home.vue'
+import Article from './Article.vue'
 
 const { Layout } = DefaultTheme
 const { frontmatter } = useData()
@@ -17,6 +18,7 @@ const { frontmatter } = useData()
 const layout = computed(() => {
   if (frontmatter.value.layout === 'Landing') return Landing
   if (frontmatter.value.layout === 'home') return Home
+  if (frontmatter.value.layout === 'article') return Article
   return Layout
 })
 </script>
