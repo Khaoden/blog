@@ -1,17 +1,6 @@
 ---
-layout: doc
-title: About Khaoden
-aside: false
-sidebar: false
+layout: page
+title: About Me
 ---
 
-<script setup>
-import { defineAsyncComponent } from 'vue'
-const About = defineAsyncComponent(() => 
-  import('./.vitepress/theme/components/About.vue')
-)
-</script>
-
-<ClientOnly>
-  <About />
-</ClientOnly> 
+<About />

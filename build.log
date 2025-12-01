@@ -1,0 +1,26 @@
+
+> my-blog@1.0.0 docs:build D:\road\github\code\project\my-blog
+> vitepress build docs
+
+
+  [32m[1mvitepress[22m v1.5.0[39m
+
+[31mfailed to load config from D:\road\github\code\project\my-blog\docs\.vitepress\config.ts[39m
+[31mbuild error:[39m
+incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 2, column 19:
+    title: Neon Nights: Coding in the Dark
+                      ^
+YAMLException: incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 2, column 19:
+    title: Neon Nights: Coding in the Dark
+                      ^
+    at generateError (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:167:10)
+    at throwError (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:173:9)
+    at readBlockMapping (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:1027:9)
+    at composeNode (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:1359:12)
+    at readDocument (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:1525:3)
+    at loadDocuments (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:1588:5)
+    at load (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:1614:19)
+    at Object.safeLoad (D:\road\github\code\project\my-blog\node_modules\.pnpm\js-yaml@3.14.1\node_modules\js-yaml\lib\js-yaml\loader.js:1637:10)
+    at module.exports (D:\road\github\code\project\my-blog\node_modules\.pnpm\gray-matter@4.0.3\node_modules\gray-matter\lib\parse.js:12:17)
+    at parseMatter (D:\road\github\code\project\my-blog\node_modules\.pnpm\gray-matter@4.0.3\node_modules\gray-matter\index.js:109:17)
+ ELIFECYCLE  Command failed with exit code 1.

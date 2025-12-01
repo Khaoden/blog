@@ -33,11 +33,10 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: '🏠 home', link: '/home' },
+      { text: '🏠 about', link: '/home' },
       { text: '📝 blog', link: '/blog' },
       { text: '👬 friends', link: '/friend' },
-      { text: '🛠️ project', link: '/projects' },
-      { text: '👤 about', link: '/about' },
+      // { text: '🛠️ project', link: '/projects' },
     ],
 
     socialLinks: [
@@ -56,6 +55,8 @@ export default defineConfig({
     },
 
     // @ts-ignore
-    posts: getBlogPosts()
+    posts: getBlogPosts(),
+    
+    viewTransition: true,
   } as DefaultTheme.Config
-}) 
+})

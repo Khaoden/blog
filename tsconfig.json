@@ -19,7 +19,8 @@
     "docs/.vitepress/**/*.ts",
     "docs/.vitepress/**/*.d.ts",
     "docs/.vitepress/**/*.tsx",
-    "docs/.vitepress/**/*.vue"
+    "docs/.vitepress/**/*.vue",
+    "env.d.ts"
   ],
   "exclude": [
     "node_modules",

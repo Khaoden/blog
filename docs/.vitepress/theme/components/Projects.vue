@@ -9,12 +9,10 @@
 
     <div class="projects-grid">
       <div
-        v-for="project in projects"
+        v-for="(project, index) in projects"
         :key="project.name"
         class="project-card"
-        v-motion
-        :initial="{ opacity: 0, y: 50 }"
-        :enter="{ opacity: 1, y: 0 }"
+        :style="{ animationDelay: `${index * 100}ms` }"
       >
         <div class="project-content">
           <h2 class="project-title">{{ project.name }}</h2>
@@ -121,6 +119,18 @@ const projects = ref<Project[]>([
   border: 1px solid var(--vp-c-divider);
   transition: all 0.3s ease;
   overflow: hidden;
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .project-card:hover {
