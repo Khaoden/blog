@@ -6,7 +6,10 @@ import Blog from './components/Blog.vue'
 import Home from './components/Home.vue'
 import Friends from './components/Friends.vue'
 import Projects from './components/Projects.vue'
+import About from './components/About.vue'
 import { MotionPlugin } from '@vueuse/motion'
+import Particles from "@tsparticles/vue3";
+import { loadSlim } from "@tsparticles/slim";
 import '../style/custom.css'
 import 'animate.css'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -18,11 +21,22 @@ export default {
   Layout,
   enhanceApp({ app }) {
     app.use(MotionPlugin)
+    
+    // Only initialize Particles on client-side to avoid SSR issues
+    if (typeof window !== 'undefined') {
+      app.use(Particles, {
+        init: async engine => {
+          await loadSlim(engine);
+        }
+      });
+    }
+    
     app.component('Landing', Landing)
     app.component('Home', Home)
     app.component('Blog', Blog)
     app.component('Friends', Friends)
     app.component('Projects', Projects)
+    app.component('About', About)
     app.component('ArticleLayout', ArticleLayout)
   },
   layouts: {

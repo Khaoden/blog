@@ -1,163 +1,203 @@
-@import '@fortawesome/fontawesome-free/css/all.min.css';
+/* Import Clean Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --vp-c-brand: #3eaf7c;
-  --vp-c-brand-light: #4abf8a;
-  --vp-c-brand-lighter: #5ccf9a;
-  --vp-c-brand-dark: #2c8f6c;
-  --vp-c-brand-darker: #1a7f5c;
-  --vp-c-brand-rgb: 62, 175, 124;
-  --vp-layout-max-width: 1440px;
+  /* Core Palette - Dark (Default) */
+  --bg-depth: #09090b; /* Zinc 950 */
+  --bg-surface: #18181b; /* Zinc 900 */
+  --bg-surface-hover: #27272a; /* Zinc 800 */
+  
+  --text-primary: #f4f4f5; /* Zinc 100 */
+  --text-secondary: #a1a1aa; /* Zinc 400 */
+  --text-tertiary: #52525b; /* Zinc 600 */
+  
+  --accent-primary: #8b5cf6; /* Violet 500 */
+  --accent-secondary: #ec4899; /* Pink 500 */
+  --accent-glow: rgba(139, 92, 246, 0.3);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(255, 255, 255, 0.15);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(24, 24, 27, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  /* VitePress Overrides */
+  --vp-c-bg: var(--bg-depth);
+  --vp-c-bg-alt: var(--bg-surface);
+  --vp-c-bg-elv: var(--bg-surface);
+  --vp-c-text-1: var(--text-primary);
+  --vp-c-text-2: var(--text-secondary);
+  --vp-c-brand: var(--accent-primary);
+  --vp-c-brand-1: #a78bfa;
+  --vp-c-brand-2: #7c3aed;
+  
+  --vp-font-family-base: 'Inter', sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', monospace;
+  
+  --vp-nav-height: 64px;
 }
 
-.vp-doc h1 {
-  font-size: 2.5rem;
-  font-weight: 600;
+/* Light Mode Overrides */
+.vp-doc.light, :root:not(.dark) {
+  --bg-depth: #ffffff;
+  --bg-surface: #f4f4f5; /* Zinc 100 */
+  --bg-surface-hover: #e4e4e7; /* Zinc 200 */
+  
+  --text-primary: #18181b; /* Zinc 900 */
+  --text-secondary: #52525b; /* Zinc 600 */
+  --text-tertiary: #a1a1aa; /* Zinc 400 */
+  
+  --accent-primary: #7c3aed; /* Violet 600 */
+  --accent-secondary: #db2777; /* Pink 600 */
+  --accent-glow: rgba(124, 58, 237, 0.2);
+  
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-highlight: rgba(0, 0, 0, 0.15);
+
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
-.vp-doc h2 {
-  font-size: 1.8rem;
-  border-bottom: 2px solid var(--vp-c-divider);
-  padding-bottom: 0.5rem;
+/* Global Styles */
+body {
+  background-color: var(--bg-depth);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Subtle Noise Texture - blended */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  background-attachment: fixed;
 }
 
-/* 文章页面容器 */
-.vp-doc {
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+/* Bento Card */
+.bento-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
-  background-color: var(--vp-c-bg);
-  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
 }
 
-/* 背景图片样式 */
-.vp-doc::before {
-  display: none;
+.bento-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--accent-primary);
+  box-shadow: 0 20px 40px -10px var(--accent-glow);
+  background: var(--bg-surface-hover);
 }
 
-/* 文章封面图 */
-.article-cover {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
+/* Typography Utilities */
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.text-accent {
+  color: var(--accent-primary);
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
   border-radius: 12px;
-  margin: 2rem 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px var(--accent-glow);
 }
 
-/* 暗色主题适配 */
-:root.dark .vp-doc::before {
-  opacity: 0.05;
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--accent-glow);
+  filter: brightness(1.1);
 }
 
-:root.dark .wave {
-  opacity: 0.03;
+.btn-secondary {
+  background: rgba(128, 128, 128, 0.1);
+  color: var(--text-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-subtle);
 }
 
-:root.dark .gradient-overlay {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.2),
-    rgba(0, 0, 0, 0.1)
-  );
+.btn-secondary:hover {
+  background: rgba(128, 128, 128, 0.2);
+  border-color: var(--text-secondary);
 }
 
-/* 在文件末尾添加 */
-.vp-doc {
-  position: relative;
-  z-index: 1;
-  background-color: var(--vp-c-bg);
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* 确保背景动画在内容之后 */
-.background-animation {
-  z-index: 0;
+::-webkit-scrollbar-track {
+  background: var(--bg-depth);
 }
 
-/* 调整暗色主题下的背景透明度 */
-:root.dark .wave {
-  opacity: 0.02;
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-hover);
+  border-radius: 4px;
+  border: 2px solid var(--bg-depth);
 }
 
-:root.dark .wave2 {
-  opacity: 0.015;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
 
-:root.dark .wave3 {
-  opacity: 0.01;
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-:root {
-  --vp-layout-max-width: 1440px;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
-.VPDoc {
-  position: relative !important;
-  z-index: 1 !important;
-  background: transparent !important;
+/* Scanlines Effect (Optional) */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.02));
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
 }
 
-.VPContent {
-  position: relative !important;
-  z-index: 1 !important;
-  background: transparent !important;
+/* View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
-/* 确保背景动画在最底层 */
-.background-animation {
-  z-index: -1 !important;
-}
-
-/* 调整暗色主题下的效果 */
-:root.dark .wave {
-  opacity: 0.02;
-}
-
-:root.dark .wave2 {
-  opacity: 0.015;
-}
-
-:root.dark .wave3 {
-  opacity: 0.01;
-}
-
-:root.dark .gradient-overlay {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.2),
-    rgba(0, 0, 0, 0.1)
-  );
-}
-
-/* 添加新的样式 */
-:root {
-  --vp-layout-max-width: 1440px;
-}
-
-.VPDoc {
-  position: relative !important;
-  z-index: 1 !important;
-  background: transparent !important;
-}
-
-.VPContent {
-  position: relative !important;
-  z-index: 1 !important;
-  background: transparent !important;
-}
-
-/* 确保背景动画在最底层 */
-.background-animation {
-  z-index: -1 !important;
-}
-
-/* 调整文章内容容器样式 */
-.article-wrapper {
-  position: relative;
-  z-index: 2;
-  background: transparent;
-}
-
-.article-content {
-  background: var(--vp-c-bg);
-  position: relative;
-  z-index: 2;
-} 

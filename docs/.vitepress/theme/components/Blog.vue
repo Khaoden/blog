@@ -1,319 +1,271 @@
 <template>
   <div class="blog-container">
+    
     <div class="blog-header">
-      <div class="search-box">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          type="text"
-          v-model="searchQuery"
-          placeholder="Search posts..."
-          class="search-input"
-        />
-      </div>
-
-      <!-- 添加标签筛选器 -->
-      <div class="tags-filter">
-        <span
-          v-for="tag in allTags"
-          :key="tag"
-          :class="['filter-tag', { active: selectedTags.includes(tag) }]"
-          @click="toggleTag(tag)"
-        >
-          {{ tag }}
-        </span>
+      <h1 class="page-title">Writing</h1>
+      <p class="page-subtitle">Thoughts on software, design, and life.</p>
+      
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" v-model="searchQuery" placeholder="Search articles..." />
       </div>
     </div>
 
-    <div class="posts-list">
-      <div
-        v-for="post in filteredPosts"
-        :key="post.url"
-        class="post-item"
-        v-motion
-        :initial="{ opacity: 0, y: 50 }"
-        :enter="{ opacity: 1, y: 0 }"
-        @click="navigateTo(post.url)"
-      >
-        <div class="post-content">
-          <h2 class="post-title">
-            <span class="title-link" @click="navigateTo(post.url)">
-              {{ post.frontmatter?.title || "Untitled" }}
-            </span>
-          </h2>
-          <div class="post-meta">
-            <span class="post-date">
-              <i class="fas fa-calendar"></i>
-              {{ formatDate(post.frontmatter.date) }}
-            </span>
-            <span class="post-time">
-              <i class="fas fa-clock"></i>
-              {{ post.frontmatter.readingTime }}min
-            </span>
+    <!-- Featured Post -->
+    <div v-if="featuredPost && !searchQuery" class="featured-section">
+      <div class="section-label">Featured</div>
+      <div class="featured-card bento-card" @click="navigateTo(featuredPost.url)">
+        <div class="featured-content">
+          <div class="meta-row">
+            <span class="date">{{ formatDate(featuredPost.frontmatter.date) }}</span>
+            <span class="tag" v-if="featuredPost.frontmatter.tags">{{ featuredPost.frontmatter.tags[0] }}</span>
           </div>
-          <p class="post-desc">
-            {{ post.frontmatter?.description || "No description available" }}
-          </p>
-          <div class="post-tags">
-            <span v-for="tag in post.frontmatter.tags" :key="tag" class="tag">
-              {{ tag }}
-            </span>
+          <h2 class="featured-title">{{ featuredPost.frontmatter.title }}</h2>
+          <p class="featured-desc">{{ featuredPost.frontmatter.description }}</p>
+          <div class="read-more">Read Article <i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Posts -->
+    <div class="latest-section">
+      <div class="section-label">Latest</div>
+      <div class="posts-grid">
+        <div class="posts-grid-inner">
+          <div 
+            v-for="(post, index) in filteredPosts" 
+            :key="post.url" 
+            class="post-card bento-card" 
+            @click="navigateTo(post.url)"
+            :style="{ animationDelay: `${index * 50}ms` }"
+          >
+            <div class="post-meta">
+              <span class="date">{{ formatDate(post.frontmatter.date) }}</span>
+            </div>
+            <h3 class="post-title">{{ post.frontmatter.title }}</h3>
+            <p class="post-desc">{{ post.frontmatter.description }}</p>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, defineOptions } from "vue";
 import { useData, useRouter } from "vitepress";
 import type { Post } from "../../types/blog";
 
-defineOptions({
-  name: "Blog",
-});
+defineOptions({ name: "Blog" });
 
 const { theme } = useData();
-
-// 获取所有博客文章
-const posts = theme.value.posts as Post[];
-
-// 搜索和标签筛选
+const posts = computed(() => (theme.value.posts || []) as Post[]);
 const searchQuery = ref("");
-const selectedTags = ref<string[]>([]);
 
-// 获取所有标签
-const allTags = computed(() => {
-  const tags = new Set<string>();
-  posts.forEach((post) => {
-    post.frontmatter.tags?.forEach((tag) => tags.add(tag));
-  });
-  return Array.from(tags);
-});
+const featuredPost = computed(() => posts.value.length > 0 ? posts.value[0] : null);
 
-// 过滤文章
 const filteredPosts = computed(() => {
-  return posts.filter((post: Post) => {
-    // 搜索过滤
-    const searchMatch =
-      (post.frontmatter?.title
-        ?.toLowerCase()
-        .includes(searchQuery.value.toLowerCase()) ||
-        post.frontmatter?.description
-          ?.toLowerCase()
-          .includes(searchQuery.value.toLowerCase())) ??
-      false;
-
-    // 标签过滤
-    const tagMatch =
-      selectedTags.value.length === 0 ||
-      selectedTags.value.every((tag) => post.frontmatter.tags?.includes(tag));
-
-    return searchMatch && tagMatch;
+  let result = posts.value;
+  if (!searchQuery.value) result = posts.value.slice(1);
+  
+  return result.filter((post) => {
+    const title = post.frontmatter.title?.toLowerCase() || '';
+    const description = post.frontmatter.description?.toLowerCase() || '';
+    const query = searchQuery.value.toLowerCase();
+    return title.includes(query) || description.includes(query);
   });
 });
 
-// 切换标签选择
-const toggleTag = (tag: string) => {
-  const index = selectedTags.value.indexOf(tag);
-  if (index === -1) {
-    selectedTags.value.push(tag);
-  } else {
-    selectedTags.value.splice(index, 1);
-  }
-};
-
-// 格式化日期
 const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("zh-CN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return new Date(date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 };
 
-// 添加 router
 const router = useRouter();
-
-// 添加导航函数
-const navigateTo = (url: string) => {
-  router.go(url);
-};
+const navigateTo = (url: string) => router.go(url);
 </script>
 
 <style scoped>
-a, h2 {
-  text-decoration: none;
-}
-
 .blog-container {
-  width: 55%;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 4rem 2rem;
 }
 
 .blog-header {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 2rem;
 }
 
-.search-box {
-  position: relative;
-  margin-bottom: 1.5rem;
+.page-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.03em;
 }
 
-.search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--vp-c-text-2);
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
 }
 
-.search-input {
-  width: 100%;
-  padding: 1rem 1rem 1rem 2.5rem;
-  font-size: 1rem;
-  border: 2px solid transparent;
-  border-radius: 12px;
-  background: var(--vp-c-bg-soft);
-  transition: all 0.3s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--vp-c-brand);
-  background: var(--vp-c-bg);
-  box-shadow: 0 0 0 4px rgba(var(--vp-c-brand-rgb), 0.1);
-}
-
-.tags-filter {
+.search-bar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  max-width: 400px;
+  gap: 0.8rem;
+  color: var(--text-secondary);
 }
 
-.filter-tag {
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-2);
+.search-bar input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  width: 100%;
+}
+
+.search-bar input:focus {
+  outline: none;
+}
+
+.section-label {
   font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.featured-section {
+  margin-bottom: 5rem;
+}
+
+.featured-card {
+  padding: 3rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  user-select: none;
+  background: linear-gradient(to bottom right, var(--bg-surface), #1c1c20);
 }
 
-.filter-tag:hover {
-  background: var(--vp-c-bg-mute);
-  transform: translateY(-1px);
+.meta-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-.filter-tag.active {
-  background: var(--vp-c-brand);
-  color: white;
+.tag {
+  color: var(--accent-primary);
 }
 
-.posts-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+.featured-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
-.post-item {
-  border-radius: 16px;
-  background: var(--vp-c-bg);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.featured-desc {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  max-width: 80%;
+  line-height: 1.6;
+}
+
+.read-more {
+  color: var(--text-primary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.posts-grid {
+  position: relative;
+}
+
+.post-card {
+  padding: 2rem;
   cursor: pointer;
-  border: 1px solid var(--vp-c-divider);
-  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.6s ease-out both;
 }
 
-.post-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-  border-color: var(--vp-c-brand);
-}
-
-.post-content {
-  padding: 1.5rem;
-}
-
-.post-title {
-  margin: 0;
-  font-size: 1.4rem;
-  line-height: 1.4;
-}
-
-.title-link:hover {
-  color: var(--vp-c-brand);
-  background-position: 0% 100%;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .post-meta {
-  display: flex;
-  gap: 1rem;
-  margin: 0.8rem 0;
-  color: var(--vp-c-text-2);
-  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
 }
 
-.post-meta i {
-  margin-right: 0.4rem;
+.post-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
 }
 
 .post-desc {
-  margin: 0.8rem 0;
-  color: var(--vp-c-text-2);
-  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
   line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.tag {
-  padding: 0.3rem 0.8rem;
-  border-radius: 12px;
-  background: rgba(var(--vp-c-brand-rgb), 0.1);
-  color: var(--vp-c-brand);
-  font-size: 0.8rem;
-  transition: all 0.3s ease;
-}
-
-.tag:hover {
-  background: rgba(var(--vp-c-brand-rgb), 0.2);
-  transform: translateY(-1px);
-}
-
 @media (max-width: 768px) {
-  .blog-container {
-    padding: 1rem;
-  }
-
-  .posts-list {
-    grid-template-columns: 1fr;
-  }
-
-  .post-item {
-    margin-bottom: 1rem;
-  }
+  .page-title { font-size: 2.5rem; }
+  .featured-card { padding: 1.5rem; }
+  .featured-title { font-size: 1.8rem; }
 }
 
-/* 暗色主题适配 */
-:root.dark .post-item {
-  background: var(--vp-c-bg-soft);
+/* List Transitions */
+.posts-grid-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
 }
 
-:root.dark .post-item:hover {
-  background: var(--vp-c-bg-mute);
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-leave-active {
+  position: absolute;
 }
 </style>

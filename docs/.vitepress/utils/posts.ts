@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { fileURLToPath } from 'url'
 import type { Post } from '../types/blog'
 
 function calculateReadingTime(content: string): number {
@@ -10,9 +11,15 @@ function calculateReadingTime(content: string): number {
 }
 
 export function getBlogPosts(): Post[] {
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
   const postsDirectory = path.resolve(__dirname, '../../blog/posts')
   const posts: Post[] = []
   
+  if (!fs.existsSync(postsDirectory)) {
+    return []
+  }
+
   function getPostsRecursively(dir: string): void {
     const files = fs.readdirSync(dir)
     
@@ -43,4 +50,4 @@ export function getBlogPosts(): Post[] {
   return posts.sort((a, b) => 
     new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
   )
-} 
+}

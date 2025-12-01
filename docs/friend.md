@@ -9,4 +9,6 @@ sidebar: false
 import Friends from './.vitepress/theme/components/Friends.vue'
 </script>
 
-<Friends />
+<ClientOnly>
+  <Friends />
+</ClientOnly>

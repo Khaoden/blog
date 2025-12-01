@@ -1,649 +1,527 @@
 <template>
   <div class="home-container">
-    <!-- 3D 粒子背景 -->
-    <div id="particles-js" class="particles-container"></div>
-
-    <!-- 动态波浪效果 -->
-    <div class="wave-container">
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
-    </div>
-
-    <!-- 英雄区域 -->
-    <div class="hero-section">
-      <!-- 3D 卡片效果 -->
-      <div class="hero-card" data-tilt>
-        <h1 class="title animate__animated animate__fadeInDown">
-          <span class="gradient-text">{{ frontmatter.hero.name }}</span>
-        </h1>
-        <p class="text animate__animated animate__fadeIn animate__delay-1s">
-          <TypeWriter :text="frontmatter.hero.text" :delay="100" />
-        </p>
-        <p class="tagline animate__animated animate__fadeIn animate__delay-2s">
-          {{ frontmatter.hero.tagline }}
-        </p>
-        
-        <!-- 发光按钮 -->
-        <div class="actions animate__animated animate__fadeInUp animate__delay-2s">
-          <a class="action-button primary glow-effect" :href="frontmatter.hero.actions[0].link">
-            <span class="button-content">{{ frontmatter.hero.actions[0].text }}</span>
-            <div class="glow-container">
-              <div class="glow"></div>
-            </div>
-          </a>
-          <a class="action-button secondary neon-effect" :href="frontmatter.hero.actions[1].link" target="_blank">
-            <i class="fab fa-github"></i>
-            <span class="button-content">{{ frontmatter.hero.actions[1].text }}</span>
-          </a>
+    <div class="bento-grid">
+      
+      <!-- Hero Tile (Large) -->
+      <div 
+        class="tile hero-tile bento-card" 
+        data-tilt 
+        style="animation-delay: 0ms"
+      >
+        <div class="hero-content">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Available for work
+          </div>
+          <h1 class="hero-title">
+            Building digital <br>
+            <span class="text-gradient glitch-text" data-text="experiences">experiences</span> that matter.
+          </h1>
+          <p class="hero-desc">
+            Backend AI Application Developer. Building intelligent systems with Java, Golang, Python, and LangChain.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="/about">
+              About Me <i class="fas fa-arrow-right"></i>
+            </a>
+            <a class="btn-secondary" href="https://github.com/Khaoden" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 技能展示区 -->
-    <div class="skills-section">
-      <h2 class="section-title">Skills & Technologies</h2>
-      <div class="skills-container">
-        <div v-for="(skill, index) in skills" 
-             :key="index"
-             class="skill-item animate__animated animate__fadeIn"
-             :style="{ animationDelay: `${index * 100}ms` }">
-          <i :class="skill.icon"></i>
-          <span class="skill-name">{{ skill.name }}</span>
-          <div class="skill-level" :style="{ width: skill.level + '%' }"></div>
+      <!-- Location Tile (Medium) -->
+      <div 
+        class="tile location-tile bento-card"
+        style="animation-delay: 100ms"
+      >
+        <div class="map-bg"></div>
+        <div class="location-content">
+          <i class="fas fa-map-marker-alt location-icon"></i>
+          <span class="location-text">Based in Earth</span>
+          <span class="time-text">{{ currentTime }}</span>
         </div>
       </div>
-    </div>
 
-    <!-- 特性区域 -->
-    <div class="features">
-      <div v-for="(feature, index) in frontmatter.features" 
-           :key="index" 
-           class="feature-card glass-effect animate__animated animate__fadeInUp"
-           :style="{ animationDelay: `${index * 200}ms` }">
-        <div class="feature-icon">
-          <i :class="getFeatureIcon(index)"></i>
+      <!-- Tech Stack Tile (Medium - Marquee) -->
+      <div 
+        class="tile tech-tile bento-card"
+        style="animation-delay: 200ms"
+      >
+        <h3 class="tile-title">Tech Stack</h3>
+        <div class="marquee-wrapper">
+          <div class="marquee-content">
+            <i class="fab fa-java"></i>
+            <i class="fab fa-python"></i>
+            <i class="fab fa-golang"></i>
+            <i class="fab fa-vuejs"></i>
+            <i class="fab fa-docker"></i>
+            <i class="fab fa-node"></i>
+            <i class="fab fa-aws"></i>
+            <!-- Duplicate for seamless loop -->
+            <i class="fab fa-java"></i>
+            <i class="fab fa-python"></i>
+            <i class="fab fa-golang"></i>
+            <i class="fab fa-vuejs"></i>
+          </div>
         </div>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.details }}</p>
-        <!-- 悬浮时显示的装饰元素 -->
-        <div class="card-decoration"></div>
       </div>
-    </div>
 
-    <!-- 统计数据展示 -->
-    <div class="stats-section">
-      <div v-for="(stat, index) in stats" 
-           :key="index"
-           class="stat-item animate__animated animate__fadeIn"
-           :style="{ animationDelay: `${index * 150}ms` }">
-        <div class="stat-number">
-          {{ Math.round(stat.count) }}
-        </div>
-        <div class="stat-label">{{ stat.label }}</div>
+      <!-- Socials Tile (Small) -->
+      <div 
+        class="tile social-tile bento-card"
+        style="animation-delay: 300ms"
+      >
+        <a href="https://twitter.com" target="_blank" class="social-link twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" class="social-link linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:hello@example.com" class="social-link mail">
+          <i class="fas fa-envelope"></i>
+        </a>
       </div>
+
+      <!-- Stats Tile (Small) -->
+      <div 
+        class="tile stats-tile bento-card"
+        style="animation-delay: 400ms"
+      >
+        <div class="stat-item">
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Years Exp.</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Projects</span>
+        </div>
+      </div>
+
+      <!-- Blog Preview Tile (Wide) -->
+      <div 
+        class="tile blog-tile bento-card"
+        style="animation-delay: 500ms"
+      >
+        <div class="tile-header">
+          <h3 class="tile-title">Latest Thoughts</h3>
+          <a href="/blog" class="view-all">View All</a>
+        </div>
+        <div class="blog-preview-list">
+          <div v-for="i in 2" :key="i" class="blog-preview-item">
+            <span class="preview-date">Oct {{ 20 + i }}</span>
+            <span class="preview-title">Exploring the future of web development</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { useData } from 'vitepress'
-import { ref, onMounted, computed } from 'vue'
-import 'animate.css'
+import { ref, onMounted, onUnmounted } from 'vue'
 import VanillaTilt from 'vanilla-tilt'
-import { tsParticles } from "@tsparticles/engine"
-import { loadSlim } from "@tsparticles/slim"
-import TypeWriter from './TypeWriter.vue'
-import { useTransition } from '@vueuse/core'
 
-// 技能数据
-const skills = [
-  { name: 'Spring', level: 90, icon: 'fab fa-java' },
-  { name: 'Vue.js', level: 85, icon: 'fab fa-vuejs' },
-  { name: 'JavaScript', level: 80, icon: 'fab fa-js' },
-  { name: 'Python', level: 75, icon: 'fab fa-python' },
-  { name: 'Linux', level: 70, icon: 'fab fa-linux' },
-]
+const currentTime = ref('')
+let timer = null
 
-// 统计数据
-const stats = [
-  { value: 100, label: 'Projects' },
-  { value: 1000, label: 'Commits' },
-  { value: 50, label: 'Articles' },
-  { value: 10000, label: 'Lines of Code' },
-].map(stat => ({
-  ...stat,
-  count: useTransition(ref(stat.value))
-}))
+const updateTime = () => {
+  const now = new Date()
+  currentTime.value = now.toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: true 
+  })
+}
 
-onMounted(async () => {
-  // 初始化 3D 倾斜效果
+onMounted(() => {
+  updateTime()
+  timer = setInterval(updateTime, 1000)
+  
   VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
-    max: 15,
+    max: 5,
     speed: 400,
     glare: true,
-    "max-glare": 0.2,
-  })
-
-  // 初始化粒子效果
-  await loadSlim(tsParticles)
-  await tsParticles.load("particles-js", {
-    fullScreen: {
-      enable: false
-    },
-    background: {
-      color: "transparent"
-    },
-    fpsLimit: 60,
-    particles: {
-      color: {
-        value: "#41d1ff"
-      },
-      links: {
-        color: "#41d1ff",
-        distance: 150,
-        enable: true,
-        opacity: 0.4,
-        width: 1
-      },
-      move: {
-        enable: true,
-        speed: 2,
-        direction: "none",
-        random: false,
-        straight: false,
-        outModes: {
-          default: "out"
-        }
-      },
-      number: {
-        value: 80,
-        density: {
-          enable: true,
-          area: 800
-        }
-      },
-      opacity: {
-        value: 0.5
-      },
-      shape: {
-        type: "circle"
-      },
-      size: {
-        value: { min: 1, max: 3 }
-      }
-    },
-    detectRetina: true,
-    interactivity: {
-      events: {
-        onHover: {
-          enable: true,
-          mode: "repulse"
-        },
-        onClick: {
-          enable: true,
-          mode: "push"
-        },
-        resize: true
-      },
-      modes: {
-        repulse: {
-          distance: 100,
-          duration: 0.4
-        },
-        push: {
-          quantity: 4
-        }
-      }
-    }
+    "max-glare": 0.1,
+    scale: 1.02
   })
 })
 
-const { frontmatter } = useData()
-
-const getFeatureIcon = (index) => {
-  const icons = ['fas fa-code', 'fas fa-book', 'fas fa-project-diagram']
-  return icons[index]
-}
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
+})
 </script>
 
 <style scoped>
 .home-container {
-  position: relative;
-  padding: 2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  overflow: hidden;
-  min-height: calc(100vh - 64px - 48px);
+  padding: 4rem 2rem;
+  min-height: calc(100vh - 64px);
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 背景动画 */
-.background-animation {
-  position: fixed;
-  top: 0;
-  left: 0;
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, minmax(180px, auto));
+  gap: 1.5rem;
   width: 100%;
-  height: 100%;
-  z-index: -1;
-  overflow: hidden;
 }
 
-.circle-container {
-  position: absolute;
-  transform: translateY(-10vh);
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  left: calc(random(100) * 1%);
-  animation-duration: calc(10s + random(10) * 1s);
+/* Tile Base Styling & Animation */
+.tile {
+  animation: fadeInUp 0.8s ease-out both;
 }
 
-.circle {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: var(--vp-c-brand);
-  mix-blend-mode: screen;
-  opacity: 0.1;
-}
-
-@keyframes float-up {
+@keyframes fadeInUp {
   from {
-    transform: translateY(100vh);
-    opacity: 1;
+    opacity: 0;
+    transform: translateY(50px);
   }
   to {
-    transform: translateY(-10vh);
-    opacity: 0;
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.circle-container {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  animation: float-up 15s infinite linear;
+/* Tile Specifics */
+.hero-tile {
+  grid-column: span 2;
+  grid-row: span 2;
+  justify-content: center;
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent 40%), var(--bg-surface);
 }
 
-.hero-section {
-  text-align: center;
-  margin-bottom: 2rem;
+.location-tile {
+  grid-column: span 1;
+  grid-row: span 1;
   position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
-.gradient-text {
-  background: linear-gradient(120deg, #bd34fe 30%, #41d1ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradient 8s ease infinite;
+.tech-tile {
+  grid-column: span 1;
+  grid-row: span 1;
+  justify-content: center;
+  overflow: hidden;
 }
 
-@keyframes gradient {
-  0% { background-position: 0% 50% }
-  50% { background-position: 100% 50% }
-  100% { background-position: 0% 50% }
+.social-tile {
+  grid-column: span 1;
+  grid-row: span 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.title {
-  font-size: 3.5rem;
+.stats-tile {
+  grid-column: span 1;
+  grid-row: span 1;
+  justify-content: space-around;
+}
+
+.blog-tile {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+/* Hero Content */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  line-height: 1.1;
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
-.text {
-  font-size: 1.8rem;
-  color: var(--vp-c-text-1);
-  margin-bottom: 1rem;
-}
-
-.tagline {
-  font-size: 1.2rem;
-  color: var(--vp-c-text-2);
+.hero-desc {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
   margin-bottom: 2rem;
+  max-width: 90%;
 }
 
-.actions {
+.hero-actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
 }
 
-.action-button {
-  padding: 0.8rem 1.6rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.action-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: 0.5s;
-}
-
-.action-button:hover::before {
-  left: 100%;
-}
-
-.action-button.primary {
-  background: var(--vp-c-brand);
-  color: white;
-}
-
-.action-button.secondary {
-  border: 2px solid var(--vp-c-brand);
-  color: var(--vp-c-brand);
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-  padding-bottom: 2rem;
-}
-
-.feature-card {
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: var(--vp-c-bg-soft);
-  transition: all 0.3s ease;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.feature-card::before {
-  content: '';
+/* Location Tile */
+.map-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(225deg, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23333' fill-opacity='0.2' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.location-content {
+  position: relative;
   z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.location-icon {
+  font-size: 2rem;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
 }
 
-.feature-icon {
-  font-size: 2.5rem;
-  color: var(--vp-c-brand);
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 2;
+.location-text {
+  font-weight: 600;
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 2.5rem;
-  }
-  
-  .text {
-    font-size: 1.5rem;
-  }
-  
-  .actions {
-    flex-direction: column;
-  }
+.time-text {
+  color: var(--text-secondary);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.9rem;
 }
 
-/* 暗色主题适配 */
-:root.dark .feature-card {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-:root.dark .feature-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* 添加响应式布局优化 */
-@media (max-height: 800px) {
-  .home-container {
-    padding: 1rem 2rem;
-  }
-  
-  .hero-section {
-    margin-bottom: 1rem;
-  }
-  
-  .title {
-    font-size: 2.8rem;
-  }
-  
-  .text {
-    font-size: 1.5rem;
-  }
-  
-  .features {
-    margin-top: 1rem;
-  }
-  
-  .feature-card {
-    padding: 1.2rem;
-  }
-}
-
-/* 添加更小屏幕的优化 */
-@media (max-width: 480px) {
-  .home-container {
-    padding: 1rem;
-  }
-  
-  .title {
-    font-size: 2rem;
-  }
-  
-  .text {
-    font-size: 1.2rem;
-  }
-  
-  .tagline {
-    font-size: 1rem;
-  }
-  
-  .feature-card {
-    padding: 1rem;
-  }
-}
-
-/* 添加卡片内容的动画效果 */
-.feature-card h3 {
-  transition: transform 0.3s ease;
-}
-
-.feature-card:hover h3 {
-  transform: translateY(-5px);
-}
-
-.feature-card p {
-  transition: opacity 0.3s ease;
-}
-
-.feature-card:hover p {
-  opacity: 0.9;
-}
-
-/* 优化暗色主题 */
-:root.dark .home-container {
-  background: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0.2), 
-    rgba(0, 0, 0, 0.1)
-  );
-}
-
-:root.dark .feature-card {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* 粒子容器 */
-.particles-container {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* Tech Marquee */
+.marquee-wrapper {
   width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-/* 波浪效果 */
-.wave-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
   overflow: hidden;
-  z-index: -1;
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
 }
 
-.wave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 200%;
-  height: 100%;
-  background: url('path-to-wave-svg.svg') repeat-x;
-  animation: wave 10s linear infinite;
-  opacity: 0.1;
+.marquee-content {
+  display: flex;
+  gap: 2rem;
+  animation: scroll 10s linear infinite;
+  padding: 1rem 0;
 }
 
-.wave:nth-child(2) {
-  animation-delay: -5s;
-  opacity: 0.05;
+.marquee-content i {
+  font-size: 2.5rem;
+  color: var(--text-secondary);
+  transition: color 0.3s;
 }
 
-.wave:nth-child(3) {
-  animation-delay: -2s;
-  opacity: 0.02;
+.marquee-content i:hover {
+  color: var(--text-primary);
 }
 
-@keyframes wave {
+@keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-/* 技能展示区样式 */
-.skills-section {
-  margin: 4rem 0;
+/* Socials */
+.social-link {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s;
 }
 
-.skills-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+.social-link:hover {
+  background: var(--text-primary);
+  color: var(--bg-depth);
+  transform: translateY(-3px);
 }
 
-.skill-item {
-  position: relative;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.skill-level {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  background: var(--vp-c-brand);
-  transition: width 1.5s ease-in-out;
-}
-
-/* 发光按钮效果 */
-.glow-effect {
-  position: relative;
-  overflow: hidden;
-}
-
-.glow {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-  animation: glow-spin 4s linear infinite;
-}
-
-@keyframes glow-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* 统计数据样式 */
-.stats-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
-  margin: 4rem 0;
+/* Stats */
+.stat-item {
   text-align: center;
 }
 
-.stat-number {
+.stat-num {
+  display: block;
   font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--vp-c-brand);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .stat-label {
-  margin-top: 0.5rem;
-  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-/* 玻璃态效果 */
-.glass-effect {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Blog Preview */
+.tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-/* 装饰元素 */
-.card-decoration {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, var(--vp-c-brand) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.tile-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
-.feature-card:hover .card-decoration {
-  opacity: 0.1;
+.view-all {
+  font-size: 0.9rem;
+  color: var(--accent-primary);
+  text-decoration: none;
 }
 
-/* 响应式调整 */
-@media (max-width: 768px) {
-  .stats-section {
+.blog-preview-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.blog-preview-item:last-child {
+  border-bottom: none;
+}
+
+.preview-date {
+  color: var(--text-tertiary);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.85rem;
+}
+
+.preview-title {
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .bento-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .skills-container {
+  .hero-tile { grid-column: span 2; }
+  .blog-tile { grid-column: span 2; }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
     grid-template-columns: 1fr;
   }
+  
+  .hero-tile, .blog-tile, .location-tile, .tech-tile, .social-tile, .stats-tile {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+  
+  .hero-title { font-size: 2rem; }
 }
-</style> 
+
+/* Glitch Effect */
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-surface);
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -1px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(30px, 9999px, 10px, 0); }
+  5% { clip: rect(85px, 9999px, 81px, 0); }
+  10% { clip: rect(25px, 9999px, 69px, 0); }
+  15% { clip: rect(4px, 9999px, 88px, 0); }
+  20% { clip: rect(15px, 9999px, 2px, 0); }
+  25% { clip: rect(66px, 9999px, 24px, 0); }
+  30% { clip: rect(1px, 9999px, 81px, 0); }
+  35% { clip: rect(79px, 9999px, 54px, 0); }
+  40% { clip: rect(23px, 9999px, 16px, 0); }
+  45% { clip: rect(56px, 9999px, 39px, 0); }
+  50% { clip: rect(8px, 9999px, 30px, 0); }
+  55% { clip: rect(87px, 9999px, 15px, 0); }
+  60% { clip: rect(12px, 9999px, 63px, 0); }
+  65% { clip: rect(45px, 9999px, 82px, 0); }
+  70% { clip: rect(95px, 9999px, 28px, 0); }
+  75% { clip: rect(3px, 9999px, 19px, 0); }
+  80% { clip: rect(61px, 9999px, 73px, 0); }
+  85% { clip: rect(38px, 9999px, 51px, 0); }
+  90% { clip: rect(74px, 9999px, 9px, 0); }
+  95% { clip: rect(19px, 9999px, 42px, 0); }
+  100% { clip: rect(53px, 9999px, 94px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  5% { clip: rect(52px, 9999px, 74px, 0); }
+  10% { clip: rect(79px, 9999px, 85px, 0); }
+  15% { clip: rect(75px, 9999px, 5px, 0); }
+  20% { clip: rect(67px, 9999px, 61px, 0); }
+  25% { clip: rect(14px, 9999px, 79px, 0); }
+  30% { clip: rect(1px, 9999px, 66px, 0); }
+  35% { clip: rect(86px, 9999px, 30px, 0); }
+  40% { clip: rect(23px, 9999px, 98px, 0); }
+  45% { clip: rect(85px, 9999px, 72px, 0); }
+  50% { clip: rect(71px, 9999px, 75px, 0); }
+  55% { clip: rect(2px, 9999px, 48px, 0); }
+  60% { clip: rect(30px, 9999px, 16px, 0); }
+  65% { clip: rect(59px, 9999px, 50px, 0); }
+  70% { clip: rect(41px, 9999px, 62px, 0); }
+  75% { clip: rect(2px, 9999px, 82px, 0); }
+  80% { clip: rect(47px, 9999px, 73px, 0); }
+  85% { clip: rect(3px, 9999px, 27px, 0); }
+  90% { clip: rect(26px, 9999px, 55px, 0); }
+  95% { clip: rect(42px, 9999px, 97px, 0); }
+  100% { clip: rect(38px, 9999px, 49px, 0); }
+}
+</style>
