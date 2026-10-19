@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
+import { VFile } from 'vfile'
+import { matter } from 'vfile-matter'
 import { fileURLToPath } from 'url'
 import type { Post } from '../types/blog'
 
@@ -31,7 +32,9 @@ export function getBlogPosts(): Post[] {
         getPostsRecursively(filePath)
       } else if (filename.endsWith('.md')) {
         const content = fs.readFileSync(filePath, 'utf-8')
-        const { data: frontmatter } = matter(content)
+        const file = new VFile(content)
+        matter(file)
+        const frontmatter = file.data.matter as Post['frontmatter']
         
         const relativePath = path.relative(postsDirectory, filePath)
         posts.push({

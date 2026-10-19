@@ -7,7 +7,6 @@ import Home from './components/Home.vue'
 import Friends from './components/Friends.vue'
 import Projects from './components/Projects.vue'
 import About from './components/About.vue'
-import { MotionPlugin } from '@vueuse/motion'
 import Particles from "@tsparticles/vue3";
 import { loadSlim } from "@tsparticles/slim";
 import '../style/custom.css'
@@ -20,8 +19,6 @@ export default {
   extends: DefaultTheme,
   Layout,
   enhanceApp({ app }) {
-    app.use(MotionPlugin)
-    
     // Only initialize Particles on client-side to avoid SSR issues
     if (typeof window !== 'undefined') {
       app.use(Particles, {

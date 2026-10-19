@@ -14,10 +14,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.24",
-    "@vitejs/plugin-vue": "^5.2.0",
+    "@vitejs/plugin-vue": "^5.2.4",
     "typescript": "^5.3.3",
-    "vitepress": "1.5.0",
-    "vue": "^3.4.0"
+    "vitepress": "1.6.4",
+    "vue": "^3.5.44"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.0",
@@ -25,12 +25,18 @@
     "@tsparticles/slim": "^3.5.0",
     "@tsparticles/vue3": "^3.0.1",
     "@vueuse/core": "^11.2.0",
-    "@vueuse/motion": "^2.2.6",
     "animate.css": "^4.1.1",
-    "gray-matter": "^4.0.3",
-    "vanilla-tilt": "^1.8.1",
-    "vue-countup-v3": "^1.4.2",
     "fs": "^0.0.1-security",
-    "path": "^0.12.7"
-  }
+    "path": "^0.12.7",
+    "vanilla-tilt": "^1.8.1",
+    "vfile": "^6.0.3",
+    "vfile-matter": "^5.0.1",
+    "vue-countup-v3": "^1.4.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "^6.4.4"
+    }
+  },
+  "packageManager": "pnpm@9.15.9"
 }
