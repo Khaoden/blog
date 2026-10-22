@@ -24,7 +24,7 @@ const interests = [
 <template>
   <div class="about-page page-width">
     <header class="page-intro">
-      <span class="eyebrow">A LITTLE ABOUT ME</span>
+      <span class="eyebrow">ABOUT</span>
       <h1>你好，我是 Khaoden<span class="heading-dot">.</span></h1>
       <p>一个喜欢探索，也喜欢把事情想明白的人。</p>
     </header>
@@ -36,7 +36,7 @@ const interests = [
         >
       </div>
       <div class="about-copy">
-        <span class="eyebrow">写代码的人，也有自己的小世界</span>
+        <span class="eyebrow">CODE. LEARN. REPEAT.</span>
         <h2>在问题里探索，<br />在文字里整理。</h2>
         <p>
           我是一名关注后端开发与 AI
@@ -72,8 +72,8 @@ const interests = [
     </div>
     <section class="about-site">
       <div>
-        <span class="eyebrow">ABOUT THIS LITTLE CORNER</span>
-        <h2>一间自己的数字小屋。</h2>
+        <span class="eyebrow">COLOPHON</span>
+        <h2>关于这个博客</h2>
         <p>
           用 VitePress 和 Vue 搭建，用文字慢慢填满。<br />如果这些笔记恰好帮到了你，那就是记录最好的意义。
         </p>

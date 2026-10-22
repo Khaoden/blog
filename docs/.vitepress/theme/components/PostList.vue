@@ -10,20 +10,26 @@ defineProps<{ posts: Post[] }>()
       <div class="post-row-main">
         <div class="post-kicker">
           <span class="category-label">{{ categoryOf(post) }}</span
-          ><span class="meta-divider">/</span
+          ><span class="meta-divider">·</span
           ><time :datetime="post.frontmatter.date || undefined">{{
             dateLabel(post.frontmatter.date)
-          }}</time>
+          }}</time
+          ><span v-if="post.hasContent === false" class="draft-label">待整理</span>
         </div>
-        <h3>{{ titleOf(post) }}<SiteIcon name="diagonal" :size="19" /></h3>
+        <h3>{{ titleOf(post) }}</h3>
         <p>{{ summaryOf(post) }}</p>
         <div class="post-bottom">
-          <span v-for="tag in (post.frontmatter.tags || []).slice(0, 2)" :key="tag" class="post-tag"
-            ># {{ tag }}</span
-          ><span class="reading-time">{{ post.frontmatter.readingTime || 1 }} 分钟阅读</span>
+          <span
+            v-for="tag in (post.frontmatter.tags || []).slice(0, 2)"
+            :key="tag"
+            class="post-tag"
+            >{{ tag }}</span
+          ><span v-if="post.hasContent !== false" class="reading-time"
+            >{{ post.frontmatter.readingTime || 1 }} 分钟阅读</span
+          >
         </div>
       </div>
-      <span class="post-arrow"><SiteIcon name="arrow" :size="21" /></span>
+      <span class="post-arrow"><SiteIcon name="diagonal" :size="21" /></span>
     </a>
   </div>
 </template>

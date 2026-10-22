@@ -4,7 +4,7 @@ title: 终端命令快速进入 IDE（Windows）
 date: 2024-03-20
 tags: ['os', 'windows']
 category: 'technology'
-description: 终端命令快速进入 IDE（Windows）
+description: 配置环境变量与启动命令，从 Windows 终端快速打开 Cursor 或其他 IDE。
 readingTime: 10
 aside: true
 outline: deep

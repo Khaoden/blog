@@ -4,8 +4,8 @@ import SiteIcon from './SiteIcon.vue'
 <template>
   <div class="projects-page page-width">
     <header class="page-intro">
-      <span class="eyebrow">THINGS I'M BUILDING</span>
-      <h1>把想法，做出来<span class="heading-dot">.</span></h1>
+      <span class="eyebrow">PROJECTS</span>
+      <h1>边学边做<span class="heading-dot">.</span></h1>
       <p>边学边做，让一个个小想法落地。</p>
     </header>
     <a

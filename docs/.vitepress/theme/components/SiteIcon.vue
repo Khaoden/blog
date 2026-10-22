@@ -1,6 +1,8 @@
 <script setup lang="ts">
 withDefaults(defineProps<{ name: string; size?: number }>(), { size: 20 })
 const paths: Record<string, string[]> = {
+  home: ['m3 10 9-7 9 7v10H3Z', 'M9 20v-7h6v7'],
+  smile: ['M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0', 'M8 14s1 3 4 3 4-3 4-3', 'M8 8h.01M16 8h.01'],
   arrow: ['M5 12h14', 'm13 6 6 6-6 6'],
   diagonal: ['M7 17 17 7', 'M7 7h10v10'],
   left: ['M19 12H5', 'm11 6-6 6 6 6'],

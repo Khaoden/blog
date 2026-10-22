@@ -31,8 +31,8 @@ onUnmounted(() => clearTimeout(timer))
 <template>
   <div class="friends-page page-width">
     <header class="page-intro">
-      <span class="eyebrow"><SiteIcon name="link" :size="16" /> A LITTLE INTERNET</span>
-      <h1>山水有相逢，<br />来这里坐坐<span class="heading-dot">.</span></h1>
+      <span class="eyebrow">FRIENDS & FAVORITES</span>
+      <h1>网上邻居<span class="heading-dot">.</span></h1>
       <p>让独立的声音彼此连接。这里收藏一些值得停留的个人站点。</p>
     </header>
     <div class="friends-section-heading">
@@ -79,11 +79,11 @@ onUnmounted(() => clearTimeout(timer))
     </div>
     <section class="friend-invitation">
       <div class="invitation-art" aria-hidden="true">
-        <SiteIcon name="link" :size="36" /><span>HELLO,<br />NEIGHBOR.</span><i>✳</i>
+        <SiteIcon name="link" :size="30" />
       </div>
       <div class="invitation-copy">
-        <span class="eyebrow">LET'S GET CONNECTED</span>
-        <h2>一起织一张有趣的网。</h2>
+        <span class="eyebrow">LET'S CONNECT</span>
+        <h2>交换友链，认识一下。</h2>
         <p>
           如果你也有一个用心记录的博客，欢迎来交换友链。<br />带上站点名称、链接和一句介绍，先认识一下。
         </p>

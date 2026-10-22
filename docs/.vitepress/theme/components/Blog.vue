@@ -4,7 +4,6 @@ import { useData } from 'vitepress'
 import type { Post } from '../../types/blog'
 import { categories, categoryOf, matchesQuery } from '../utils/presentation'
 import PostList from './PostList.vue'
-import ProfileCard from './ProfileCard.vue'
 import SiteIcon from './SiteIcon.vue'
 const { theme } = useData()
 const category = ref('全部')
@@ -17,6 +16,17 @@ const filtered = computed(() =>
       matchesQuery(post, query.value)
   )
 )
+const groups = computed(() => {
+  const result = new Map<string, Post[]>()
+  for (const post of filtered.value) {
+    const year = Number.isFinite(Date.parse(post.frontmatter.date))
+      ? String(new Date(post.frontmatter.date).getUTCFullYear())
+      : '未标日期'
+    if (!result.has(year)) result.set(year, [])
+    result.get(year)!.push(post)
+  }
+  return Array.from(result, ([year, posts]) => ({ year, posts }))
+})
 onMounted(() => {
   const value = new URLSearchParams(window.location.search).get('category')
   if (value && categories.includes(value)) category.value = value
@@ -29,9 +39,9 @@ function reset() {
 <template>
   <div class="archive-page page-width">
     <header class="page-intro">
-      <span class="eyebrow">THE ARCHIVE</span>
-      <h1>文字是思考的痕迹<span class="heading-dot">.</span></h1>
-      <p>关于技术，也关于生活。这里收着 {{ posts.length }} 篇记录，欢迎慢慢翻阅。</p>
+      <span class="eyebrow">WRITING</span>
+      <h1>所有文章<span class="heading-dot">.</span></h1>
+      <p>关于代码、学习与生活的 {{ posts.length }} 篇记录。</p>
     </header>
     <div class="home-columns">
       <section>
@@ -60,7 +70,14 @@ function reset() {
           <span>{{ category === '全部' ? '所有记录' : category }}</span
           ><span>{{ filtered.length }} 篇</span>
         </div>
-        <PostList v-if="filtered.length" :posts="filtered" />
+        <div v-if="filtered.length" class="archive-groups">
+          <section v-for="group in groups" :key="group.year" class="archive-group">
+            <h2 class="archive-year">
+              {{ group.year }}<span>{{ group.posts.length }} 篇</span>
+            </h2>
+            <PostList :posts="group.posts" />
+          </section>
+        </div>
         <div v-else class="empty-state">
           <SiteIcon name="search" :size="32" />
           <h2>这一页，暂时没有结果。</h2>
@@ -70,7 +87,6 @@ function reset() {
           </button>
         </div>
       </section>
-      <ProfileCard :filter-in-place="true" @category="category = $event" />
     </div>
   </div>
 </template>

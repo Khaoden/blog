@@ -26,3 +26,15 @@ pnpm audit
 - 全局样式和深浅主题配色在 `docs/.vitepress/style/custom.css`，不依赖外部字体、图标 CDN 或粒子动画。
 - 搜索支持标题、标签、描述和文章摘要；可使用 `Ctrl/Command + K` 打开、`Esc` 关闭、`Enter` 打开首个结果。
 - 修改主题后，检查桌面与手机布局、分类筛选、搜索、主题切换、文章正文及目录、友链信息复制，再执行 `pnpm docs:build` 和 `pnpm audit`。
+
+## 设计参考
+
+当前主题采用侧栏导航、单列文章和按年份归档的结构；浅色为黑白与蓝色点缀，深色使用中性灰。英文使用本地 Inter 可变字体，中文使用系统字体，字体许可证见 `docs/public/fonts/Inter-LICENSE.txt`。
+
+本次参考了以下公开设计资料，页面结构和插图由本项目自行实现：
+
+- [Anthony Fu 的个人站点源码](https://github.com/antfu/antfu.me)：简洁的个人介绍、导航和文字层级。
+- [astro-erudite 的官方截图与源码](https://github.com/jktrn/astro-erudite)：侧栏导航、阅读宽度与页边目录。
+- [AstroPaper 的官方截图与源码](https://github.com/satnaing/astro-paper)：以文章为主的首页、深浅主题和键盘可用性。
+
+当前云环境无法直接访问这些独立站点及最初提供的两个参考域名，参考范围为可访问的公开源码和官方截图。
