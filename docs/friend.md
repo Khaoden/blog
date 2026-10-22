@@ -1,14 +1,5 @@
 ---
-title: Khaoden's Friends
 layout: page
-aside: false
-sidebar: false
+title: 友情链接
+description: 独立的站点，有趣的灵魂。
 ---
-
-<script setup>
-import Friends from './.vitepress/theme/components/Friends.vue'
-</script>
-
-<ClientOnly>
-  <Friends />
-</ClientOnly>

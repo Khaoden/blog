@@ -1,16 +1,5 @@
 ---
 layout: page
-title: Notes
-aside: false
+title: 文章
+description: Khaoden 的学习笔记与思考归档。
 ---
-
-<script setup>
-import { defineAsyncComponent } from 'vue'
-const Blog = defineAsyncComponent(() => 
-  import('../.vitepress/theme/components/Blog.vue')
-)
-</script>
-
-<ClientOnly>
-  <Blog />
-</ClientOnly>

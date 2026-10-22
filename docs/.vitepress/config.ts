@@ -1,62 +1,28 @@
-import { defineConfig } from 'vitepress'
+import { defineConfigWithTheme } from 'vitepress'
 import type { DefaultTheme } from 'vitepress'
-import { generateSidebar } from './utils/sidebar'
+import type { Post } from './types/blog'
 import { getBlogPosts } from './utils/posts'
 
-export default defineConfig({
+export default defineConfigWithTheme<DefaultTheme.Config & { posts: Post[] }>({
   lang: 'zh-CN',
   title: 'Khaoden',
-  description: '这是我的个人博客',
-  
+  description: 'Khaoden 的个人博客，记录后端开发、AI 应用与日常灵感。',
+  cleanUrls: true,
+  appearance: true,
   head: [
-    ['link', { 
-      rel: 'stylesheet', 
-      href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-    }],
-    ['link', {
-      rel: 'icon',
-      href: '/images/avatar.jpg'
-    }],
-    [
-      'script',
-      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-9999KR6YC8' }
-    ],
-    [
-      'script',
-      {},
-      `window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'TAG_ID');`
-    ]
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/images/favicon.svg' }],
+    ['meta', { name: 'theme-color', content: '#f7f7f2' }]
   ],
-
+  markdown: {
+    headers: { level: [2, 3] }
+  },
   themeConfig: {
     nav: [
-      { text: '🏠 about', link: '/home' },
-      { text: '📝 blog', link: '/blog' },
-      { text: '👬 friends', link: '/friend' },
-      // { text: '🛠️ project', link: '/projects' },
+      { text: '首页', link: '/' },
+      { text: '文章', link: '/blog' },
+      { text: '友链', link: '/friend' },
+      { text: '关于', link: '/about' }
     ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/Khaoden' }
-    ],
-
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: `Copyright © ${new Date().getFullYear()}-present Khaoden`
-    },
-
-    sidebar: generateSidebar(),
-
-    search: {
-      provider: 'local'
-    },
-
-    // @ts-ignore
-    posts: getBlogPosts(),
-    
-    viewTransition: true,
-  } as DefaultTheme.Config
+    posts: getBlogPosts()
+  }
 })

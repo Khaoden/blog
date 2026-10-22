@@ -1,17 +1,5 @@
 ---
 layout: page
-title: Khaoden's Projects
-aside: false
-sidebar: false
+title: 项目
+description: 边学边做，把想法变成可以使用的东西。
 ---
-
-<script setup>
-import { defineAsyncComponent } from 'vue'
-const Projects = defineAsyncComponent(() => 
-  import('./.vitepress/theme/components/Projects.vue')
-)
-</script>
-
-<ClientOnly>
-  <Projects />
-</ClientOnly>

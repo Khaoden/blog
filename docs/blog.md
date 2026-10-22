@@ -1,17 +1,5 @@
 ---
 layout: page
-title: Khaoden'sBlog
-aside: false
-sidebar: false
+title: 文章
+description: 后端开发、算法与面试、工具与效率，以及生活随笔。
 ---
-
-<script setup>
-import { defineAsyncComponent } from 'vue'
-const Blog = defineAsyncComponent(() => 
-  import('./.vitepress/theme/components/Blog.vue')
-)
-</script>
-
-<ClientOnly>
-  <Blog />
-</ClientOnly> 
