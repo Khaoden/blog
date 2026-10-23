@@ -4,7 +4,7 @@
 
 ## 开发与安全检查
 
-推荐使用 Node.js 22 或 24，以及 `package.json` 固定的 pnpm 9.15.9。
+使用 `package.json` 指定的 Node.js 24 和 pnpm 9.15.9，与 Vercel 生产构建保持一致。
 
 ```sh
 pnpm install --frozen-lockfile
@@ -38,3 +38,9 @@ pnpm audit
 - [AstroPaper 的官方截图与源码](https://github.com/satnaing/astro-paper)：以文章为主的首页、深浅主题和键盘可用性。
 
 当前云环境无法直接访问这些独立站点及最初提供的两个参考域名，参考范围为可访问的公开源码和官方截图。
+
+## Vercel 部署
+
+仓库根目录的 `vercel.json` 指定 VitePress、安装与构建命令，以及 `docs/.vitepress/dist` 输出目录。Vercel 项目的 Node.js Version 应设为 `24.x`；旧项目的 `20.x` 已被 Vercel 停用，会在安装依赖前直接构建失败。
+
+生产分支为 `main`。关联 GitHub 仓库后，推送会触发部署；旧自定义域名失效时，可以继续使用项目的 `vercel.app` 地址。`.vercel` 和 `.env*` 保留在本机，不提交账号或环境凭据。
