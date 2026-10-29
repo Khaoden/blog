@@ -11,19 +11,19 @@ const { theme } = useData()
 const tab = ref('全部')
 const tilt = ref({ x: 0, y: 0 })
 const posts = computed(() => (theme.value.posts || []) as Post[])
+const readable = computed(() => posts.value.filter((post) => post.hasContent !== false))
+const unfinished = computed(() => posts.value.length - readable.value.length)
 const featured = computed(() =>
   posts.value.find((post) => post.url.endsWith('/代码随想录/数组算法'))
 )
 const selected = computed(() => {
   const source =
     tab.value === '全部'
-      ? posts.value.filter(
+      ? readable.value.filter(
           (post) =>
-            post.hasContent !== false &&
-            Date.parse(post.frontmatter.date) <= Date.now() &&
-            post.url !== featured.value?.url
+            Date.parse(post.frontmatter.date) <= Date.now() && post.url !== featured.value?.url
         )
-      : posts.value.filter((post) => categoryOf(post) === tab.value)
+      : readable.value.filter((post) => categoryOf(post) === tab.value)
   return source.slice(0, 4)
 })
 const focus = computed(() =>
@@ -48,7 +48,14 @@ const focus = computed(() =>
     }
   ].map((item) => ({
     ...item,
-    count: posts.value.filter((post) => categoryOf(post) === item.category).length
+    ready: readable.value.filter((post) => categoryOf(post) === item.category).length,
+    pending: posts.value.filter(
+      (post) => categoryOf(post) === item.category && post.hasContent === false
+    ).length,
+    href:
+      '/blog?category=' +
+      encodeURIComponent(item.category) +
+      (readable.value.some((post) => categoryOf(post) === item.category) ? '' : '&view=drafts')
   }))
 )
 const cardStyle = computed(() => ({
@@ -85,7 +92,7 @@ function resetCard() {
         <div class="orbit-journey orbit-java">
           <div class="orbit-counter">
             <a
-              href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0"
+              href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0&view=drafts"
               class="orbit-badge java-badge"
               aria-label="浏览开发笔记"
               ><SiteIcon name="coffee" :size="29" /><span>Java</span></a
@@ -139,22 +146,22 @@ function resetCard() {
           <div class="identity-divider"></div>
           <p class="identity-section-label">我的几个关键词</p>
           <div class="identity-roles">
-            <a href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0"
-              ><span>Backend Developer<small>后端开发</small></span
-              ><SiteIcon name="diagonal" :size="18"
+            <a href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0&view=drafts"
+              ><span>后端开发</span><small>Backend</small><SiteIcon name="diagonal" :size="18"
             /></a>
             <a href="/about"
-              ><span>AI Explorer<small>应用探索</small></span
+              ><span>应用探索</span><small>AI Applications</small
               ><SiteIcon name="diagonal" :size="18"
             /></a>
             <a href="#notes"
-              ><span>Lifelong Learner<small>学习与记录</small></span
-              ><SiteIcon name="diagonal" :size="18"
+              ><span>学习与记录</span><small>Learning</small><SiteIcon name="diagonal" :size="18"
             /></a>
           </div>
           <div class="identity-bottom">
-            <span><i></i> 保持好奇，持续学习</span
-            ><a href="/about">认识一下 <SiteIcon name="arrow" :size="15" /></a>
+            <a href="#notes" class="identity-read">开始阅读 <SiteIcon name="arrow" :size="16" /></a>
+            <a href="/about" class="identity-about"
+              >关于我 <SiteIcon name="diagonal" :size="15"
+            /></a>
           </div>
           <div class="identity-spark" aria-hidden="true">
             <SiteIcon name="asterisk" :size="68" />
@@ -183,8 +190,8 @@ function resetCard() {
           <h3>我的公开笔记本</h3>
           <p>把理解写下来，也把问题留下来。</p>
           <div class="channel-bottom">
-            <strong>{{ posts.length }}<small>篇记录</small></strong
-            ><span>技术 / 算法 / 随笔</span>
+            <strong>{{ readable.length }}<small>篇正文</small></strong
+            ><span>另有 {{ unfinished }} 份笔记整理中</span>
           </div></a
         >
         <a
@@ -246,15 +253,14 @@ function resetCard() {
           </div>
         </a>
         <div class="focus-stack">
-          <a
-            v-for="item in focus"
-            :key="item.category"
-            :href="'/blog?category=' + encodeURIComponent(item.category)"
-            class="focus-card"
+          <a v-for="item in focus" :key="item.category" :href="item.href" class="focus-card"
             ><span class="focus-icon"><SiteIcon :name="item.icon" :size="23" /></span>
             <div>
               <h3>
-                {{ item.title }}<span>{{ item.count }} 篇记录</span>
+                {{ item.title
+                }}<span>{{
+                  item.ready ? item.ready + ' 篇正文' : item.pending + ' 份整理中'
+                }}</span>
               </h3>
               <p>{{ item.detail }}</p>
             </div>
@@ -269,7 +275,9 @@ function resetCard() {
         <div>
           <span class="eyebrow">NOTES & THOUGHTS</span>
           <h2 id="notes-heading">
-            最近写下的<span class="section-count">{{ posts.length }}</span>
+            最近写下的<span class="section-count" :aria-label="readable.length + ' 篇正文'">{{
+              readable.length
+            }}</span>
           </h2>
         </div>
         <a href="/blog" class="text-link">全部文章 <SiteIcon name="arrow" :size="17" /></a>
@@ -286,9 +294,20 @@ function resetCard() {
           {{ category }}
         </button>
       </div>
-      <PostList :posts="selected" />
+      <PostList v-if="selected.length" :posts="selected" />
+      <div v-else class="home-empty-state" role="status">
+        <SiteIcon name="book" :size="26" />
+        <h3>这个主题的笔记还在整理中。</h3>
+        <p>先读读已完成的文字，或者去归档看看整理进度。</p>
+        <div>
+          <button type="button" class="primary-button" @click="tab = '全部'">阅读其他笔记</button
+          ><a :href="'/blog?category=' + encodeURIComponent(tab) + '&view=drafts'" class="text-link"
+            >查看整理中的记录 <SiteIcon name="arrow" :size="16"
+          /></a>
+        </div>
+      </div>
       <a href="/blog" class="all-posts-link"
-        >翻开全部 {{ posts.length }} 篇记录 <SiteIcon name="arrow" :size="17"
+        >浏览全部 {{ readable.length }} 篇正文 <SiteIcon name="arrow" :size="17"
       /></a>
     </section>
 

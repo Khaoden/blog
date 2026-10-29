@@ -16,6 +16,7 @@ const route = useRoute()
 const menuOpen = ref(false)
 const search = ref<InstanceType<typeof SearchDialog>>()
 const progress = ref(0)
+const showArticleTop = ref(false)
 const activeHeading = ref('')
 const motionPaused = ref(false)
 const systemReducedMotion = ref(false)
@@ -80,6 +81,7 @@ function updateProgress() {
   scrollFrame = requestAnimationFrame(() => {
     const height = document.documentElement.scrollHeight - window.innerHeight
     progress.value = height > 0 ? Math.min(100, Math.round((window.scrollY / height) * 100)) : 0
+    showArticleTop.value = window.scrollY > 480
     scrollFrame = 0
   })
 }
@@ -230,10 +232,26 @@ onUnmounted(() => {
           @click="menuOpen = false"
           >{{ item.label }}<SiteIcon name="diagonal" :size="17"
         /></a>
+        <button
+          class="mobile-motion-toggle"
+          type="button"
+          :disabled="systemReducedMotion"
+          :aria-pressed="motionDisabled"
+          @click="toggleMotion"
+        >
+          <SiteIcon :name="motionDisabled ? 'play' : 'pause'" :size="17" />{{
+            systemReducedMotion ? '系统已减少动态效果' : motionPaused ? '播放动画' : '暂停动画'
+          }}
+        </button>
       </nav>
       <div
         v-if="kind === 'article'"
         class="reading-progress"
+        role="progressbar"
+        aria-label="文章阅读进度"
+        :aria-valuenow="progress"
+        :aria-valuemin="0"
+        :aria-valuemax="100"
         :style="{ width: progress + '%' }"
       ></div>
     </header>
@@ -373,6 +391,15 @@ onUnmounted(() => {
         </div>
       </footer>
     </div>
+    <button
+      v-if="kind === 'article' && showArticleTop"
+      class="article-mobile-top"
+      type="button"
+      aria-label="回到文章顶部"
+      @click="top"
+    >
+      <SiteIcon name="up" :size="19" /><span>{{ progress }}%</span>
+    </button>
     <SearchDialog ref="search" />
   </div>
 </template>

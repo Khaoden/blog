@@ -81,7 +81,7 @@ html {
   justify-content: center;
   gap: 8px;
   padding: 8px;
-  min-height: 42px;
+  min-height: 44px;
   color: var(--muted);
   font-size: 12px;
   background: none;
@@ -98,9 +98,9 @@ html {
 }
 .header-actions .icon-button,
 .sidebar-github {
-  min-width: 40px;
-  width: 40px;
-  height: 42px;
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -296,6 +296,32 @@ html {
 .motion-paused .identity-card {
   transition: none;
 }
+.mobile-motion-toggle {
+  display: none;
+}
+.article-mobile-top span {
+  font: 10px var(--mono);
+  color: var(--muted);
+}
+.article-mobile-top {
+  display: none;
+  position: fixed;
+  right: 18px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 35;
+  width: 48px;
+  min-height: 57px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 24px #263b4c20;
+}
 @media (max-width: 1200px) {
   .header-inner {
     width: calc(100% - 64px);
@@ -383,7 +409,7 @@ html {
   }
   .header-inner {
     width: calc(100% - 28px);
-    height: 66px;
+    height: 70px;
     gap: 8px;
   }
   .brand-name {
@@ -401,9 +427,9 @@ html {
   }
   .header-actions .icon-button,
   .search-trigger {
-    min-width: 35px;
-    width: 35px;
-    height: 40px;
+    min-width: 44px;
+    width: 44px;
+    height: 44px;
     padding: 0;
   }
   .site-content {
@@ -475,5 +501,37 @@ html {
     border: 0;
     border-radius: 0;
     box-shadow: none;
+  }
+}
+@media (max-width: 1200px) {
+  .article-mobile-top {
+    display: flex;
+  }
+}
+@media (max-width: 600px) {
+  .header-actions .motion-toggle {
+    display: none;
+  }
+  .mobile-motion-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin-top: 8px;
+    padding: 12px 4px;
+    background: none;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .mobile-motion-toggle:disabled {
+    opacity: 0.65;
+  }
+}
+@media print {
+  .article-mobile-top {
+    display: none !important;
   }
 }

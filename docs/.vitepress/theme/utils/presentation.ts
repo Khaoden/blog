@@ -22,7 +22,12 @@ export function matchesQuery(post: Post, query: string): boolean {
   ]
     .join(' ')
     .toLocaleLowerCase()
-  return text.includes(query.trim().toLocaleLowerCase())
+  return query
+    .trim()
+    .toLocaleLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((term) => text.includes(term))
 }
 export function summaryOf(post: Post): string {
   if (post.hasContent === false) return '这份笔记暂时还没有正文。'

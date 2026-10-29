@@ -1,11 +1,11 @@
 /* A personal card at the center of a small, interactive universe. */
 .orbit-hero {
   position: relative;
-  min-height: 770px;
-  height: min(850px, calc(100svh - 76px));
+  min-height: 640px;
+  height: clamp(640px, calc(100svh - 140px), 700px);
   display: grid;
   place-items: center;
-  padding: 24px 0 65px;
+  padding: 22px 0 52px;
   overflow: clip;
 }
 .hero-caption {
@@ -25,8 +25,8 @@
   letter-spacing: 1.7px;
 }
 .orbit-universe {
-  width: 800px;
-  height: 700px;
+  width: 760px;
+  height: 620px;
   display: grid;
   place-items: center;
   position: relative;
@@ -52,16 +52,16 @@
   pointer-events: none;
 }
 .track-inner {
-  width: 620px;
-  height: 620px;
+  width: 580px;
+  height: 580px;
 }
 .track-outer {
-  width: 760px;
-  height: 760px;
+  width: 700px;
+  height: 700px;
   border-color: color-mix(in srgb, var(--muted) 15%, transparent);
 }
 .orbit-journey {
-  --orbit-size: 620px;
+  --orbit-size: 580px;
   --start-angle: -68deg;
   --orbit-duration: 64s;
   position: absolute;
@@ -81,7 +81,7 @@
   pointer-events: auto;
 }
 .orbit-ai {
-  --orbit-size: 760px;
+  --orbit-size: 700px;
   --start-angle: 42deg;
   --orbit-duration: 80s;
 }
@@ -94,7 +94,7 @@
   animation-direction: reverse;
 }
 .orbit-photo {
-  --orbit-size: 760px;
+  --orbit-size: 700px;
   --start-angle: 228deg;
   --orbit-duration: 94s;
   z-index: 2;
@@ -173,8 +173,8 @@
   --tilt-y: 0deg;
   position: relative;
   z-index: 4;
-  width: 412px;
-  padding: 31px 34px 26px;
+  width: 400px;
+  padding: 28px 30px 25px;
   border-radius: 22px;
   border: 1px solid color-mix(in srgb, var(--surface) 85%, white);
   background: linear-gradient(
@@ -206,11 +206,11 @@
 }
 .identity-card h1 {
   font-family: var(--display);
-  font-size: 58px;
+  font-size: 54px;
   font-weight: 400;
   letter-spacing: -2px;
-  line-height: 1.4;
-  margin: 18px 0 1px;
+  line-height: 1.35;
+  margin: 14px 0 2px;
   white-space: nowrap;
   color: var(--ink);
 }
@@ -220,14 +220,14 @@
 .identity-description {
   font-size: 13px;
   color: var(--muted);
-  margin: 4px 0 23px;
+  margin: 4px 0 16px;
 }
 .identity-divider {
   height: 1px;
   background: var(--line);
 }
 .identity-section-label {
-  margin: 19px 0 10px;
+  margin: 14px 0 3px;
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 1px;
@@ -238,27 +238,31 @@
   gap: 0;
 }
 .identity-roles > a {
-  display: flex;
+  display: grid;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   padding: 9px 0;
   border-bottom: 1px solid color-mix(in srgb, var(--line) 65%, transparent);
+  grid-template-columns: 1fr auto 18px;
+  min-height: 46px;
 }
 .identity-roles > a:last-child {
   border-bottom: 0;
 }
 .identity-roles > a > span {
-  font-family: var(--display);
-  font-size: 21px;
+  font-family: var(--sans);
+  font-size: 15px;
   line-height: 1.4;
+  font-weight: 550;
 }
 .identity-roles small {
   display: block;
-  font-family: var(--sans);
-  font-size: 11px;
+  font-family: var(--display);
+  font-size: 13px;
   color: var(--muted);
-  margin-top: 2px;
+  margin-top: 0;
+  white-space: nowrap;
 }
 .identity-roles svg {
   color: var(--muted);
@@ -274,30 +278,6 @@
   color: var(--accent);
   opacity: 1;
   transform: translate(2px, -2px);
-}
-.identity-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  font-size: 10px;
-  color: var(--muted);
-  margin-top: 22px;
-}
-.identity-bottom > span,
-.identity-bottom > a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-.identity-bottom i {
-  width: 5px;
-  height: 5px;
-  background: #6c9b7f;
-  border-radius: 50%;
-}
-.identity-bottom > a {
-  color: var(--ink);
 }
 .identity-spark {
   position: absolute;
@@ -347,7 +327,7 @@
 
 /* Three real destinations, rather than invented social accounts or counts. */
 .spaces-section {
-  padding-top: 55px;
+  padding-top: 36px;
   scroll-margin-top: 18px;
 }
 .home-section-intro {
@@ -789,9 +769,76 @@
   margin-left: auto;
   color: var(--muted);
 }
+.identity-bottom {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+.identity-bottom .identity-read {
+  background: #eba264;
+  color: #2b3339;
+  font-weight: 550;
+  box-shadow: 0 5px 12px #e4a06420;
+}
+.identity-bottom .identity-about {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink);
+}
+.home-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  text-align: center;
+  min-height: 250px;
+  padding: 36px 24px;
+  border: 1px dashed var(--line);
+  border-radius: 21px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  color: var(--muted);
+}
+.home-empty-state p {
+  font-size: 12px;
+  line-height: 1.9;
+}
+.home-empty-state .primary-button {
+  min-height: 44px;
+}
+.identity-bottom > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-size: 12px;
+}
+.identity-bottom .identity-read:hover {
+  background: #f1b47f;
+}
+.identity-bottom .identity-about:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.home-empty-state h3 {
+  font-size: 17px;
+  font-weight: 500;
+}
+.home-empty-state > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 6px;
+}
 @media (max-width: 1200px) {
   .orbit-hero {
-    min-height: 745px;
+    min-height: 620px;
   }
   .channel-grid {
     gap: 17px;
@@ -868,7 +915,7 @@
     display: none;
   }
   .orbit-hero {
-    height: 750px;
+    height: 680px;
     min-height: 0;
   }
   .orbit-universe {
@@ -954,7 +1001,7 @@
 }
 @media (max-width: 600px) {
   .orbit-hero {
-    height: 650px;
+    height: 580px;
     padding: 0 0 34px;
   }
   .hero-caption {
@@ -967,7 +1014,7 @@
   }
   .orbit-universe {
     width: 100%;
-    height: 590px;
+    height: 530px;
     scale: 1;
   }
   .orbit-universe::before {
@@ -1010,38 +1057,31 @@
     font-size: clamp(35px, 10vw, 48px);
     letter-spacing: -1.3px;
     margin-top: 15px;
+    margin: 13px 0 2px;
   }
   .identity-description {
-    font-size: 11px;
-    margin-bottom: 20px;
+    font-size: 12px;
+    margin-bottom: 15px;
   }
   .identity-section-label {
     font-size: 10px;
-    margin-top: 17px;
+    margin-top: 14px;
   }
   .identity-roles > a {
     padding: 9px 0;
+    grid-template-columns: 1fr auto 16px;
+    gap: 6px;
+    min-height: 44px;
   }
   .identity-roles > a > span {
-    font-size: 18px;
+    font-size: 14px;
   }
   .identity-roles small {
-    font-size: 10px;
+    font-size: 12px;
   }
   .identity-roles svg {
     width: 16px;
     height: 16px;
-  }
-  .identity-bottom {
-    font-size: 9px;
-    gap: 8px;
-    margin-top: 20px;
-  }
-  .identity-bottom > a {
-    gap: 5px;
-  }
-  .identity-bottom > span {
-    gap: 5px;
   }
   .identity-spark {
     left: -20px;
@@ -1058,7 +1098,7 @@
     gap: 9px;
   }
   .spaces-section {
-    padding-top: 29px;
+    padding-top: 24px;
   }
   .home-section-intro {
     margin: 0 3px 23px;
