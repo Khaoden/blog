@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import type { Post } from '../../types/blog'
 import Home from '../components/Home.vue'
@@ -10,6 +10,7 @@ import Projects from '../components/Projects.vue'
 import SearchDialog from '../components/SearchDialog.vue'
 import SiteIcon from '../components/SiteIcon.vue'
 import { categoryOf, dateLabel, titleOf } from '../utils/presentation'
+import { motionPreference } from '../utils/motion'
 
 const { page, frontmatter, theme, isDark } = useData()
 const route = useRoute()
@@ -21,6 +22,8 @@ const activeHeading = ref('')
 const motionPaused = ref(false)
 const systemReducedMotion = ref(false)
 const motionDisabled = computed(() => motionPaused.value || systemReducedMotion.value)
+provide(motionPreference, motionDisabled)
+let themeTransitionActive = false
 const year = new Date().getFullYear()
 const posts = computed(() => (theme.value.posts || []) as Post[])
 const kind = computed(() => {
@@ -67,6 +70,37 @@ function toggleMotion() {
     localStorage.setItem('khaoden-motion-paused', String(motionPaused.value))
   } catch {
     // The control still works when browser storage is unavailable.
+  }
+}
+
+async function toggleTheme(event: MouseEvent) {
+  if (themeTransitionActive) return
+  const transitionDocument = document as Document & {
+    startViewTransition?: (update: () => Promise<void>) => { finished: Promise<void> }
+  }
+  if (motionDisabled.value || !transitionDocument.startViewTransition) {
+    isDark.value = !isDark.value
+    return
+  }
+  const button = event.currentTarget as HTMLElement
+  const box = button.getBoundingClientRect()
+  const x = box.left + box.width / 2
+  const y = box.top + box.height / 2
+  const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+  document.documentElement.style.setProperty('--theme-x', x + 'px')
+  document.documentElement.style.setProperty('--theme-y', y + 'px')
+  document.documentElement.style.setProperty('--theme-radius', radius + 'px')
+  document.documentElement.classList.add('theme-transition')
+  themeTransitionActive = true
+  try {
+    const transition = transitionDocument.startViewTransition(async () => {
+      isDark.value = !isDark.value
+      await nextTick()
+    })
+    await transition.finished
+  } finally {
+    document.documentElement.classList.remove('theme-transition')
+    themeTransitionActive = false
   }
 }
 
@@ -189,7 +223,7 @@ onUnmounted(() => {
               type="button"
               class="icon-button theme-trigger"
               :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
-              @click="isDark = !isDark"
+              @click="toggleTheme"
             >
               <SiteIcon :name="isDark ? 'sun' : 'moon'" :size="19" /><span>{{
                 isDark ? '浅色模式' : '深色模式'
@@ -257,7 +291,7 @@ onUnmounted(() => {
     </header>
 
     <div class="site-content">
-      <main id="main-content" tabindex="-1">
+      <main id="main-content" :key="page.relativePath" class="page-scene" tabindex="-1">
         <Home v-if="kind === 'home'" :motion-paused="motionDisabled" />
         <Blog v-else-if="kind === 'blog'" />
         <Friends v-else-if="kind === 'friends'" />
@@ -292,6 +326,9 @@ onUnmounted(() => {
                       currentPost?.frontmatter.readingTime || frontmatter.readingTime || 1
                     }}
                     分钟阅读</span
+                  >
+                  <span v-if="frontmatter.lastUpdated" class="article-updated"
+                    >更新于 {{ dateLabel(frontmatter.lastUpdated) }}</span
                   >
                 </div>
                 <div v-if="frontmatter.tags?.length" class="article-tags">

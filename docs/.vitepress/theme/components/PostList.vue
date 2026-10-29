@@ -11,8 +11,10 @@ defineProps<{ posts: Post[] }>()
         <div class="post-kicker">
           <span class="category-label">{{ categoryOf(post) }}</span
           ><span class="meta-divider">·</span
-          ><time :datetime="post.frontmatter.date || undefined">{{
-            dateLabel(post.frontmatter.date)
+          ><time :datetime="post.frontmatter.lastUpdated || post.frontmatter.date || undefined">{{
+            post.frontmatter.lastUpdated
+              ? '更新于 ' + dateLabel(post.frontmatter.lastUpdated)
+              : dateLabel(post.frontmatter.date)
           }}</time
           ><span v-if="post.hasContent === false" class="draft-label">待整理</span>
         </div>

@@ -95,7 +95,11 @@ function clearQuery() {
     <header class="page-intro">
       <span class="eyebrow">WRITING</span>
       <h1>所有文章<span class="heading-dot">.</span></h1>
-      <p>{{ readyCount }} 篇有正文的笔记，{{ posts.length - readyCount }} 份正在整理的记录。</p>
+      <p>
+        {{ readyCount }} 篇笔记，沿着问题慢慢读。<template v-if="posts.length > readyCount"
+          >另有 {{ posts.length - readyCount }} 份记录整理中。</template
+        >
+      </p>
     </header>
     <section>
       <div class="archive-toolbar">

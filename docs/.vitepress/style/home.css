@@ -162,10 +162,10 @@
   object-fit: cover;
   border-radius: 50%;
 }
-.orbit-hero:hover .orbit-journey,
-.orbit-hero:hover .orbit-counter,
-.orbit-hero:focus-within .orbit-journey,
-.orbit-hero:focus-within .orbit-counter {
+.orbit-journey:has(a:hover),
+.orbit-journey:has(a:hover) .orbit-counter,
+.orbit-journey:focus-within,
+.orbit-journey:focus-within .orbit-counter {
   animation-play-state: paused;
 }
 .identity-card {

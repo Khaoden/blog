@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url'
 import type { Post } from '../types/blog'
 
 function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200
-  const words = content.trim().split(/\s+/).length
-  return Math.ceil(words / wordsPerMinute)
+  const chinese = content.match(/\p{Script=Han}/gu)?.length || 0
+  const words = content.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length || 0
+  return Math.max(1, Math.ceil(chinese / 350 + words / 200))
 }
 
 function excerptFrom(content: string): string {
@@ -58,7 +58,7 @@ export function getBlogPosts(): Post[] {
           url: `/blog/posts/${relativePath.replace('.md', '')}`,
           frontmatter: {
             ...frontmatter,
-            readingTime: calculateReadingTime(content),
+            readingTime: calculateReadingTime(body),
             // An undated note must not look newly published on every build.
             date: frontmatter.date ? new Date(frontmatter.date).toISOString() : ''
           }

@@ -4,6 +4,9 @@ import { useData } from 'vitepress'
 import type { Post } from '../../types/blog'
 import PostList from './PostList.vue'
 import SiteIcon from './SiteIcon.vue'
+import MotionReveal from './MotionReveal.vue'
+import ReadingPaths from './ReadingPaths.vue'
+import AlgorithmLab from './AlgorithmLab.vue'
 import { categories, categoryOf, dateLabel, titleOf } from '../utils/presentation'
 
 const props = withDefaults(defineProps<{ motionPaused?: boolean }>(), { motionPaused: false })
@@ -24,7 +27,13 @@ const selected = computed(() => {
             Date.parse(post.frontmatter.date) <= Date.now() && post.url !== featured.value?.url
         )
       : readable.value.filter((post) => categoryOf(post) === tab.value)
-  return source.slice(0, 4)
+  return [...source]
+    .sort(
+      (a, b) =>
+        (Date.parse(b.frontmatter.lastUpdated || b.frontmatter.date) || 0) -
+        (Date.parse(a.frontmatter.lastUpdated || a.frontmatter.date) || 0)
+    )
+    .slice(0, 4)
 })
 const focus = computed(() =>
   [
@@ -60,7 +69,9 @@ const focus = computed(() =>
 )
 const cardStyle = computed(() => ({
   '--tilt-x': (props.motionPaused ? 0 : tilt.value.x) + 'deg',
-  '--tilt-y': (props.motionPaused ? 0 : tilt.value.y) + 'deg'
+  '--tilt-y': (props.motionPaused ? 0 : tilt.value.y) + 'deg',
+  '--card-x': 50 + tilt.value.y * 10 + '%',
+  '--card-y': 50 - tilt.value.x * 10 + '%'
 }))
 function moveCard(event: PointerEvent) {
   if (
@@ -83,6 +94,7 @@ function resetCard() {
 <template>
   <div class="home-page">
     <section class="orbit-hero" aria-labelledby="identity-name">
+      <div class="hero-atmosphere" aria-hidden="true"><i></i><i></i></div>
       <div class="hero-caption">
         <span class="eyebrow">KHAODEN / PERSONAL SPACE</span><span>一个人的数字角落</span>
       </div>
@@ -92,7 +104,7 @@ function resetCard() {
         <div class="orbit-journey orbit-java">
           <div class="orbit-counter">
             <a
-              href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0&view=drafts"
+              href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0"
               class="orbit-badge java-badge"
               aria-label="浏览开发笔记"
               ><SiteIcon name="coffee" :size="29" /><span>Java</span></a
@@ -126,54 +138,71 @@ function resetCard() {
           </div>
         </div>
 
-        <div
-          class="identity-card"
-          :style="cardStyle"
-          @pointermove="moveCard"
-          @pointerleave="resetCard"
-        >
-          <div class="identity-label">
-            <span>你好，我是</span><SiteIcon name="asterisk" :size="21" /><img
-              class="identity-avatar"
-              src="/images/avatar.jpg"
-              alt=""
-              width="32"
-              height="32"
-            />
-          </div>
-          <h1 id="identity-name">Khaoden<span>.</span></h1>
-          <p class="identity-description">把所学，写成自己的语言。</p>
-          <div class="identity-divider"></div>
-          <p class="identity-section-label">我的几个关键词</p>
-          <div class="identity-roles">
-            <a href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0&view=drafts"
-              ><span>后端开发</span><small>Backend</small><SiteIcon name="diagonal" :size="18"
-            /></a>
-            <a href="/about"
-              ><span>应用探索</span><small>AI Applications</small
-              ><SiteIcon name="diagonal" :size="18"
-            /></a>
-            <a href="#notes"
-              ><span>学习与记录</span><small>Learning</small><SiteIcon name="diagonal" :size="18"
-            /></a>
-          </div>
-          <div class="identity-bottom">
-            <a href="#notes" class="identity-read">开始阅读 <SiteIcon name="arrow" :size="16" /></a>
-            <a href="/about" class="identity-about"
-              >关于我 <SiteIcon name="diagonal" :size="15"
-            /></a>
-          </div>
-          <div class="identity-spark" aria-hidden="true">
-            <SiteIcon name="asterisk" :size="68" />
+        <div class="identity-stage">
+          <div
+            class="identity-card"
+            :style="cardStyle"
+            @pointermove="moveCard"
+            @pointerleave="resetCard"
+          >
+            <div class="identity-label">
+              <span>你好，我是</span><SiteIcon name="asterisk" :size="21" /><img
+                class="identity-avatar"
+                src="/images/avatar.jpg"
+                alt=""
+                width="32"
+                height="32"
+              />
+            </div>
+            <h1 id="identity-name">Khaoden<span>.</span></h1>
+            <p class="identity-description">把所学，写成自己的语言。</p>
+            <div class="identity-divider"></div>
+            <p class="identity-section-label">我的几个关键词</p>
+            <div class="identity-roles">
+              <a href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0"
+                ><span>后端开发</span><small>Backend</small><SiteIcon name="diagonal" :size="18"
+              /></a>
+              <a href="/about"
+                ><span>应用探索</span><small>AI Applications</small
+                ><SiteIcon name="diagonal" :size="18"
+              /></a>
+              <a href="/#notes"
+                ><span>学习与记录</span><small>Learning</small><SiteIcon name="diagonal" :size="18"
+              /></a>
+            </div>
+            <div class="identity-bottom">
+              <a href="/#notes" class="identity-read"
+                >开始阅读 <SiteIcon name="arrow" :size="16"
+              /></a>
+              <a href="/about" class="identity-about"
+                >关于我 <SiteIcon name="diagonal" :size="15"
+              /></a>
+            </div>
+            <div class="identity-spark" aria-hidden="true">
+              <SiteIcon name="asterisk" :size="68" />
+            </div>
           </div>
         </div>
       </div>
-      <a href="#spaces" class="hero-scroll"
+      <div class="hero-fragment fragment-code" aria-hidden="true">
+        <span class="fragment-kicker">A WORK IN PROGRESS</span>
+        <code
+          ><span>const</span> curiosity = <b>true</b><br /><span>while</span> (curiosity) {<br />&nbsp;
+          learn();<br />&nbsp; build();<br />&nbsp; write();<br />}</code
+        >
+      </div>
+      <a href="/#learning-paths" class="hero-fragment fragment-route"
+        ><span class="fragment-star"><SiteIcon name="asterisk" :size="24" /></span
+        ><span class="fragment-kicker">FOLLOW THE THREAD</span
+        ><strong>从一个问题，<br />走向下一次理解。</strong
+        ><span class="fragment-link">找一条阅读路线 <SiteIcon name="arrow" :size="14" /></span
+      ></a>
+      <a href="/#spaces" class="hero-scroll"
         ><span>往下看看我的小世界</span><SiteIcon name="arrow" :size="18"
       /></a>
     </section>
 
-    <section id="spaces" class="spaces-section" aria-labelledby="spaces-heading">
+    <MotionReveal as="section" id="spaces" class="spaces-section" aria-labelledby="spaces-heading">
       <div class="home-section-intro">
         <span class="eyebrow">A LITTLE OF EVERYTHING</span>
         <h2 id="spaces-heading">
@@ -191,7 +220,9 @@ function resetCard() {
           <p>把理解写下来，也把问题留下来。</p>
           <div class="channel-bottom">
             <strong>{{ readable.length }}<small>篇正文</small></strong
-            ><span>另有 {{ unfinished }} 份笔记整理中</span>
+            ><span>{{
+              unfinished ? '另有 ' + unfinished + ' 份笔记整理中' : '从基础到原理，循着问题读下去'
+            }}</span>
           </div></a
         >
         <a
@@ -221,9 +252,25 @@ function resetCard() {
           </div></a
         >
       </div>
-    </section>
+    </MotionReveal>
 
-    <section class="workbench-section" aria-labelledby="workbench-heading">
+    <MotionReveal
+      as="section"
+      id="learning-paths"
+      class="home-paths"
+      aria-labelledby="paths-heading"
+    >
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">ONE THING LEADS TO ANOTHER</span>
+          <h2 id="paths-heading">不知道从哪篇开始？</h2>
+        </div>
+        <span class="section-aside">选一条线，慢慢读。</span>
+      </div>
+      <ReadingPaths />
+    </MotionReveal>
+
+    <MotionReveal as="section" class="workbench-section" aria-labelledby="workbench-heading">
       <div class="section-heading">
         <div>
           <span class="eyebrow">LEARNING BY DOING</span>
@@ -268,9 +315,22 @@ function resetCard() {
           /></a>
         </div>
       </div>
-    </section>
+    </MotionReveal>
 
-    <section id="notes" class="home-entries" aria-labelledby="notes-heading">
+    <MotionReveal as="section" class="home-lab" aria-labelledby="lab-heading">
+      <div class="lab-introduction">
+        <span class="eyebrow">LESS ABSTRACT, MORE HANDS-ON</span
+        ><span class="lab-doodle" aria-hidden="true"><SiteIcon name="code" :size="46" /></span>
+        <h2 id="lab-heading">让思路，<br />动起来<span>.</span></h2>
+        <p>二分查找为什么快？<br />换一个目标，亲手推进几步，<br />看见每次比较留下的范围。</p>
+        <a href="/blog/posts/interview/代码随想录/数组算法" class="text-link"
+          >回到数组笔记 <SiteIcon name="diagonal" :size="16"
+        /></a>
+      </div>
+      <AlgorithmLab />
+    </MotionReveal>
+
+    <MotionReveal as="section" id="notes" class="home-entries" aria-labelledby="notes-heading">
       <div class="section-heading">
         <div>
           <span class="eyebrow">NOTES & THOUGHTS</span>
@@ -309,16 +369,19 @@ function resetCard() {
       <a href="/blog" class="all-posts-link"
         >浏览全部 {{ readable.length }} 篇正文 <SiteIcon name="arrow" :size="17"
       /></a>
-    </section>
+    </MotionReveal>
 
-    <a href="/about" class="home-closing"
-      ><span class="closing-spark" aria-hidden="true"><SiteIcon name="asterisk" :size="48" /></span>
-      <div>
-        <span class="eyebrow">THIS IS JUST THE BEGINNING</span>
-        <h2>代码之外，也想和你聊聊。</h2>
-        <p>关于这个博客，和写下这些文字的人。</p>
-      </div>
-      <SiteIcon name="diagonal" :size="26"
-    /></a>
+    <MotionReveal
+      ><a href="/about" class="home-closing"
+        ><span class="closing-spark" aria-hidden="true"
+          ><SiteIcon name="asterisk" :size="48"
+        /></span>
+        <div>
+          <span class="eyebrow">THIS IS JUST THE BEGINNING</span>
+          <h2>代码之外，也想和你聊聊。</h2>
+          <p>关于这个博客，和写下这些文字的人。</p>
+        </div>
+        <SiteIcon name="diagonal" :size="26" /></a
+    ></MotionReveal>
   </div>
 </template>
