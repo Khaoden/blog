@@ -11,7 +11,7 @@ export default defineConfigWithTheme<DefaultTheme.Config & { posts: Post[] }>({
   appearance: true,
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/images/favicon.svg' }],
-    ['meta', { name: 'theme-color', content: '#ffffff' }]
+    ['meta', { name: 'theme-color', content: '#f2f3f5' }]
   ],
   markdown: {
     headers: { level: [2, 3] }

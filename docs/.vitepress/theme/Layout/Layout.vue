@@ -17,6 +17,9 @@ const menuOpen = ref(false)
 const search = ref<InstanceType<typeof SearchDialog>>()
 const progress = ref(0)
 const activeHeading = ref('')
+const motionPaused = ref(false)
+const systemReducedMotion = ref(false)
+const motionDisabled = computed(() => motionPaused.value || systemReducedMotion.value)
 const year = new Date().getFullYear()
 const posts = computed(() => (theme.value.posts || []) as Post[])
 const kind = computed(() => {
@@ -51,6 +54,20 @@ const nav = [
 ]
 let observer: IntersectionObserver | undefined
 let scrollFrame = 0
+let motionQuery: MediaQueryList | undefined
+
+function syncMotionPreference() {
+  systemReducedMotion.value = motionQuery?.matches || false
+}
+function toggleMotion() {
+  if (systemReducedMotion.value) return
+  motionPaused.value = !motionPaused.value
+  try {
+    localStorage.setItem('khaoden-motion-paused', String(motionPaused.value))
+  } catch {
+    // The control still works when browser storage is unavailable.
+  }
+}
 
 function top() {
   window.scrollTo({
@@ -99,12 +116,21 @@ watch(
   }
 )
 onMounted(() => {
+  motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  syncMotionPreference()
+  motionQuery.addEventListener('change', syncMotionPreference)
+  try {
+    motionPaused.value = localStorage.getItem('khaoden-motion-paused') === 'true'
+  } catch {
+    motionPaused.value = false
+  }
   document.addEventListener('keydown', keyboard)
   window.addEventListener('scroll', updateProgress, { passive: true })
   updateProgress()
   observeHeadings()
 })
 onUnmounted(() => {
+  motionQuery?.removeEventListener('change', syncMotionPreference)
   document.removeEventListener('keydown', keyboard)
   window.removeEventListener('scroll', updateProgress)
   observer?.disconnect()
@@ -113,18 +139,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="journal">
+  <div class="journal" :class="{ 'motion-paused': motionDisabled, 'page-home': kind === 'home' }">
     <a href="#main-content" class="skip-link">跳转到正文</a>
     <header class="site-header">
       <div class="header-inner">
         <a href="/" class="site-brand" aria-label="Khaoden 首页"
-          ><span class="brand-mark">k<span>.</span></span
-          ><span class="brand-name"
-            >Khaoden<span class="brand-description">开发者 · 持续学习的人</span></span
-          ></a
+          ><span class="brand-mark"><SiteIcon name="asterisk" :size="26" /></span
+          ><span class="brand-name">Khaoden</span></a
         >
         <nav class="desktop-nav" aria-label="主导航">
-          <span class="nav-caption">EXPLORE</span>
           <a
             v-for="item in nav"
             :key="item.href"
@@ -135,8 +158,7 @@ onUnmounted(() => {
                 ? 'page'
                 : undefined
             "
-            ><SiteIcon :name="item.icon" :size="18" /><span>{{ item.label }}</span
-            ><span class="nav-english">{{ item.english }}</span></a
+            ><span>{{ item.label }}</span></a
           >
         </nav>
         <div class="header-actions">
@@ -147,6 +169,18 @@ onUnmounted(() => {
             @click="search?.open()"
           >
             <SiteIcon name="search" :size="18" /><span>搜索</span><kbd>⌘ K</kbd>
+          </button>
+          <button
+            type="button"
+            class="icon-button motion-toggle"
+            :aria-label="
+              systemReducedMotion ? '系统已减少动态效果' : motionPaused ? '播放动画' : '暂停动画'
+            "
+            :aria-pressed="motionDisabled"
+            :disabled="systemReducedMotion"
+            @click="toggleMotion"
+          >
+            <SiteIcon :name="motionDisabled ? 'play' : 'pause'" :size="17" />
           </button>
           <ClientOnly>
             <button
@@ -184,14 +218,15 @@ onUnmounted(() => {
             <SiteIcon :name="menuOpen ? 'close' : 'menu'" />
           </button>
         </div>
-        <p class="sidebar-colophon">写代码，做笔记。<br />这里存放我的所学与所想。</p>
       </div>
       <nav v-if="menuOpen" id="mobile-navigation" class="mobile-nav" aria-label="手机导航">
         <a
           v-for="item in nav"
           :key="item.href"
           :href="item.href"
-          :aria-current="kind === item.kind ? 'page' : undefined"
+          :aria-current="
+            kind === item.kind || (item.kind === 'blog' && kind === 'article') ? 'page' : undefined
+          "
           @click="menuOpen = false"
           >{{ item.label }}<SiteIcon name="diagonal" :size="17"
         /></a>
@@ -205,7 +240,7 @@ onUnmounted(() => {
 
     <div class="site-content">
       <main id="main-content" tabindex="-1">
-        <Home v-if="kind === 'home'" />
+        <Home v-if="kind === 'home'" :motion-paused="motionDisabled" />
         <Blog v-else-if="kind === 'blog'" />
         <Friends v-else-if="kind === 'friends'" />
         <About v-else-if="kind === 'about'" />

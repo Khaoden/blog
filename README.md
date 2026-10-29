@@ -23,21 +23,22 @@ pnpm audit
 
 - 文章保存在 `docs/blog/posts/`，标题、日期和标签继续读取 Markdown 元信息；未填写日期的笔记显示「未标日期」，不会在每次构建时被当作新文章。
 - 友链信息在 `docs/.vitepress/config/friends.ts`；未提供头像时显示名称首字母。
-- 全局样式和深浅主题配色在 `docs/.vitepress/style/custom.css`，不依赖外部字体、图标 CDN 或粒子动画。
+- 正文、归档和通用样式在 `docs/.vitepress/style/custom.css`；导航与页面容器在 `style/layout.css`，首页名片、轨道和卡片在 `style/home.css`。字体、图标均从本地加载。
 - 搜索支持标题、标签、描述和文章摘要；可使用 `Ctrl/Command + K` 打开、`Esc` 关闭、`Enter` 打开首个结果。
 - 修改主题后，检查桌面与手机布局、分类筛选、搜索、主题切换、文章正文及目录、友链信息复制，再执行 `pnpm docs:build` 和 `pnpm audit`。
 
 ## 设计参考
 
-当前主题采用侧栏导航、单列文章和按年份归档的结构；浅色为黑白与蓝色点缀，深色使用中性灰。英文使用本地 Inter 可变字体，中文使用系统字体，字体许可证见 `docs/public/fonts/Inter-LICENSE.txt`。
+当前主题采用顶部导航、倾斜个人名片、环形图标和内容卡片；浅灰背景配暖橙色点缀，提供深色主题。首页的栏目数量、笔记和项目来自现有内容，没有添加虚构的社交账号、关注量或个人经历。
 
-本次参考了以下公开设计资料，页面结构和插图由本项目自行实现：
+本次以 [qzq.at](https://www.qzq.at/) 为设计方向。当前云环境直接访问该站会被网络代理返回 403，因此使用了明确注明参考它的公开实现及对照记录来确认布局和交互，未声称逐像素复刻原站当前版本：
 
-- [Anthony Fu 的个人站点源码](https://github.com/antfu/antfu.me)：简洁的个人介绍、导航和文字层级。
-- [astro-erudite 的官方截图与源码](https://github.com/jktrn/astro-erudite)：侧栏导航、阅读宽度与页边目录。
-- [AstroPaper 的官方截图与源码](https://github.com/satnaing/astro-paper)：以文章为主的首页、深浅主题和键盘可用性。
+- [Orbit 公开实现](https://github.com/wxh518/wxh518.github.io)：个人名片、轨道与模块式主页的设计参考。
+- [页面对照记录](https://github.com/wxh518/wxh518.github.io/blob/master/docs/visual-comparison.md)：名片、Coda 字体、深色频道卡片和模块布局的参考说明。
 
-当前云环境无法直接访问这些独立站点及最初提供的两个参考域名，参考范围为可访问的公开源码和官方截图。
+页面使用本项目自己的 Vue 与 CSS 实现，不引入参考项目的框架、个人照片、作品或统计数据。英文展示标题使用本地 Coda，正文使用 Inter 和系统中文字体；字体许可证均在 `docs/public/fonts/`。
+
+顶部的动画开关会记住个人偏好；系统启用「减少动态效果」时，轨道和倾斜跟随会停止。桌面轨道在鼠标悬停或键盘焦点进入首屏时暂停，便于点击；手机采用静态名片与头像，保留所有内容入口。
 
 ## Vercel 部署
 

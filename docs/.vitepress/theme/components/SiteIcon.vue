@@ -1,6 +1,15 @@
 <script setup lang="ts">
 withDefaults(defineProps<{ name: string; size?: number }>(), { size: 20 })
 const paths: Record<string, string[]> = {
+  asterisk: ['M12 2v20M2 12h20M5 5l14 14M5 19 19 5'],
+  pause: ['M8 5v14M16 5v14'],
+  play: ['m8 5 11 7-11 7V5Z'],
+  terminal: ['M3 4h18v16H3Z', 'm7 8 4 4-4 4m7 0h3'],
+  coffee: [
+    'M4 8h13v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z',
+    'M17 9h2a3 3 0 0 1 0 6h-2M7 4V2m4 2V2m4 2V2'
+  ],
+  layers: ['m12 3 10 6-10 6L2 9l10-6Z', 'm2 13 10 6 10-6m-20 4 10 6 10-6'],
   home: ['m3 10 9-7 9 7v10H3Z', 'M9 20v-7h6v7'],
   smile: ['M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0', 'M8 14s1 3 4 3 4-3 4-3', 'M8 8h.01M16 8h.01'],
   arrow: ['M5 12h14', 'm13 6 6 6-6 6'],
