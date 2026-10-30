@@ -3,5 +3,37 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm docs:build",
   "outputDirectory": "docs/.vitepress/dist",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/blog/posts/learning/javaSE/basics",
+      "destination": "/blog/posts/learning/javaSE/java%E5%9F%BA%E7%A1%80",
+      "permanent": true
+    },
+    {
+      "source": "/blog/posts/learning/javaSE/basics.html",
+      "destination": "/blog/posts/learning/javaSE/java%E5%9F%BA%E7%A1%80",
+      "permanent": true
+    },
+    {
+      "source": "/blog/posts/learning/javaSE/oop",
+      "destination": "/blog/posts/learning/javaSE/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1",
+      "permanent": true
+    },
+    {
+      "source": "/blog/posts/learning/javaSE/oop.html",
+      "destination": "/blog/posts/learning/javaSE/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1",
+      "permanent": true
+    },
+    {
+      "source": "/blog/posts/learning/javaSE/collection",
+      "destination": "/blog/posts/learning/javaSE/%E5%AE%B9%E5%99%A8",
+      "permanent": true
+    },
+    {
+      "source": "/blog/posts/learning/javaSE/collection.html",
+      "destination": "/blog/posts/learning/javaSE/%E5%AE%B9%E5%99%A8",
+      "permanent": true
+    }
+  ]
 }

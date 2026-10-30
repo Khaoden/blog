@@ -413,7 +413,7 @@ onUnmounted(() => {
         <div class="footer-main">
           <div>
             <a href="/" class="footer-brand">Khaoden<span>.</span></a>
-            <p>所学有所记，所思有所迹。</p>
+            <p>Java、算法和工具笔记。</p>
           </div>
           <div class="footer-links">
             <a href="/blog">所有文章</a><a href="/friend">友情链接</a

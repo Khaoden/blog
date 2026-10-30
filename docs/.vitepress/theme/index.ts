@@ -5,6 +5,7 @@ import '../style/custom.css'
 import '../style/layout.css'
 import '../style/home.css'
 import '../style/explore.css'
+import '../style/notebook.css'
 
 export default {
   extends: DefaultTheme,

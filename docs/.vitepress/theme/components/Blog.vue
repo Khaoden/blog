@@ -10,7 +10,7 @@ type NoteView = 'ready' | 'all' | 'drafts'
 const { theme } = useData()
 const category = ref('全部')
 const query = ref('')
-const view = ref<NoteView>('ready')
+const view = ref<NoteView>('all')
 const filterInput = ref<HTMLInputElement>()
 const posts = computed(() => (theme.value.posts || []) as Post[])
 const readyCount = computed(() => posts.value.filter((post) => post.hasContent !== false).length)
@@ -25,8 +25,8 @@ const pendingMatches = computed(
   () => matching.value.filter((post) => post.hasContent === false).length
 )
 const views = computed(() => [
+  { value: 'all' as const, label: '全部笔记', count: matching.value.length },
   { value: 'ready' as const, label: '有正文', count: matching.value.length - pendingMatches.value },
-  { value: 'all' as const, label: '全部记录', count: matching.value.length },
   { value: 'drafts' as const, label: '整理中', count: pendingMatches.value }
 ])
 const filtered = computed(() =>
@@ -54,7 +54,7 @@ function readLocation() {
   const selectedView = params.get('view')
   category.value =
     selectedCategory && categories.includes(selectedCategory) ? selectedCategory : '全部'
-  view.value = selectedView === 'all' || selectedView === 'drafts' ? selectedView : 'ready'
+  view.value = selectedView === 'ready' || selectedView === 'drafts' ? selectedView : 'all'
   query.value = (params.get('q') || '').slice(0, 180)
 }
 function syncLocation() {
@@ -63,7 +63,7 @@ function syncLocation() {
   if (!/^\/blog(?:\/index)?(?:\.html)?\/?$/.test(url.pathname)) return
   if (category.value === '全部') url.searchParams.delete('category')
   else url.searchParams.set('category', category.value)
-  if (view.value === 'ready') url.searchParams.delete('view')
+  if (view.value === 'all') url.searchParams.delete('view')
   else url.searchParams.set('view', view.value)
   if (query.value.trim()) url.searchParams.set('q', query.value)
   else url.searchParams.delete('q')
@@ -82,7 +82,7 @@ onUnmounted(() => {
 function reset() {
   category.value = '全部'
   query.value = ''
-  view.value = 'ready'
+  view.value = 'all'
 }
 function clearQuery() {
   query.value = ''
@@ -94,9 +94,10 @@ function clearQuery() {
   <div class="archive-page page-width">
     <header class="page-intro">
       <span class="eyebrow">WRITING</span>
-      <h1>所有文章<span class="heading-dot">.</span></h1>
+      <h1>全部笔记<span class="heading-dot">.</span></h1>
       <p>
-        {{ readyCount }} 篇笔记，沿着问题慢慢读。<template v-if="posts.length > readyCount"
+        共 {{ posts.length }} 篇。可以按分类筛选，或搜索标题、正文和旧文件名。<template
+          v-if="posts.length > readyCount"
           >另有 {{ posts.length - readyCount }} 份记录整理中。</template
         >
       </p>
@@ -104,7 +105,12 @@ function clearQuery() {
     <section>
       <div class="archive-toolbar">
         <div class="archive-controls">
-          <div class="note-view-tabs" role="group" aria-label="笔记状态">
+          <div
+            v-if="posts.length > readyCount || view !== 'all'"
+            class="note-view-tabs"
+            role="group"
+            aria-label="笔记状态"
+          >
             <button
               v-for="item in views"
               :key="item.value"
@@ -141,6 +147,20 @@ function clearQuery() {
             {{ item }}
           </button>
         </div>
+      </div>
+      <div
+        v-if="category !== '全部' || query.trim() || view !== 'all'"
+        class="archive-active-filters"
+        role="status"
+      >
+        <span
+          >当前筛选：{{ category }}<template v-if="query.trim()"> · {{ query }}</template
+          ><template v-if="view !== 'all'">
+            · {{ views.find((item) => item.value === view)?.label }}</template
+          ></span
+        ><button type="button" @click="reset">
+          显示全部 {{ posts.length }} 篇 <SiteIcon name="close" :size="14" />
+        </button>
       </div>
       <div class="results-summary" aria-live="polite">
         <span
@@ -179,7 +199,7 @@ function clearQuery() {
           >
             查看整理中的笔记 <SiteIcon name="arrow" :size="16" /></button
           ><button type="button" class="quiet-button" @click="reset">
-            阅读全部正文 <SiteIcon name="arrow" :size="16" />
+            显示全部笔记 <SiteIcon name="arrow" :size="16" />
           </button>
         </div>
       </div>

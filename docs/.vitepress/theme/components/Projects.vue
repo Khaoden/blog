@@ -78,7 +78,7 @@ const decisions = [
       ><div class="section-heading">
         <div>
           <span class="eyebrow">SMALL DETAILS, REAL DIFFERENCES</span>
-          <h2 id="decisions-heading">这个小站，认真对待的几件事</h2>
+          <h2 id="decisions-heading">现在能用到的功能</h2>
         </div>
       </div>
       <div class="decision-grid">

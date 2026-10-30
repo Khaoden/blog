@@ -1,5 +1,6 @@
 ---
 title: Spring IoC：从手动组装到构造器注入
+shortTitle: Spring IoC
 date: 2024-03-20
 lastUpdated: 2026-10-29
 tags: ['Java', 'Spring', 'IoC', '依赖注入']

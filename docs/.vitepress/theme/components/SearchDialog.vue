@@ -11,21 +11,35 @@ const dialog = ref<HTMLDialogElement>()
 const input = ref<HTMLInputElement>()
 const query = ref('')
 function priority(post: Post) {
-  const title = titleOf(post).toLocaleLowerCase()
-  const value = query.value.trim().toLocaleLowerCase()
+  const titles = [
+    titleOf(post),
+    post.frontmatter.shortTitle || '',
+    ...(post.frontmatter.aliases || []),
+    post.url.split('/').pop() || ''
+  ].map((title) => title.normalize('NFKC').toLocaleLowerCase())
+  const value = query.value.trim().normalize('NFKC').toLocaleLowerCase()
   const terms = value.split(/\s+/).filter(Boolean)
   return (
-    (value && title === value ? 100 : value && title.includes(value) ? 40 : 0) +
-    terms.filter((term) => title.includes(term)).length * 10 +
+    (value && titles.includes(value)
+      ? 100
+      : value && titles.some((title) => title.includes(value))
+        ? 40
+        : 0) +
+    terms.filter((term) => titles.some((title) => title.includes(term))).length * 10 +
     (post.hasContent === false ? 0 : 2)
   )
 }
-const results = computed(() =>
+const matchingResults = computed(() =>
   ((theme.value.posts || []) as Post[])
     .filter((post) => matchesQuery(post, query.value))
-    .sort((a, b) => priority(b) - priority(a))
-    .slice(0, 8)
+    .sort(
+      (a, b) =>
+        priority(b) - priority(a) ||
+        (Date.parse(b.frontmatter.lastUpdated || '') || 0) -
+          (Date.parse(a.frontmatter.lastUpdated || '') || 0)
+    )
 )
+const results = computed(() => matchingResults.value.slice(0, 8))
 function close() {
   dialog.value?.close()
 }
@@ -81,7 +95,7 @@ defineExpose({ open })
   >
     <div class="search-dialog-inner">
       <div class="search-dialog-heading">
-        <h2 id="search-heading">找一篇文字</h2>
+        <h2 id="search-heading">搜索笔记</h2>
         <button type="button" class="icon-button" aria-label="关闭搜索" @click="close">
           <SiteIcon name="close" />
         </button>
@@ -92,7 +106,7 @@ defineExpose({ open })
           v-model="query"
           type="search"
           aria-label="搜索文章"
-          placeholder="输入标题、关键词或标签…"
+          placeholder="标题、正文关键词或旧文件名…"
           autocomplete="off"
           maxlength="180"
           @keydown.enter="firstResult"
@@ -107,7 +121,15 @@ defineExpose({ open })
         </button>
       </div>
       <p class="search-results-label">
-        {{ query ? '搜索结果' : '先读读这些' }}<span>{{ results.length }} 篇</span>
+        {{ query ? '搜索结果' : '最近补充'
+        }}<span
+          >{{
+            matchingResults.length > results.length
+              ? '显示 ' + results.length + ' / ' + matchingResults.length
+              : results.length
+          }}
+          篇</span
+        >
       </p>
       <div class="search-results" aria-live="polite">
         <a v-for="post in results" :key="post.url" :href="post.url" @click="close"
@@ -128,6 +150,13 @@ defineExpose({ open })
           <span>试试「Java 数组」「Spring」或「算法」。</span>
         </div>
       </div>
+      <a
+        v-if="matchingResults.length > results.length"
+        class="search-all-results"
+        :href="'/blog?q=' + encodeURIComponent(query.trim())"
+        @click="close"
+        >查看全部 {{ matchingResults.length }} 篇 <SiteIcon name="arrow" :size="16"
+      /></a>
       <div class="dialog-hint">
         <span class="search-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> 选择 <kbd>Enter</kbd> 打开</span
         ><span><kbd>Esc</kbd> 关闭</span>

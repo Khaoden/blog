@@ -1,5 +1,6 @@
 ---
 title: Spring AOP：理解代理与调用边界
+shortTitle: Spring AOP
 date: 2024-03-20
 lastUpdated: 2026-10-29
 tags: ['Java', 'Spring', 'AOP', '代理']

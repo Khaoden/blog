@@ -6,7 +6,7 @@ import { getBlogPosts } from './utils/posts'
 export default defineConfigWithTheme<DefaultTheme.Config & { posts: Post[] }>({
   lang: 'zh-CN',
   title: 'Khaoden',
-  description: 'Khaoden 的个人博客，记录后端开发、AI 应用与日常灵感。',
+  description: 'Khaoden 的 Java、Spring、算法与 Windows 工具笔记。',
   cleanUrls: true,
   appearance: true,
   head: [

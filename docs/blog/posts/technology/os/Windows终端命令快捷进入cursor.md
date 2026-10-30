@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: 终端命令快速进入 IDE（Windows）
+shortTitle: Windows：终端快速打开 Cursor
+aliases: ['Windows终端命令快捷进入cursor', 'Windows 终端命令快捷进入 Cursor', 'Cursor启动命令']
 date: 2024-03-20
 tags: ['os', 'windows']
 category: 'technology'

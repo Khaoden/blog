@@ -5,6 +5,12 @@ import { matter } from 'vfile-matter'
 import { fileURLToPath } from 'url'
 import type { Post } from '../types/blog'
 
+function normalizeDate(value: unknown): string {
+  if (!value) return ''
+  const timestamp = Date.parse(String(value))
+  return Number.isFinite(timestamp) ? new Date(timestamp).toISOString() : ''
+}
+
 function calculateReadingTime(content: string): number {
   const chinese = content.match(/\p{Script=Han}/gu)?.length || 0
   const words = content.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length || 0
@@ -51,16 +57,29 @@ export function getBlogPosts(): Post[] {
         const frontmatter = file.data.matter as Post['frontmatter']
         const body = String(file.value ?? '')
 
-        const relativePath = path.relative(postsDirectory, filePath)
+        const relativePath = path.relative(postsDirectory, filePath).split(path.sep).join('/')
         posts.push({
           excerpt: excerptFrom(body),
+          searchText: [
+            frontmatter.title,
+            frontmatter.shortTitle,
+            frontmatter.description,
+            ...(frontmatter.aliases || []),
+            ...(frontmatter.tags || []),
+            relativePath.replace(/\.md$/, ''),
+            body
+          ]
+            .join(' ')
+            .normalize('NFKC')
+            .toLocaleLowerCase(),
           hasContent: body.replace(/^\s*#\s+[^\n]*(?:\n|$)/, '').trim().length > 0,
           url: `/blog/posts/${relativePath.replace('.md', '')}`,
           frontmatter: {
             ...frontmatter,
             readingTime: calculateReadingTime(body),
+            lastUpdated: normalizeDate(frontmatter.lastUpdated) || undefined,
             // An undated note must not look newly published on every build.
-            date: frontmatter.date ? new Date(frontmatter.date).toISOString() : ''
+            date: normalizeDate(frontmatter.date)
           }
         })
       }

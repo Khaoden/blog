@@ -14,16 +14,22 @@ export function dateLabel(date?: string): string {
   return new Date(date).toISOString().slice(0, 10).replaceAll('-', '.')
 }
 export function matchesQuery(post: Post, query: string): boolean {
-  const text = [
-    titleOf(post),
-    post.frontmatter.description || '',
-    post.excerpt || '',
-    ...(post.frontmatter.tags || [])
-  ]
-    .join(' ')
+  const text = (
+    post.searchText ||
+    [
+      titleOf(post),
+      post.frontmatter.description || '',
+      post.excerpt || '',
+      post.url.split('/').pop() || '',
+      ...(post.frontmatter.aliases || []),
+      ...(post.frontmatter.tags || [])
+    ].join(' ')
+  )
+    .normalize('NFKC')
     .toLocaleLowerCase()
   return query
     .trim()
+    .normalize('NFKC')
     .toLocaleLowerCase()
     .split(/\s+/)
     .filter(Boolean)

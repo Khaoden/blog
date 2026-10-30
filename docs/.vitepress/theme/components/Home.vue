@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useData } from 'vitepress'
 import type { Post } from '../../types/blog'
 import PostList from './PostList.vue'
@@ -7,11 +7,17 @@ import SiteIcon from './SiteIcon.vue'
 import MotionReveal from './MotionReveal.vue'
 import ReadingPaths from './ReadingPaths.vue'
 import AlgorithmLab from './AlgorithmLab.vue'
+import NotebookIndex from './NotebookIndex.vue'
+import { recentNotes } from '../utils/notebook'
 import { categories, categoryOf, dateLabel, titleOf } from '../utils/presentation'
 
 const props = withDefaults(defineProps<{ motionPaused?: boolean }>(), { motionPaused: false })
 const { theme } = useData()
 const tab = ref('全部')
+const visibleCount = ref(6)
+watch(tab, () => {
+  visibleCount.value = 6
+})
 const tilt = ref({ x: 0, y: 0 })
 const posts = computed(() => (theme.value.posts || []) as Post[])
 const readable = computed(() => posts.value.filter((post) => post.hasContent !== false))
@@ -19,41 +25,27 @@ const unfinished = computed(() => posts.value.length - readable.value.length)
 const featured = computed(() =>
   posts.value.find((post) => post.url.endsWith('/代码随想录/数组算法'))
 )
-const selected = computed(() => {
-  const source =
-    tab.value === '全部'
-      ? readable.value.filter(
-          (post) =>
-            Date.parse(post.frontmatter.date) <= Date.now() && post.url !== featured.value?.url
-        )
-      : readable.value.filter((post) => categoryOf(post) === tab.value)
-  return [...source]
-    .sort(
-      (a, b) =>
-        (Date.parse(b.frontmatter.lastUpdated || b.frontmatter.date) || 0) -
-        (Date.parse(a.frontmatter.lastUpdated || a.frontmatter.date) || 0)
-    )
-    .slice(0, 4)
-})
+const matchingNotes = computed(() => recentNotes(posts.value, tab.value, categoryOf))
+const selected = computed(() => matchingNotes.value.slice(0, visibleCount.value))
 const focus = computed(() =>
   [
     {
-      title: 'Backend',
+      title: 'Java / Spring',
       category: '开发笔记',
       icon: 'layers',
-      detail: 'Java、Spring，与原理多走近一步。'
+      detail: '类型、集合、IoC 和 AOP。'
     },
     {
-      title: 'Algorithms',
+      title: '算法练习',
       category: '算法与面试',
       icon: 'code',
-      detail: '从边界、递归到数据结构。'
+      detail: '数组、字符串、栈和队列、回溯。'
     },
     {
-      title: 'Tools',
+      title: 'Windows / Git',
       category: '工具与效率',
       icon: 'terminal',
-      detail: '把重复的事情，交给好用的工具。'
+      detail: '终端命令、PATH 和 Git 操作。'
     }
   ].map((item) => ({
     ...item,
@@ -96,7 +88,7 @@ function resetCard() {
     <section class="orbit-hero" aria-labelledby="identity-name">
       <div class="hero-atmosphere" aria-hidden="true"><i></i><i></i></div>
       <div class="hero-caption">
-        <span class="eyebrow">KHAODEN / PERSONAL SPACE</span><span>一个人的数字角落</span>
+        <span class="eyebrow">KHAODEN / NOTES</span><span>Java · 算法 · Windows · 工具</span>
       </div>
       <div class="orbit-universe">
         <div class="orbit-track track-inner" aria-hidden="true"></div>
@@ -113,8 +105,11 @@ function resetCard() {
         </div>
         <div class="orbit-journey orbit-ai">
           <div class="orbit-counter">
-            <a href="/about" class="orbit-badge ai-badge" aria-label="了解我的 AI 应用兴趣"
-              ><SiteIcon name="sparkle" :size="25" /><span>AI</span></a
+            <a
+              href="/blog?category=%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%95%88%E7%8E%87"
+              class="orbit-badge ai-badge"
+              aria-label="查看工具笔记"
+              ><SiteIcon name="terminal" :size="25" /><span>工具</span></a
             >
           </div>
         </div>
@@ -155,24 +150,24 @@ function resetCard() {
               />
             </div>
             <h1 id="identity-name">Khaoden<span>.</span></h1>
-            <p class="identity-description">把所学，写成自己的语言。</p>
+            <p class="identity-description">Java、算法和工具使用记录。</p>
             <div class="identity-divider"></div>
-            <p class="identity-section-label">我的几个关键词</p>
+            <p class="identity-section-label">这里写些什么</p>
             <div class="identity-roles">
               <a href="/blog?category=%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0"
                 ><span>后端开发</span><small>Backend</small><SiteIcon name="diagonal" :size="18"
               /></a>
-              <a href="/about"
-                ><span>应用探索</span><small>AI Applications</small
-                ><SiteIcon name="diagonal" :size="18"
+              <a href="/blog?category=%E7%AE%97%E6%B3%95%E4%B8%8E%E9%9D%A2%E8%AF%95"
+                ><span>算法练习</span><small>Algorithms</small><SiteIcon name="diagonal" :size="18"
               /></a>
-              <a href="/#notes"
-                ><span>学习与记录</span><small>Learning</small><SiteIcon name="diagonal" :size="18"
+              <a href="/blog?category=%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%95%88%E7%8E%87"
+                ><span>工具笔记</span><small>Windows / Git</small
+                ><SiteIcon name="diagonal" :size="18"
               /></a>
             </div>
             <div class="identity-bottom">
               <a href="/#notes" class="identity-read"
-                >开始阅读 <SiteIcon name="arrow" :size="16"
+                >打开笔记目录 <SiteIcon name="arrow" :size="16"
               /></a>
               <a href="/about" class="identity-about"
                 >关于我 <SiteIcon name="diagonal" :size="15"
@@ -185,16 +180,13 @@ function resetCard() {
         </div>
       </div>
       <div class="hero-fragment fragment-code" aria-hidden="true">
-        <span class="fragment-kicker">A WORK IN PROGRESS</span>
-        <code
-          ><span>const</span> curiosity = <b>true</b><br /><span>while</span> (curiosity) {<br />&nbsp;
-          learn();<br />&nbsp; build();<br />&nbsp; write();<br />}</code
-        >
+        <span class="fragment-kicker">WINDOWS / TERMINAL</span>
+        <code><span>PS&gt;</span> Get-Location<br /><span>PS&gt;</span> cursor .</code>
       </div>
       <a href="/#learning-paths" class="hero-fragment fragment-route"
         ><span class="fragment-star"><SiteIcon name="asterisk" :size="24" /></span
         ><span class="fragment-kicker">FOLLOW THE THREAD</span
-        ><strong>从一个问题，<br />走向下一次理解。</strong
+        ><strong>Windows、算法，<br />旧笔记都在目录里。</strong
         ><span class="fragment-link">找一条阅读路线 <SiteIcon name="arrow" :size="14" /></span
       ></a>
       <a href="/#spaces" class="hero-scroll"
@@ -202,13 +194,29 @@ function resetCard() {
       /></a>
     </section>
 
+    <section id="notes" class="home-notebook" aria-labelledby="notebook-heading">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">NOTEBOOK</span>
+          <h2 id="notebook-heading">
+            笔记目录<span class="section-count">{{ posts.length }}</span>
+          </h2>
+        </div>
+        <a href="/blog" class="text-link">搜索全部笔记 <SiteIcon name="search" :size="16" /></a>
+      </div>
+      <p class="notebook-description">
+        按主题找文章。分组可以收起，原来的 Windows 和算法笔记放在前面。
+      </p>
+      <NotebookIndex :posts="posts" />
+    </section>
+
     <MotionReveal as="section" id="spaces" class="spaces-section" aria-labelledby="spaces-heading">
       <div class="home-section-intro">
         <span class="eyebrow">A LITTLE OF EVERYTHING</span>
         <h2 id="spaces-heading">
-          代码、文字，<br class="mobile-break" />还有一点好奇心<span>.</span>
+          这个博客里，<br class="mobile-break" />还有这些入口<span>.</span>
         </h2>
-        <p>在这里记录后端开发、AI 应用与学习过程中的点滴。</p>
+        <p>文章归档、代码仓库和朋友们的博客。</p>
       </div>
       <div class="channel-grid">
         <a href="/blog" class="channel-card channel-notes"
@@ -216,12 +224,12 @@ function resetCard() {
             <SiteIcon name="book" :size="27" /><SiteIcon name="diagonal" :size="21" />
           </div>
           <span class="channel-label">NOTEBOOK</span>
-          <h3>我的公开笔记本</h3>
-          <p>把理解写下来，也把问题留下来。</p>
+          <h3>笔记与文章</h3>
+          <p>按分类查找，也可以搜索正文中的关键词。</p>
           <div class="channel-bottom">
             <strong>{{ readable.length }}<small>篇正文</small></strong
             ><span>{{
-              unfinished ? '另有 ' + unfinished + ' 份笔记整理中' : '从基础到原理，循着问题读下去'
+              unfinished ? '另有 ' + unfinished + ' 份笔记整理中' : 'Java、算法、Windows 与工具'
             }}</span>
           </div></a
         >
@@ -235,7 +243,7 @@ function resetCard() {
           </div>
           <span class="channel-label">BUILD IN THE OPEN</span>
           <h3>GitHub</h3>
-          <p>从一个小想法，到可以运行的代码。</p>
+          <p>博客源码和其他代码记录。</p>
           <div class="channel-bottom">
             <strong class="channel-handle">@Khaoden</strong><span>来看看我的代码</span>
           </div></a
@@ -246,7 +254,7 @@ function resetCard() {
           </div>
           <span class="channel-label">A SMALL INTERNET</span>
           <h3>去朋友家坐坐</h3>
-          <p>一些独立站点，一些不同的视角。</p>
+          <p>收藏在友链里的独立博客。</p>
           <div class="channel-bottom">
             <strong class="channel-handle">Hello, world.</strong><span>网上邻居 →</span>
           </div></a
@@ -265,7 +273,7 @@ function resetCard() {
           <span class="eyebrow">ONE THING LEADS TO ANOTHER</span>
           <h2 id="paths-heading">不知道从哪篇开始？</h2>
         </div>
-        <span class="section-aside">选一条线，慢慢读。</span>
+        <span class="section-aside">按顺序读，也可以直接跳到需要的部分。</span>
       </div>
       <ReadingPaths />
     </MotionReveal>
@@ -274,7 +282,7 @@ function resetCard() {
       <div class="section-heading">
         <div>
           <span class="eyebrow">LEARNING BY DOING</span>
-          <h2 id="workbench-heading">最近在折腾什么</h2>
+          <h2 id="workbench-heading">几份比较长的笔记</h2>
         </div>
         <a href="/projects" class="text-link">项目与实践 <SiteIcon name="diagonal" :size="16" /></a>
       </div>
@@ -283,7 +291,7 @@ function resetCard() {
           <div class="feature-copy">
             <span class="feature-eyebrow">SELECTED NOTE / JAVA</span>
             <h3>{{ titleOf(featured) }}</h3>
-            <p>二分查找、双指针与滑动窗口。<br />从边界出发，把解题思路一步步理清楚。</p>
+            <p>两种二分区间写法，以及双指针、滑动窗口的题目和代码。</p>
             <div class="featured-meta">
               <time :datetime="featured.frontmatter.date">{{
                 dateLabel(featured.frontmatter.date)
@@ -296,7 +304,7 @@ function resetCard() {
             <div class="array-bracket"></div>
             <div class="array-cells"><i>1</i><i>3</i><i>5</i><i>8</i><i>13</i></div>
             <div class="array-labels"><span>left</span><span>mid</span><span>right</span></div>
-            <small>把复杂的问题，拆成清楚的步骤。</small>
+            <small>left、mid、right 对应闭区间的三个位置。</small>
           </div>
         </a>
         <div class="focus-stack">
@@ -321,7 +329,7 @@ function resetCard() {
       <div class="lab-introduction">
         <span class="eyebrow">LESS ABSTRACT, MORE HANDS-ON</span
         ><span class="lab-doodle" aria-hidden="true"><SiteIcon name="code" :size="46" /></span>
-        <h2 id="lab-heading">让思路，<br />动起来<span>.</span></h2>
+        <h2 id="lab-heading">二分查找，<br />走一遍<span>.</span></h2>
         <p>二分查找为什么快？<br />换一个目标，亲手推进几步，<br />看见每次比较留下的范围。</p>
         <a href="/blog/posts/interview/代码随想录/数组算法" class="text-link"
           >回到数组笔记 <SiteIcon name="diagonal" :size="16"
@@ -330,13 +338,18 @@ function resetCard() {
       <AlgorithmLab />
     </MotionReveal>
 
-    <MotionReveal as="section" id="notes" class="home-entries" aria-labelledby="notes-heading">
+    <MotionReveal
+      as="section"
+      id="recent-notes"
+      class="home-entries"
+      aria-labelledby="notes-heading"
+    >
       <div class="section-heading">
         <div>
           <span class="eyebrow">NOTES & THOUGHTS</span>
           <h2 id="notes-heading">
-            最近写下的<span class="section-count" :aria-label="readable.length + ' 篇正文'">{{
-              readable.length
+            最近补充的笔记<span class="section-count" :aria-label="posts.length + ' 篇笔记'">{{
+              posts.length
             }}</span>
           </h2>
         </div>
@@ -357,14 +370,24 @@ function resetCard() {
       <PostList v-if="selected.length" :posts="selected" />
       <div v-else class="home-empty-state" role="status">
         <SiteIcon name="book" :size="26" />
-        <h3>这个主题的笔记还在整理中。</h3>
-        <p>先读读已完成的文字，或者去归档看看整理进度。</p>
+        <h3>这个分类还没有笔记。</h3>
+        <p>可以切回全部，或在上方目录里按主题找。</p>
         <div>
           <button type="button" class="primary-button" @click="tab = '全部'">阅读其他笔记</button
-          ><a :href="'/blog?category=' + encodeURIComponent(tab) + '&view=drafts'" class="text-link"
-            >查看整理中的记录 <SiteIcon name="arrow" :size="16"
-          /></a>
+          ><a href="/blog" class="text-link">打开全部笔记 <SiteIcon name="arrow" :size="16" /></a>
         </div>
+      </div>
+      <div class="home-load-more" v-if="selected.length">
+        <span role="status">显示 {{ selected.length }} / {{ matchingNotes.length }} 篇</span
+        ><button
+          v-if="selected.length < matchingNotes.length"
+          type="button"
+          class="quiet-button"
+          @click="visibleCount += 6"
+        >
+          再看 {{ Math.min(6, matchingNotes.length - selected.length) }} 篇
+          <SiteIcon name="down" :size="15" />
+        </button>
       </div>
       <a href="/blog" class="all-posts-link"
         >浏览全部 {{ readable.length }} 篇正文 <SiteIcon name="arrow" :size="17"
@@ -378,8 +401,8 @@ function resetCard() {
         /></span>
         <div>
           <span class="eyebrow">THIS IS JUST THE BEGINNING</span>
-          <h2>代码之外，也想和你聊聊。</h2>
-          <p>关于这个博客，和写下这些文字的人。</p>
+          <h2>关于这个博客</h2>
+          <p>栏目说明、示例环境和 GitHub 入口。</p>
         </div>
         <SiteIcon name="diagonal" :size="26" /></a
     ></MotionReveal>

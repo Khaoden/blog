@@ -1,5 +1,7 @@
 ---
 title: Java 基础：从类型到异常
+aliases: ['Java基础', 'Java基础语法', 'basics']
+shortTitle: Java 基础
 date: 2024-03-20
 lastUpdated: 2026-10-29
 tags: ['Java', 'JavaSE', '基础']

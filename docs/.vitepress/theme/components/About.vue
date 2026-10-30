@@ -4,6 +4,7 @@ import { useData } from 'vitepress'
 import type { Post } from '../../types/blog'
 import SiteIcon from './SiteIcon.vue'
 import MotionReveal from './MotionReveal.vue'
+import { originalNotes } from '../utils/notebook'
 import { categoryOf, categories } from '../utils/presentation'
 const { theme } = useData()
 const posts = computed(() => (theme.value.posts || []) as Post[])
@@ -17,10 +18,10 @@ const topics = computed(() =>
 )
 const questions = [
   {
-    title: '第一次来，可以从哪里开始？',
-    text: '首页整理了 Java → Spring、算法与动手实践三条阅读路线。想打基础，可以先看类型、对象与集合；想看解题思路，可以从数组和二分查找开始。',
-    href: '/#learning-paths',
-    link: '挑一条阅读路线'
+    title: 'Windows 和 Cursor 的笔记在哪里？',
+    text: '放在工具与效率分类。首页目录里的 Windows / Cursor 可以直接打开原来的终端启动笔记，旁边还有 PATH 和 PowerShell 的补充记录。',
+    href: '/blog/posts/technology/os/Windows终端命令快捷进入cursor',
+    link: '打开 Windows 笔记'
   },
   {
     title: '代码示例适合什么环境？',
@@ -38,21 +39,21 @@ const questions = [
 const interests = [
   {
     icon: 'code',
-    title: '后端开发',
-    text: '从 Java、Spring 到系统设计，理解原理，也关注实际问题。',
-    tags: ['Java', 'Spring', 'MySQL']
-  },
-  {
-    icon: 'sparkle',
-    title: 'AI 应用',
-    text: '探索大模型与日常开发的连接，把想法变成可以使用的工具。',
-    tags: ['Python', 'LangChain', 'RAG']
+    title: 'Java 与 Spring',
+    text: '基本类型、集合、对象关系，以及 IoC 和代理调用。',
+    tags: ['Java', '集合', 'Spring']
   },
   {
     icon: 'book',
-    title: '学习与记录',
-    text: '用自己的语言整理知识，让每一次学习都有迹可循。',
-    tags: ['算法', '阅读', '写作']
+    title: '算法练习',
+    text: '代码随想录的刷题笔记，保留原来的分析和代码。',
+    tags: ['数组', '字符串', '回溯']
+  },
+  {
+    icon: 'terminal',
+    title: 'Windows 与工具',
+    text: '终端命令、Cursor 启动、环境变量和 Git。',
+    tags: ['Windows', 'PowerShell', 'Git']
   }
 ]
 </script>
@@ -61,24 +62,24 @@ const interests = [
     <header class="page-intro">
       <span class="eyebrow">ABOUT</span>
       <h1>你好，我是 Khaoden<span class="heading-dot">.</span></h1>
-      <p>一个喜欢探索，也喜欢把事情想明白的人。</p>
+      <p>这里放技术笔记，也放一些工具使用记录。</p>
     </header>
     <MotionReveal as="section" class="about-story">
       <div class="about-photo">
         <img src="/images/avatar.jpg" alt="Khaoden 的头像" width="240" height="240" /><span
           class="photo-caption"
-          >STAY CURIOUS, ALWAYS.</span
+          >KHAODEN / BLOG</span
         >
       </div>
       <div class="about-copy">
         <span class="eyebrow">CODE. LEARN. REPEAT.</span>
-        <h2>在问题里探索，<br />在文字里整理。</h2>
+        <h2>笔记按主题放，<br />需要时回来查。</h2>
         <p>
-          我是一名关注后端开发与 AI
-          应用的开发者。这里是我的公开笔记本，记录从理解概念到动手实践的过程。
+          这里主要是 Java、Spring 和算法笔记。Windows 下的终端命令、Cursor
+          等工具用法单独放在工具分类。
         </p>
         <p>
-          写作对我来说，是把模糊的想法慢慢变清楚。它未必总是完整的答案，也可以是一个正在生长的问题。
+          代码随想录的几篇比较长，直接看目录或搜索具体题目更方便。「滑动窗口」「N皇后」这样的正文关键词，也能搜到对应的笔记。
         </p>
         <a
           class="primary-button"
@@ -92,7 +93,7 @@ const interests = [
     <MotionReveal as="section" class="about-map" aria-labelledby="about-map-heading">
       <div class="about-map-copy">
         <span class="eyebrow">A MAP OF THIS PLACE</span>
-        <h2 id="about-map-heading">把零散的问题，<br />慢慢连成一张地图。</h2>
+        <h2 id="about-map-heading">按主题看，<br />或直接搜一个关键词。</h2>
         <p>
           这里既有从类型、对象到 Spring
           的基础线，也有数组、字符串与回溯的解题线。可以按主题读，也可以从眼前的问题出发。
@@ -113,7 +114,7 @@ const interests = [
       <div class="section-heading">
         <div>
           <span class="eyebrow">CURRENT INTERESTS</span>
-          <h2>我在关注什么<span class="heading-dot">.</span></h2>
+          <h2>这里记录什么<span class="heading-dot">.</span></h2>
         </div>
       </div>
       <div class="interest-grid">
@@ -127,41 +128,21 @@ const interests = [
         </section>
       </div>
     </MotionReveal>
-    <MotionReveal as="section" class="about-principles" aria-labelledby="principles-heading">
+    <MotionReveal as="section" class="about-originals" aria-labelledby="original-notes-heading">
       <div class="section-heading">
         <div>
-          <span class="eyebrow">HOW THESE NOTES GROW</span>
-          <h2 id="principles-heading">一篇笔记怎样长出来</h2>
+          <span class="eyebrow">EARLIER NOTES</span>
+          <h2 id="original-notes-heading">以前的几份笔记</h2>
         </div>
       </div>
-      <ol>
-        <li>
-          <span>01</span>
-          <div>
-            <h3>先留下一个问题</h3>
-            <p>
-              为什么引用可以修改对象？为什么 this
-              调用没有经过代理？从具体的困惑开始，找到需要解释的边界。
-            </p>
-          </div>
-        </li>
-        <li>
-          <span>02</span>
-          <div>
-            <h3>再把它缩成一个例子</h3>
-            <p>
-              用尽量小的代码呈现行为，把输入、输出和前提写清楚。理解一个概念，也要知道它在哪里不再成立。
-            </p>
-          </div>
-        </li>
-        <li>
-          <span>03</span>
-          <div>
-            <h3>最后，连回已有的知识</h3>
-            <p>给出相邻主题、练习和官方资料。读完一篇之后，能带着更清晰的问题继续走下去。</p>
-          </div>
-        </li>
-      </ol>
+      <div class="original-note-links">
+        <a v-for="note in originalNotes" :key="note.url" :href="note.url"
+          ><SiteIcon
+            :name="note.title.startsWith('Windows') ? 'terminal' : 'book'"
+            :size="18" /><span>{{ note.title }}</span
+          ><SiteIcon name="arrow" :size="16"
+        /></a>
+      </div>
     </MotionReveal>
     <MotionReveal as="section" class="about-questions" aria-labelledby="questions-heading">
       <div class="section-heading">
@@ -188,9 +169,7 @@ const interests = [
       <div>
         <span class="eyebrow">COLOPHON</span>
         <h2>关于这个博客</h2>
-        <p>
-          用 VitePress 和 Vue 搭建，用文字慢慢填满。<br />如果这些笔记恰好帮到了你，那就是记录最好的意义。
-        </p>
+        <p>文章用 Markdown 保存，由 VitePress 和 Vue 显示。<br />源码和修改记录都在 GitHub。</p>
       </div>
       <a
         href="https://github.com/Khaoden/blog"
